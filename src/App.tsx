@@ -7,11 +7,13 @@ import { PricingGrid } from "./examples/PricingGrid";
 import { ProductDetails } from "./examples/ProductDetails";
 import { ProductGrid } from "./examples/ProductGrid";
 import { WelcomeHero } from "./examples/WelcomeHero";
+import { TeamSettings } from "./examples/TeamSettings";
 
 function App() {
   return (
     <AllProviders>
       <Header />
+      <TeamSettings />
       <Demo />
       <WelcomeHero />
       <PanelSections />
