@@ -1,0 +1,244 @@
+import { useMediaQuery } from "hooks";
+import { IconCheckCircle, IconInfo } from "icons";
+import { placeholder } from "images";
+import { Flex, Section } from "layout";
+import {
+  Avatar,
+  AvatarBlock,
+  Button,
+  ButtonDanger,
+  ButtonGroup,
+  InputField,
+  Notification,
+  SelectField,
+  SelectItem,
+  SwitchField,
+  Text,
+  TextContentTitle,
+  TextHeading,
+  TextStrong,
+} from "primitives";
+import { useState } from "react";
+import "./teamSettings.css";
+
+type Role = "Owner" | "Admin" | "Editor" | "Viewer";
+type Member = { id: string; name: string; email: string; role: Role };
+type Settings = {
+  fullName: string;
+  email: string;
+  jobTitle: string;
+  productUpdates: boolean;
+  weeklyDigest: boolean;
+  members: Member[];
+};
+
+const ROLES: Role[] = ["Owner", "Admin", "Editor", "Viewer"];
+
+const INITIAL_SETTINGS: Settings = {
+  fullName: "Ada Lovelace",
+  email: "ada@example.com",
+  jobTitle: "",
+  productUpdates: true,
+  weeklyDigest: false,
+  members: [
+    { id: "1", name: "Ada Lovelace", email: "ada@example.com", role: "Owner" },
+    { id: "2", name: "Grace Hopper", email: "grace@example.com", role: "Admin" },
+    { id: "3", name: "Alan Turing", email: "alan@example.com", role: "Viewer" },
+  ],
+};
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+export function TeamSettings() {
+  const { isMobile } = useMediaQuery();
+  const [saved, setSaved] = useState<Settings>(INITIAL_SETTINGS);
+  const [form, setForm] = useState<Settings>(INITIAL_SETTINGS);
+  const [showSaved, setShowSaved] = useState(false);
+
+  const update = (patch: Partial<Settings>) => {
+    setForm((prev) => ({ ...prev, ...patch }));
+    setShowSaved(false);
+  };
+  const updateMembers = (fn: (members: Member[]) => Member[]) =>
+    update({ members: fn(form.members) });
+
+  const errors = {
+    fullName: form.fullName.trim() ? undefined : "Enter your full name.",
+    email: EMAIL_PATTERN.test(form.email.trim())
+      ? undefined
+      : "Enter a valid email address.",
+  };
+  const errorCount = Object.values(errors).filter(Boolean).length;
+  const isDirty = JSON.stringify(form) !== JSON.stringify(saved);
+
+  const handleSave = () => {
+    setSaved(form);
+    setShowSaved(true);
+  };
+  const handleCancel = () => {
+    setForm(saved);
+    setShowSaved(false);
+  };
+
+  return (
+    <Section padding={isMobile ? "600" : "1600"}>
+      <Flex
+        container
+        direction="column"
+        alignSecondary="stretch"
+        gap={isMobile ? "800" : "1200"}
+        className="team-settings"
+      >
+        <TextContentTitle
+          title="Team settings"
+          subtitle="Manage your profile, notifications, and team members."
+        />
+
+        {errorCount > 0 && (
+          <Notification variant="alert" icon={<IconInfo />} role="alert">
+            <TextStrong>
+              {errorCount === 1
+                ? "1 field needs attention"
+                : `${errorCount} fields need attention`}
+            </TextStrong>
+            <Text>Fix the highlighted fields before saving.</Text>
+          </Notification>
+        )}
+        {showSaved && (
+          <Notification icon={<IconCheckCircle />} role="status">
+            <TextStrong>Changes saved</TextStrong>
+            <Text>Your team settings have been updated.</Text>
+          </Notification>
+        )}
+
+        <section aria-labelledby="ts-profile">
+          <Flex direction="column" alignSecondary="stretch" gap="600">
+          <TextHeading elementType="h2" id="ts-profile">
+            Profile
+          </TextHeading>
+          <InputField
+            label="Full name"
+            value={form.fullName}
+            onChange={(fullName) => update({ fullName })}
+            isRequired
+            isInvalid={!!errors.fullName}
+            errorMessage={errors.fullName}
+          />
+          <InputField
+            label="Email"
+            type="email"
+            value={form.email}
+            onChange={(email) => update({ email })}
+            isRequired
+            isInvalid={!!errors.email}
+            errorMessage={errors.email}
+          />
+          <InputField
+            label="Job title"
+            description="Shown to teammates on your profile."
+            placeholder="e.g. Engineering manager"
+            value={form.jobTitle}
+            onChange={(jobTitle) => update({ jobTitle })}
+          />
+        </Flex>
+        </section>
+
+        <section aria-labelledby="ts-notifications">
+          <Flex direction="column" alignSecondary="stretch" gap="600">
+          <TextHeading elementType="h2" id="ts-notifications">
+            Notifications
+          </TextHeading>
+          <SwitchField
+            label="Product updates"
+            description="News about features and improvements."
+            isSelected={form.productUpdates}
+            onChange={(productUpdates) => update({ productUpdates })}
+          />
+          <SwitchField
+            label="Weekly digest"
+            description="A summary of team activity every Monday."
+            isSelected={form.weeklyDigest}
+            onChange={(weeklyDigest) => update({ weeklyDigest })}
+          />
+          <SwitchField
+            label="Security alerts"
+            description="Always on for workspace admins."
+            isSelected
+            isDisabled
+          />
+        </Flex>
+        </section>
+
+        <section aria-labelledby="ts-members">
+          <Flex direction="column" alignSecondary="stretch" gap="600">
+          <TextHeading elementType="h2" id="ts-members">
+            Team members
+          </TextHeading>
+          <ul className="team-settings-members">
+            {form.members.map((member) => {
+              const isOwner = member.role === "Owner";
+              return (
+                <li key={member.id} className="team-settings-member">
+                  <AvatarBlock
+                    className="team-settings-member-info"
+                    title={member.name}
+                    description={member.email}
+                  >
+                    <Avatar src={placeholder} size="large" />
+                  </AvatarBlock>
+                  <SelectField
+                    className="team-settings-member-role"
+                    aria-label={`Role for ${member.name}`}
+                    selectedKey={member.role}
+                    isDisabled={isOwner}
+                    disabledKeys={isOwner ? [] : ["Owner"]}
+                    onSelectionChange={(key) =>
+                      updateMembers((members) =>
+                        members.map((m) =>
+                          m.id === member.id ? { ...m, role: key as Role } : m,
+                        ),
+                      )
+                    }
+                  >
+                    {ROLES.map((role) => (
+                      <SelectItem key={role} id={role}>
+                        {role}
+                      </SelectItem>
+                    ))}
+                  </SelectField>
+                  <ButtonDanger
+                    variant="danger-subtle"
+                    size="small"
+                    isDisabled={isOwner}
+                    aria-label={`Remove ${member.name}`}
+                    onPress={() =>
+                      updateMembers((members) =>
+                        members.filter((m) => m.id !== member.id),
+                      )
+                    }
+                  >
+                    Remove
+                  </ButtonDanger>
+                </li>
+              );
+            })}
+          </ul>
+        </Flex>
+        </section>
+
+        <ButtonGroup align={isMobile ? "stack" : "end"}>
+          <Button variant="neutral" onPress={handleCancel}>
+            Cancel
+          </Button>
+          <Button
+            variant="primary"
+            isDisabled={!isDirty || errorCount > 0}
+            onPress={handleSave}
+          >
+            Save changes
+          </Button>
+        </ButtonGroup>
+      </Flex>
+    </Section>
+  );
+}
