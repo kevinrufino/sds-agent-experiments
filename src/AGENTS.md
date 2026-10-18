@@ -188,6 +188,14 @@ When you see `hidden={true}` in Figma data, it indicates that the node should be
 <Button variant="primary" size="medium">
   Button Text
 </Button>
+
+// Destructive actions (delete, remove) use the danger variants of Button
+<Button variant="danger-primary" onPress={onDelete}>
+  Delete
+</Button>
+<Button variant="danger-subtle" size="small" onPress={onRemove}>
+  Remove
+</Button>
 ```
 
 ### Navigation
