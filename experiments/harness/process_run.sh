@@ -5,7 +5,7 @@ RUN=$1; WT=/home/user/runs/$RUN; OUT=$S/results/$RUN; mkdir -p $OUT
 AID=$(awk -v r=$RUN '$1==r{print $2}' $S/runs.tsv)
 JSONL=/root/.claude/projects/-home-user-sds-agent-experiments/cbd70087-78b0-57e7-90af-7738bbc36e01/subagents/agent-$AID.jsonl
 cd $WT
-git add -A -N . ; git diff 05525f7 > $OUT/diff.patch; git reset -q
+git add -A -N . ; git diff HEAD > $OUT/diff.patch; git reset -q
 node $H/score.mjs $WT > $OUT/score.json
 bash $H/validate.sh $RUN $OUT > $OUT/validate.txt 2>&1
 python3 -I $H/trace.py $JSONL $OUT/trace.md $OUT/trace.json > $OUT/trace_summary.json

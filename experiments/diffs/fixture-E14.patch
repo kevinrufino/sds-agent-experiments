@@ -1,0 +1,26 @@
+diff --git a/.eslintrc.cjs b/.eslintrc.cjs
+index 4d5baf6..a61def7 100644
+--- a/.eslintrc.cjs
++++ b/.eslintrc.cjs
+@@ -17,6 +17,21 @@ module.exports = {
+   },
+   plugins: ["react-refresh"],
+   rules: {
++    "no-restricted-syntax": [
++      "error",
++      {
++        selector: "JSXElement[openingElement.name.name=/^(Button|IconButton)$/]:has(JSXIdentifier[name=/^IconTrash/])",
++        message: "Destructive actions (remove/delete) must use ButtonDanger or DestructiveIconButton from \"primitives\", not Button/IconButton.",
++      },
++      {
++        selector: "JSXElement[openingElement.name.name=/^(Button|IconButton)$/]:has(JSXText[value=/(remove|delete)/i])",
++        message: "Destructive actions (remove/delete) must use ButtonDanger or DestructiveIconButton from \"primitives\", not Button/IconButton.",
++      },
++      {
++        selector: "JSXOpeningElement[name.name=/^(Button|IconButton)$/] > JSXAttribute[name.name='aria-label'] :matches(Literal[value=/(remove|delete)/i], TemplateElement[value.raw=/(remove|delete)/i])",
++        message: "Destructive actions (remove/delete) must use ButtonDanger or DestructiveIconButton from \"primitives\", not Button/IconButton.",
++      },
++    ],
+     "react-refresh/only-export-components": [
+       "warn",
+       { allowConstantExport: true },

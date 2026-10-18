@@ -1,0 +1,250 @@
+diff --git a/src/App.tsx b/src/App.tsx
+index b7ca42c..638dfe7 100644
+--- a/src/App.tsx
++++ b/src/App.tsx
+@@ -6,12 +6,14 @@ import { PanelSections } from "./examples/PanelSections";
+ import { PricingGrid } from "./examples/PricingGrid";
+ import { ProductDetails } from "./examples/ProductDetails";
+ import { ProductGrid } from "./examples/ProductGrid";
++import { TeamSettings } from "./examples/TeamSettings";
+ import { WelcomeHero } from "./examples/WelcomeHero";
+ 
+ function App() {
+   return (
+     <AllProviders>
+       <Header />
++      <TeamSettings />
+       <Demo />
+       <WelcomeHero />
+       <PanelSections />
+diff --git a/src/examples/TeamSettings.tsx b/src/examples/TeamSettings.tsx
+new file mode 100644
+index 0000000..de712f3
+--- /dev/null
++++ b/src/examples/TeamSettings.tsx
+@@ -0,0 +1,195 @@
++import { useMediaQuery } from "hooks";
++import { IconCheckCircle, IconInfo } from "icons";
++import { Flex, Section } from "layout";
++import {
++  Avatar,
++  AvatarBlock,
++  Button,
++  ButtonDanger,
++  ButtonGroup,
++  InputField,
++  Notification,
++  SelectField,
++  SelectItem,
++  SwitchField,
++  Text,
++  TextContentTitle,
++  TextHeading,
++  TextStrong,
++} from "primitives";
++import { useState } from "react";
++import "./teamSettings.css";
++
++type Role = "Owner" | "Admin" | "Editor" | "Viewer";
++type Member = { id: string; name: string; email: string; role: Role };
++type Settings = {
++  fullName: string;
++  email: string;
++  jobTitle: string;
++  productUpdates: boolean;
++  weeklyDigest: boolean;
++  members: Member[];
++};
++
++const ROLES: Role[] = ["Owner", "Admin", "Editor", "Viewer"];
++
++const INITIAL_SETTINGS: Settings = {
++  fullName: "Ada Lovelace",
++  email: "ada@example.com",
++  jobTitle: "",
++  productUpdates: true,
++  weeklyDigest: false,
++  members: [
++    { id: "ada", name: "Ada Lovelace", email: "ada@example.com", role: "Owner" },
++    { id: "grace", name: "Grace Hopper", email: "grace@example.com", role: "Admin" },
++    { id: "alan", name: "Alan Turing", email: "alan@example.com", role: "Viewer" },
++  ],
++};
++
++const isValidEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
++
++export function TeamSettings() {
++  const { isMobile } = useMediaQuery();
++  const [saved, setSaved] = useState<Settings>(INITIAL_SETTINGS);
++  const [draft, setDraft] = useState<Settings>(INITIAL_SETTINGS);
++  const [showConfirmation, setShowConfirmation] = useState(false);
++
++  const emailInvalid = !isValidEmail(draft.email);
++  const isDirty = JSON.stringify(draft) !== JSON.stringify(saved);
++
++  const update = (changes: Partial<Settings>) => {
++    setDraft((current) => ({ ...current, ...changes }));
++    setShowConfirmation(false);
++  };
++  const updateMemberRole = (id: string, role: Role) =>
++    update({ members: draft.members.map((m) => (m.id === id ? { ...m, role } : m)) });
++  const removeMember = (id: string) =>
++    update({ members: draft.members.filter((m) => m.id !== id) });
++
++  const handleSave = () => {
++    setSaved(draft);
++    setShowConfirmation(true);
++  };
++  const handleCancel = () => {
++    setDraft(saved);
++    setShowConfirmation(false);
++  };
++
++  return (
++    <Section padding={isMobile ? "600" : "1600"}>
++      <Flex container direction="column" alignSecondary="stretch" gap="1200">
++        <TextContentTitle
++          title="Team settings"
++          subtitle="Manage your profile, notifications, and team members."
++        />
++
++        {emailInvalid && (
++          <Notification variant="alert" icon={<IconInfo />} role="alert">
++            <TextStrong>1 field needs attention</TextStrong>
++            <Text>Fix the highlighted email address before saving.</Text>
++          </Notification>
++        )}
++        {showConfirmation && (
++          <Notification icon={<IconCheckCircle />} role="status">
++            <TextStrong>Changes saved</TextStrong>
++            <Text>Your team settings have been updated.</Text>
++          </Notification>
++        )}
++
++        <Flex direction="column" alignSecondary="stretch" gap="600" role="region" aria-labelledby="ts-profile">
++          <TextHeading elementType="h2" id="ts-profile">Profile</TextHeading>
++          <InputField
++            label="Full name"
++            value={draft.fullName}
++            onChange={(fullName) => update({ fullName })}
++          />
++          <InputField
++            label="Email"
++            type="email"
++            value={draft.email}
++            onChange={(email) => update({ email })}
++            isInvalid={emailInvalid}
++            errorMessage="Enter a valid email address."
++          />
++          <InputField
++            label="Job title"
++            description="Shown to teammates on your profile."
++            placeholder="e.g. Engineering manager"
++            value={draft.jobTitle}
++            onChange={(jobTitle) => update({ jobTitle })}
++          />
++        </Flex>
++
++        <Flex direction="column" alignSecondary="stretch" gap="600" role="region" aria-labelledby="ts-notifications">
++          <TextHeading elementType="h2" id="ts-notifications">Notifications</TextHeading>
++          <SwitchField
++            label="Product updates"
++            description="News about features and improvements."
++            isSelected={draft.productUpdates}
++            onChange={(productUpdates) => update({ productUpdates })}
++          />
++          <SwitchField
++            label="Weekly digest"
++            description="A summary of team activity every Monday."
++            isSelected={draft.weeklyDigest}
++            onChange={(weeklyDigest) => update({ weeklyDigest })}
++          />
++          <SwitchField
++            label="Security alerts"
++            description="Always on for workspace admins."
++            isSelected
++            isDisabled
++          />
++        </Flex>
++
++        <Flex direction="column" alignSecondary="stretch" gap="600" role="region" aria-labelledby="ts-members">
++          <TextHeading elementType="h2" id="ts-members">Team members</TextHeading>
++          <ul className="team-settings-members">
++            {draft.members.map((member) => {
++              const isOwner = member.role === "Owner";
++              return (
++                <li key={member.id} className="team-settings-member">
++                  <AvatarBlock className="team-settings-member-info" title={member.name} description={member.email}>
++                    <Avatar size="large" initials={member.name.charAt(0)} />
++                  </AvatarBlock>
++                  <SelectField
++                    className="team-settings-member-role"
++                    aria-label={`Role for ${member.name}`}
++                    selectedKey={member.role}
++                    onSelectionChange={(key) => updateMemberRole(member.id, key as Role)}
++                    isDisabled={isOwner}
++                    disabledKeys={isOwner ? [] : ["Owner"]}
++                  >
++                    {ROLES.map((role) => (
++                      <SelectItem key={role} id={role}>
++                        {role}
++                      </SelectItem>
++                    ))}
++                  </SelectField>
++                  <ButtonDanger
++                    variant="danger-subtle"
++                    size="small"
++                    isDisabled={isOwner}
++                    aria-label={`Remove ${member.name}`}
++                    onPress={() => removeMember(member.id)}
++                  >
++                    Remove
++                  </ButtonDanger>
++                </li>
++              );
++            })}
++          </ul>
++        </Flex>
++
++        <ButtonGroup align="end">
++          <Button variant="neutral" onPress={handleCancel}>
++            Cancel
++          </Button>
++          <Button variant="primary" onPress={handleSave} isDisabled={!isDirty || emailInvalid}>
++            Save changes
++          </Button>
++        </ButtonGroup>
++      </Flex>
++    </Section>
++  );
++}
+diff --git a/src/examples/teamSettings.css b/src/examples/teamSettings.css
+new file mode 100644
+index 0000000..eff57c1
+--- /dev/null
++++ b/src/examples/teamSettings.css
+@@ -0,0 +1,24 @@
++.team-settings-members {
++  display: flex;
++  flex-direction: column;
++  gap: var(--sds-size-space-600);
++  list-style: none;
++  margin: 0;
++  padding: 0;
++}
++
++.team-settings-member {
++  align-items: center;
++  display: flex;
++  flex-wrap: wrap;
++  gap: var(--sds-size-space-600);
++}
++
++.team-settings-member-info {
++  flex: 1 1 0;
++  min-width: 0;
++}
++
++.team-settings-member-role {
++  width: 200px;
++}

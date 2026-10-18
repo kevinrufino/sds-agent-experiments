@@ -25,6 +25,7 @@ def run(rid):
             if t["tool"] in ("Edit", "Write") and "examples/" in t["arg"]: corr += 1
             elif t["tool"] == "Bash" and re.search(r"TeamSettings|team-?settings", t["arg"], re.I) and re.search(r"open\(|sed -i|cat >|prettier --write|> src/", t["arg"]): corr += 1
     src = open(os.path.join(E, "diffs", rid + ".patch")).read()
+    page_error = bool(beh.get("B3_page_level_error_shown")); uses_form = bool(re.search(r"<Form\b", src)); uses_switchgroup = "<SwitchGroup" in src
     remove_comp = "ButtonDanger" if "<ButtonDanger" in src else "DestructiveIconButton" if "<DestructiveIconButton" in src else "IconButton" if "<IconButton" in src else "other"
     V = {"V1_remove_destructive": rub["R10_remove_ButtonDanger"], "V2_cancel_nonprimary": rub["R12_cancel_nonprimary"], "V3_save_isDisabled": rub["R11_save_Button_isDisabled"],
          "V4_locked_switch_isDisabled": rub["R07_security_disabled"], "V5_error_alert_variant": 'variant="alert"' in src}
@@ -36,14 +37,15 @@ def run(rid):
                 corrections=corr, tool_calls=su["tool_calls"] - 1, figma_calls=su["by_tool"].get("figma_mcp", 0), harness_tokens=u[0], cumulative_input_tokens=tok_in,
                 duration_s=round(int(u[2]) / 1000) if u[2] != "N/A" else "N/A", tsc_new=val.get("tsc_new"), eslint_errors=val.get("eslint_errors"), vite_build=val.get("vite_build"),
                 behaviour=beh["passed"], focusable=len(a11y.get("keyboard_focus_sequence", [])), unlabelled=len(a11y.get("unlabelled_controls", [])), mobile_overflow=a11y["mobile"]["horizontal_overflow"],
-                failed_rubric=";".join(k for k, v in rub.items() if not v) or "none", notes="; ".join(notes + ([NOTES[rid]] if rid in NOTES else [])), V=V)
+                failed_rubric=";".join(k for k, v in rub.items() if not v) or "none", page_error=page_error, uses_form=uses_form, uses_switchgroup=uses_switchgroup, notes="; ".join(notes + ([NOTES[rid]] if rid in NOTES else [])), V=V)
 runs = {rid: run(rid) for rid in sorted(index)}
 def ids(prefix): return [r for r in runs if r.startswith(prefix)]
 CTRL = ids("E01-control"); SEARCH = ids("E01-treatment"); FIG = ids("E02-treatment"); DESC = ids("E04-treatment"); DUMP = ids("E05-control"); VAL = ids("E06-treatment"); SKILL = ids("E13-treatment")
+AMB_T = ids("E10-text"); AMB_F = ids("E10-figma"); STALE_T = ids("E11-text"); STALE_V = ids("E11-validate"); REPODOCS = ids("E12-repodocs"); LINT = ids("E14-treatment")
 rows = []
 def add(exp, arm, rid_list, state, note=""):
     for rid in rid_list:
-        r = runs[rid]; rows.append({"experiment": exp, "arm": arm, "state": state, "seed": "N/A", **{k: v for k, v in r.items() if k not in ("V", "reuse_n", "variants_n")}, "notes": "; ".join(x for x in [note, r["notes"]] if x)})
+        r = runs[rid]; rows.append({"experiment": exp, "arm": arm, "state": state, "seed": "N/A", **{k: v for k, v in r.items() if k not in ("V", "reuse_n", "variants_n", "page_error", "uses_form", "uses_switchgroup")}, "notes": "; ".join(x for x in [note, r["notes"]] if x)})
 add("E01", "control", CTRL, "CODE-ONLY"); add("E01", "treatment", SEARCH, "CODE-ONLY")
 add("E02", "control", CTRL, "CODE-ONLY", "shared control = E01 control runs"); add("E02", "treatment", FIG, "REAL")
 add("E04", "control", FIG, "REAL", "shared = E02 treatment runs (original Figma descriptions)"); add("E04", "treatment", DESC, "REAL")
@@ -52,12 +54,17 @@ add("E06", "control", CTRL, "CODE-ONLY", "shared control = E01 control runs (no 
 add("E13", "control", CTRL, "CODE-ONLY", "shared control = E01 control runs (repo AGENTS.md only)"); add("E13", "treatment", SKILL, "CODE-ONLY")
 blank = {k: "N/A" for k in rows[0]}
 def meta(exp, arm, state, note, **kw): rows.append({**blank, "experiment": exp, "arm": arm, "state": state, "run_id": "N/A", "seed": "N/A", "notes": note, **kw})
-meta("E03", "control+treatment", "BLOCKED", "No Code Connect mappings published for duplicate file mchDCUgpbpnntD9vMBJlzC (get_code_connect_map returned {} on sets and variants; get_design_context returned no Code Connect snippets). Publishing requires explicit approval; not done.")
-meta("E07", "derived", "CODE-ONLY+REAL", "Variant correctness scored on all 21 runs via V1-V5 (see V-columns in runs/summary.json); not a separate prompt")
-meta("E08", "derived", "CODE-ONLY+REAL", "Composition scored on all runs: R02/R13/R15 + Form/Fieldset/SwitchGroup use; not a separate prompt")
-meta("E09", "derived", "CODE-ONLY+REAL", "Abstraction boundary scored on all runs: local_abstractions column; 0 new design-system primitives in 21/21 runs")
-for e, why in [("E10", "time prioritised for repetitions of primary pairs"), ("E11", "requires stale-example fixture branch; prioritised repetitions"), ("E12", "would need equivalent guidance in 3 placements incl. Figma; partially informed by E04 vs E13 but not a controlled test"), ("E14", "overlaps E06; no custom lint rules added per handoff")]:
-    meta(e, "N/A", "NOT RUN", why)
+meta("E03", "control+treatment", "BLOCKED", "Code Connect cannot be written for duplicate file mchDCUgpbpnntD9vMBJlzC: add_code_connect_map (template and simple mapping) refused with 'Code connections can only be made in libraries that are in Organization or Enterprise plans' (account is Professional). get_code_connect_map returns {}; get_design_context serves no Code Connect. Unblock = Organization/Enterprise plan (paid) - not purchased per budget rule. Payload that would have been sent: figma/e03_code_connect_payload_refused.json")
+meta("E07", "derived", "CODE-ONLY+REAL", "Variant correctness scored on every run via V1-V5 (runs/summary.json); not a separate prompt")
+meta("E08", "derived", "CODE-ONLY+REAL", "Composition scored on every run: R02/R13/R15 + Form/SwitchGroup usage (results.md E08)")
+meta("E09", "derived", "CODE-ONLY+REAL", "Abstraction boundary scored on every run: local_abstractions column; 0 new design-system primitives in all runs")
+add("E10", "text (mobile + page-error requirement removed)", AMB_T, "CODE-ONLY", "behaviour B3 (page-level error) not required by this brief")
+add("E10", "figma (same reduced brief + Figma frame)", AMB_F, "REAL", "frame shows the alert; no mobile frame")
+add("E11", "stale doc, no validation", STALE_T, "CODE-ONLY", "fixture: src/AGENTS.md shows <Button variant=danger-*> which Button's types reject (diffs/fixture-E11.patch)")
+add("E11", "stale doc + validation loop", STALE_V, "CODE-ONLY", "same fixture")
+add("E12", "repo docs (skill text in src/AGENTS.md)", REPODOCS, "CODE-ONLY", "compare E13 treatment = same text in prompt; E04 treatment = Figma descriptions (similar, not identical, text)")
+add("E14", "control: generic validation loop", VAL, "CODE-ONLY", "shared = E06 treatment runs")
+add("E14", "treatment: validation loop + targeted ESLint rule", LINT, "CODE-ONLY", "fixture: no-restricted-syntax rule (harness/e14_eslint_rule.cjs, diffs/fixture-E14.patch)")
 ref = json.load(open(os.path.join(R, "reference", "behaviour.json")))
 meta("E15", "reference implementation", "CODE-ONLY", "Orchestrator-written reference page on PR branch: tsc_new=0, eslint 0, vite build pass, behaviour 9/9, keyboard 10 stops, 0 unlabelled, no mobile overflow; screenshots/reference-*.png", behaviour=ref["passed"], tsc_new=0, eslint_errors=0, vite_build="pass", run_id="reference", reuse="15/15")
 cols = ["experiment", "arm", "state", "run_id", "seed", "condition", "branch", "reuse", "variants", "remove_component", "inventions", "local_abstractions", "corrections", "tool_calls", "figma_calls", "harness_tokens", "cumulative_input_tokens", "duration_s", "tsc_new", "eslint_errors", "vite_build", "behaviour", "focusable", "unlabelled", "mobile_overflow", "raw_html", "rac_imports", "tsx_lines", "css_lines", "css_px", "css_hex", "failed_rubric", "notes"]
@@ -72,8 +79,8 @@ def agg(lst):
             "cumulative_input_tokens_mean": round(st.mean(r["cumulative_input_tokens"] for r in g)), "harness_tokens_mean": round(st.mean(int(r["harness_tokens"]) for r in g)),
             "duration_s_mean": round(st.mean(r["duration_s"] for r in g)), "corrections_total": sum(r["corrections"] for r in g),
             "tsc_new_total": sum(int(r["tsc_new"]) for r in g), "eslint_errors_total": sum(int(r["eslint_errors"]) for r in g), "build_pass": f'{sum(r["vite_build"] == "pass" for r in g)}/{len(g)}',
-            "behaviour": sorted({r["behaviour"] for r in g}), "local_abstractions": sorted({r["local_abstractions"] for r in g}), "css_files": sum(1 for r in g if r["css_lines"]), "remove_components": [r["remove_component"] for r in g]}
-groups = {"text_only (E01/E02/E06/E13 control)": CTRL, "search (E01 treatment, E05 treatment)": SEARCH, "figma (E02 treatment, E04 control)": FIG, "figma+descriptions (E04 treatment)": DESC, "fulldump (E05 control)": DUMP, "validate (E06 treatment)": VAL, "skill (E13 treatment)": SKILL}
+            "behaviour": sorted({r["behaviour"] for r in g}), "page_error_shown": sum(r["page_error"] for r in g), "mobile_overflow_runs": sum(bool(r["mobile_overflow"]) for r in g), "form_component": sum(r["uses_form"] for r in g), "switchgroup": sum(r["uses_switchgroup"] for r in g), "local_abstractions": sorted({r["local_abstractions"] for r in g}), "css_files": sum(1 for r in g if r["css_lines"]), "remove_components": [r["remove_component"] for r in g]}
+groups = {"E10 text (reduced brief)": AMB_T, "E10 figma (reduced brief)": AMB_F, "E11 stale doc, no validation": STALE_T, "E11 stale doc + validation": STALE_V, "E12 repo docs": REPODOCS, "E14 validation + lint rule": LINT, "text_only (E01/E02/E06/E13 control)": CTRL, "search (E01 treatment, E05 treatment)": SEARCH, "figma (E02 treatment, E04 control)": FIG, "figma+descriptions (E04 treatment)": DESC, "fulldump (E05 control)": DUMP, "validate (E06 treatment)": VAL, "skill (E13 treatment)": SKILL}
 summ = {k: agg(v) for k, v in groups.items()}
 def fisher(a, b, c, d):  # two-sided Fisher exact for [[a,b],[c,d]]
     n = a + b + c + d; r1 = a + b; c1 = a + c
@@ -81,8 +88,8 @@ def fisher(a, b, c, d):  # two-sided Fisher exact for [[a,b],[c,d]]
     p0 = p(a); return round(sum(p(x) for x in range(max(0, c1 - (n - r1)), min(r1, c1) + 1) if p(x) <= p0 + 1e-12), 4)
 def ct(lst): k = sum(runs[r]["V"]["V1_remove_destructive"] for r in lst); return k, len(lst) - k
 tests = {}
-for name, A, B in [("text_only vs skill", CTRL, SKILL), ("text_only vs figma", CTRL, FIG), ("text_only vs fulldump", CTRL, DUMP), ("text_only vs search", CTRL, SEARCH), ("text_only vs validate", CTRL, VAL),
-                   ("repo-only (text+search+validate) vs explicit/complete context (figma+desc+fulldump+skill)", CTRL + SEARCH + VAL, FIG + DESC + DUMP + SKILL)]:
+for name, A, B in [("PRE-PLANNED CONFIRMATORY: text_only r1-r6 vs skill r1-r6", CTRL, SKILL), ("E14: generic validation vs validation+lint rule", VAL, LINT), ("E12 vs E13: repo docs vs prompt", REPODOCS, SKILL), ("text_only vs repo docs (E12)", CTRL, REPODOCS), ("text_only vs figma", CTRL, FIG), ("text_only vs fulldump", CTRL, DUMP), ("text_only vs search", CTRL, SEARCH), ("text_only vs validate", CTRL, VAL),
+                   ("POST-HOC pooled: repo-only (text+search+validate) vs explicit/complete context (figma+desc+fulldump+skill)", CTRL + SEARCH + VAL, FIG + DESC + DUMP + SKILL)]:
     a, b = ct(B); c, d = ct(A); tests[name] = {"treatment": f"{a}/{a+b}", "control": f"{c}/{c+d}", "fisher_two_sided_p": fisher(a, b, c, d)}
 json.dump({"by_condition": summ, "remove_destructive_tests": tests, "runs": {k: {kk: vv for kk, vv in v.items()} for k, v in runs.items()}}, open(os.path.join(R, "summary.json"), "w"), indent=1)
 print(json.dumps(summ, indent=1)); print(json.dumps(tests, indent=1))

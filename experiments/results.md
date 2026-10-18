@@ -1,152 +1,225 @@
 # Results: SDS agent experiments
 
-**Date:** 2026-10-18 · **Baseline:** `05525f7` · **Runs:** 21 isolated agent runs across 7 conditions, plus 1 reference implementation · **Figma file:** duplicate `mchDCUgpbpnntD9vMBJlzC`, fixture frame [`3005:3`](https://www.figma.com/design/mchDCUgpbpnntD9vMBJlzC/Simple-Design-System--Community-?node-id=3005-3)
+**Date:** 2026-10-18 · **Baseline:** `05525f7` · **Runs:** 44 isolated agent runs across 13 conditions, plus 1 reference implementation · **Figma file:** duplicate `mchDCUgpbpnntD9vMBJlzC`, fixture frame [`3005:3`](https://www.figma.com/design/mchDCUgpbpnntD9vMBJlzC/Simple-Design-System--Community-?node-id=3005-3)
 
 ## Executive summary
 
-- **Completed:** E01, E02, E04, E05, E06 and E13 as matched pairs with 2–4 repetitions each. E02 and E04 were **REAL** Figma MCP runs; the rest were code-only. E07, E08 and E09 were scored as rubric dimensions across all 21 runs. E15 was run on the reference implementation.
-- **Blocked:** E03 (Code Connect). The duplicate file has no published Code Connect mappings, and publishing them needs your approval. **Not run:** E10, E11, E12 and E14.
-- **Every run was already good on the basics.** All 21 runs:
-  - added **0** new TypeScript errors, **0** ESLint errors in changed files, and **passed** `vite build`;
-  - passed **9/9** scripted behaviour checks;
-  - used **0** raw `<button>`/`<input>`/`<select>` where SDS has a component, and **0** direct `react-aria-components` imports;
+- **Status of all 15 experiments:**
+  - **Run as experiments:** E01, E02, E04, E05, E06 and E10–E14, with 2–6 repetitions per arm. E02, E04 and E10-figma were **REAL** Figma MCP runs; the rest were code-only.
+  - **Scored across every run:** E07, E08 and E09.
+  - **Run on the reference page:** E15.
+- **E03 (Code Connect) is BLOCKED by plan tier, not by permission.** Writing mappings to your duplicate through the Figma MCP was refused, both as a full template and as a simple mapping: *"Code connections can only be made in libraries that are in Organization or Enterprise plans"*. The account is Professional. Upgrading means buying a plan, which the budget rule excludes, so E03 still has no real data. The payload that would have been published is in [`figma/e03_code_connect_payload_refused.json`](figma/e03_code_connect_payload_refused.json).
+- **Every run was solid on the basics.** All 44 runs:
+  - added **0** new TypeScript errors and **0** ESLint errors in changed files, and **passed** `vite build`;
+  - passed every behaviour check their brief required (9/9; 8/9 for the reduced E10 brief, which no longer asked for a page-level error);
+  - used **0** raw `<button>`/`<input>`/`<select>` where SDS has a component, and made **0** direct `react-aria-components` imports;
   - invented **0** new design-system primitives.
 
-  The conditions differed in **semantic variant choice**, not in reuse or correctness.
-- **Biggest observed difference: the destructive "Remove" action.** `Button` deliberately excludes danger variants, so the correct choice is `ButtonDanger` or `DestructiveIconButton`.
+  The conditions differed in **semantic and structural choices**, not in reuse or correctness.
+- **Most consistent signal: the destructive "Remove" action.** `Button` deliberately excludes danger variants, so the correct choice is `ButtonDanger` or `DestructiveIconButton`.
 
-  | Context the run had | Correct destructive variant |
+  | Context | Correct destructive variant |
   | --- | --- |
-  | Repository only (text-only control, search, validation) | **4/10** runs |
-  | Explicit or complete design-system context (Figma frame, Figma + descriptions, full docs dump, concise skill) | **11/11** runs |
+  | Repo only (text-only control, "search first", generic validation) | 6/12 |
+  | Explicit usage guidance (concise skill in the prompt, the same text in repo docs, a targeted lint rule) | 12/12 |
+  | Complete or visual context (full docs dump, Figma frame, Figma + descriptions) | 11/11 |
 
-  Fisher exact test on that split: p = 0.004. **Confidence: moderate.** The grouping was chosen after seeing the data, and each pre-planned pair alone is underpowered (best p = 0.14, n = 3–4).
-- **What got worse with Figma context:** agents copied what the frame shows. All 5 Figma runs dropped SDS `Form` (versus 1 of the 16 other runs), and the 3 E02 runs also dropped `SwitchGroup`. All 5 rebuilt the member list with a raw `<ul>` and CSS that hard-codes the frame's pixel widths.
-- **The validation loop (E06) caught nothing.** The `tsc`/`eslint`/`build` loop found no errors to fix in 3/3 runs. It cost about 55% more wall time, and it cannot catch the variant mistake: 1/3 correct, versus 1/4 in the control.
+  **Confidence: moderate.** The pre-planned confirmatory test (text-only n=6 vs skill n=6) gave 3/6 vs 6/6, p = 0.18, which is **not significant**. Text-only runs r4–r6 all chose correctly, which weakened the earlier 1/4 control. The pooled split (repo-only 6/12 vs explicit context 14/14, p = 0.004) is post hoc.
+- **Most consistent trade-off: Figma context drops SDS structure that the frame doesn't draw.** SDS `Form` was used in **0/8** Figma runs versus **31/36** non-Figma runs. The new E10-figma arm reproduced it (0/3), after it was first seen in E02 and E04. All 8 Figma runs also rebuilt the member list with a raw `<ul>` plus custom CSS.
+- **Stale documentation (E11) did not mislead.** 0/6 runs copied a deliberately wrong `Button variant="danger-subtle"` example from `src/AGENTS.md`. All 6 used the destructive component the types allow, and 2 explicitly flagged the doc conflict.
+- **Validation loops:** a generic `tsc`/`eslint`/`build` loop fixed nothing (E06). A **targeted lint rule** (E14) fired in 1/3 runs and that agent corrected `IconButton` to `DestructiveIconButton`, for 3/3 correct, versus 1/3 with the generic loop.
 
-## Results by experiment
+## Results by condition
 
-Every number below comes from [`matrix.csv`](matrix.csv) and [`runs/summary.json`](runs/summary.json). Token columns:
-- **"Cumulative input"** is the sum over the run's API calls of input + cache-read + cache-write tokens, taken from the transcript.
-- **"Final context"** is the token count the harness reported when the run finished.
-- **Output tokens are `N/A`**: the streamed transcript records only partial output usage, so those counts are unreliable and are not reported.
+Every number comes from [`matrix.csv`](matrix.csv) and [`runs/summary.json`](runs/summary.json).
+- **Cumulative input** = input + cache-read + cache-write tokens, summed over the run's API calls.
+- **Final ctx** = the harness-reported token count when the run ended.
+- **Output tokens** are `N/A` (the streamed transcripts record them only partially).
+- **`Form` / `SwitchGroup`** count runs that used those SDS wrappers.
+- **375 px overflow** counts runs with horizontal page overflow at that width.
 
-| Condition | n | Remove uses destructive variant | Reuse (of 15) | Variants (of 5) | Tool calls | Cumulative input tokens | Final context | Wall time | Extra CSS files |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| text_only (shared control) | 4 | **1/4** | 14.25 | 4.25 | 9.5 | 817k | 98k | 80 s | 2/4 |
-| search (E01 treatment) | 3 | 2/3 | 14.67 | 4.67 | 12.3 | 1,119k | 110k | 90 s | 1/3 |
-| validate (E06 treatment) | 3 | 1/3 | 13.67 | 4.00 | 11.7 | 1,039k | 104k | 124 s | 0/3 |
-| fulldump (E05 control) | 3 | **3/3** | 15.00 | 5.00 | **7.3** | **504k** | 130k | **69 s** | 0/3 |
-| skill (E13 treatment) | 3 | **3/3** | 15.00 | 5.00 | 8.7 | 730k | **86k** | 73 s | 0/3 |
-| figma (E02 treatment / E04 control) | 3 | **3/3** | 15.00 | 5.00 | 13.7 | 1,262k | 120k | 93 s | 3/3 |
-| figma + descriptions (E04 treatment) | 2 | **2/2** | 15.00 | 5.00 | 14.5 | 1,252k | 114k | 88 s | 2/2 |
+| Condition | n | Destructive Remove | Reuse /15 | Variants /5 | Tool calls | Cumulative input | Final ctx | Time | `Form` | `SwitchGroup` | 375 px overflow |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| text_only (shared control) | 6 | **3/6** | 14.17 | 4.50 | 10.0 | 832k | 96k | 79 s | 4/6 | 6/6 | 0 |
+| search (E01 treatment) | 3 | 2/3 | 14.67 | 4.67 | 12.3 | 1,119k | 110k | 90 s | 3/3 | 3/3 | 0 |
+| validate (E06 treatment) | 3 | 1/3 | 13.67 | 4.00 | 11.7 | 1,039k | 104k | 124 s | 3/3 | 3/3 | 0 |
+| validate + targeted lint rule (E14) | 3 | **3/3** | 14.67 | 5.00 | 10.3 | 888k | 97k | 119 s | 3/3 | 3/3 | 0 |
+| skill in prompt (E13) | 6 | **6/6** | 15.00 | 5.00 | 8.5 | 717k | **86k** | 74 s | 6/6 | 6/6 | 0 |
+| same skill text in `src/AGENTS.md` (E12) | 3 | **3/3** | 15.00 | 5.00 | 11.3 | 980k | 98k | 82 s | 2/3 | 3/3 | 1 |
+| full docs dump (E05 control) | 3 | **3/3** | 15.00 | 5.00 | **7.3** | **504k** | 130k | **69 s** | 3/3 | 3/3 | 0 |
+| stale doc, no validation (E11) | 3 | 3/3 | 15.00 | 5.00 | 10.0 | 818k | 96k | 83 s | 3/3 | 3/3 | 1 |
+| stale doc + validation (E11) | 3 | 3/3 | 15.00 | 5.00 | 9.7 | 793k | 95k | 83 s | 1/3 | 3/3 | 1 |
+| reduced brief, text (E10) | 3 | 2/3 | 14.67 | 3.67\* | 8.3 | 714k | 96k | 70 s | 3/3 | 3/3 | 1 |
+| figma (E02 treatment / E04 control) | 3 | **3/3** | 15.00 | 5.00 | 13.7 | 1,262k | 120k | 93 s | **0/3** | **0/3** | 0 |
+| figma + descriptions (E04 treatment) | 2 | **2/2** | 15.00 | 5.00 | 14.5 | 1,252k | 114k | 88 s | **0/2** | 2/2 | 0 |
+| reduced brief, figma (E10) | 3 | **3/3** | 15.00 | 5.00 | 13.0 | 1,188k | 118k | 86 s | **0/3** | 2/3 | 0 |
+
+\* The reduced E10 brief didn't ask for a page-level error, so V5 (alert variant) had no instance to score in those runs.
 
 ### E01: Can a text-only agent discover and use the design system? (CODE-ONLY)
 
-- **Control** (brief only, 4 runs): reuse was high, at 14–15 of 15. Every run read `src/AGENTS.md` without being asked; it is the repo's own instruction file. Remove was a plain `IconButton` with a trash icon in 3/4 runs. The fourth used `DestructiveIconButton`.
-- **Treatment** ("search design-system references first", 3 runs): 2/3 chose `ButtonDanger`. Treatment runs read more stories and docs (the `stories` grep hits are in the traces). They cost about 30% more tool calls and 37% more cumulative input tokens.
-- **Retrieval was not the bottleneck.** Control run [`E01-control-r1`](traces/E01-control-r1.md) printed all of `Button.tsx` (which defines `ButtonDanger`) and `IconButton.tsx` (which defines `DestructiveIconButton`) with `cat`, then still chose `IconButton`. The agent had seen the right component; it picked the wrong one.
-- **Verdict:** a weak positive (2/3 vs 1/4, p = 0.49). Telling the agent to search raises cost more reliably than it raises correctness.
+- **Control** (6 runs): reuse was 14–15 of 15. Every run read the repo's own `src/AGENTS.md` without being asked. The destructive variant was right in 3/6: r1–r3 used a plain trash `IconButton`; r4–r6 used `DestructiveIconButton`, `ButtonDanger` and `DestructiveIconButton`.
+- **Treatment** ("search design-system references first", 3 runs): 2/3 correct. It cost about 25% more tool calls and 35% more cumulative input.
+- **Retrieval is not the bottleneck.** [`E01-control-r1`](traces/E01-control-r1.md) printed the whole of `Button.tsx`, which defines `ButtonDanger`, and still picked `IconButton`.
+- **Verdict:** no reliable effect (p = 1.0). "Search first" costs more without measurably improving the choice.
 
 ### E02: Does Figma design context help? (REAL)
 
-Each run's evidence is in [`traces/E02-treatment-r*.figma-context.json`](traces/).
-- **Figma usage:** every treatment run made exactly **one** Figma MCP call, `get_design_context` on `3005:3`, which returned about 35k characters plus a screenshot. Each run also loaded the `figma-design-to-code` skill.
-- **What the response contained:** a "Component descriptions" block for 6 components, including **Button Danger: "Keywords: action, negative, destructive"**. There was no Code Connect data.
-- **Agents reached for code mappings anyway.** All 3 treatment runs then opened the repo's checked-in `src/figma/**/*.figma.ts` templates themselves to map Figma components to code (e.g. `cat figma/primitives/button/ButtonDanger.figma.ts` in [`E02-treatment-r1`](traces/E02-treatment-r1.md)). Two of the runs say this in their final reports.
-- **Variant choice:** Remove was `ButtonDanger` (`danger-subtle`, small) in 3/3 runs, versus 1/4 in the control.
-- **Fidelity costs some consistency.** All 3 Figma runs added a CSS file with hard-coded `200px` widths taken from the frame (the select was 200 wide), plus custom flex rules for member rows. The rubric counts that as custom layout CSS. Fewer non-Figma runs added CSS: 3 of 15 (`css_lines` column).
-- **Avatars:** Figma runs used the `placeholder` image, following the template mapping, rather than initials.
-- **What got worse with Figma:** 0/5 Figma runs used SDS `Form`, versus 15/16 other runs, and 0/3 E02 runs used `SwitchGroup`. Structure that isn't visible in the frame was rebuilt with raw `<form>`/`<ul>` or dropped (see E08).
-- **Fixture equivalence:** the frame was built from the same SDS instances the brief describes, so the comparison is like-for-like at the level of components. Pixel fidelity was not measured; see the screenshots side by side for a visual comparison.
+- **Retrieval:** each Figma run made **one** MCP call, `get_design_context` on `3005:3`, returning about 35k characters plus a screenshot and a "Component descriptions" block. That block included *Button Danger: "Keywords: action, negative, destructive"*. There was no Code Connect data.
+- **Agents built their own mapping.** With no Code Connect, all 3 E02 runs opened the repo's `src/figma/**/*.figma.ts` templates to map components ([`E02-treatment-r1`](traces/E02-treatment-r1.md)).
+- **Gains:** destructive variant 3/3, versus 3/6 for text-only (p = 0.46).
+- **Costs:**
+  - **SDS `Form` was dropped** in 0/3 runs here, 0/8 across all Figma runs, versus 31/36 non-Figma runs. The frame shows no form, so agents rebuilt one as a raw `<form>` or used none.
+  - **`SwitchGroup` was dropped** in 0/3 E02 runs (the frame has none).
+  - **Custom CSS:** every Figma run added a CSS file with the frame's pixel widths (e.g. a `200px` select) and a raw `<ul>`.
 
-### E03: Code Connect (BLOCKED)
+### E03: Code Connect (BLOCKED, plan tier)
 
-- **No mappings exist for the duplicate.** `get_code_connect_map` returned `{}` for the Button set `4185:3778`, the variant `4185:3779` and Switch Field `9762:1902`. No `get_design_context` response contained a Code Connect snippet.
-- **The repo's templates point elsewhere.** `figma.config.json` points at the upstream key `J0KLPKXiONDRssXD1AX9Oi`, and publishing to the duplicate would change remote state. The handoff and your settings both require explicit approval for that, so it was not done.
-- **What would unblock it:** approve `npx figma connect publish` with a Code Connect write-scoped token after switching the file-key substitutions to `mchDCUgpbpnntD9vMBJlzC`. Then rerun the E02 prompt with and without `disableCodeConnect`.
-- **A related finding from E02:** with no Code Connect served, Figma-guided agents read the repo's `.figma.ts` templates directly, which serves as a partial substitute for Code Connect.
+The test needs real Code Connect data served by the Figma MCP. Here is what happened when I tried to create it:
+
+1. **Discovery worked.** `get_code_connect_suggestions(3005:3)` listed 13 unmapped components, and `get_context_for_code_connect(185:852)` returned Button Danger's properties.
+2. **Preparation:** I converted the repo's existing parserless templates (`src/figma/**/*.figma.ts`) for those 13 components into MCP mappings, with sources pointing at this fork ([`figma/e03_code_connect_payload_refused.json`](figma/e03_code_connect_payload_refused.json)).
+3. **The write was refused.** `add_code_connect_map` failed, both with the full template and as a simple mapping without one: *"Code connections can only be made in libraries that are in Organization or Enterprise plans"* (Figma debug IDs `75f47513-…` and `594d2233-…`).
+4. **The CLI route is also closed.** `npx figma connect publish` would need a `FIGMA_ACCESS_TOKEN`, which this environment doesn't have, and it is subject to the same plan restriction.
+
+**What would unblock it:**
+- the duplicate file living in an Organization or Enterprise team (a paid plan, not bought here, per the budget rule); or
+- read-only access to a file in such a team that already has SDS Code Connect published. The upstream community file was excluded by your instruction.
+
+The closest available evidence is from E02 and E04: without Code Connect, agents read the repo's `.figma.ts` templates directly (3/3), and descriptions that name the code component replaced that lookup (0/2 read them).
 
 ### E04: Do Figma component descriptions convey semantic use? (REAL)
 
-- **Treatment:** description-only changes on 10 component masters in the duplicate. Each new description names the code component and its props and gives usage guidance, e.g. "Use for destructive actions … The regular Button component does not accept danger variants". All of them were restored afterwards; the before and after text is in [`figma/e04_descriptions.json`](figma/e04_descriptions.json).
-- **The new text reached the agents.** Both treatment runs received it verbatim in the `get_design_context` "Component descriptions" block, which grew from 6 components to 10 ([`traces/E04-treatment-r1.figma-context.json`](traces/E04-treatment-r1.figma-context.json)). Figma stores the quotes HTML-escaped (`&quot;`), but the MCP response unescaped them.
-- **Quality was already at ceiling** in the control (the E02 treatment runs: 15/15 reuse, 5/5 variants, 3/3 destructive). The treatment could not show a quality gain: 2/2 runs scored 15/15 and 5/5.
-- **Retrieval behaviour changed.** The control runs opened `src/figma/*.figma.ts` templates in **3/3** runs; the treatment runs did so in **0/2** and relied on the descriptions instead. Treatment runs also used initials instead of the template's `placeholder` avatar. Tool calls and tokens were essentially unchanged (14.5 vs 13.7 calls; 1.25M vs 1.26M cumulative input).
-- **Verdict:** descriptions are retrieved and do steer how the agent looks things up. A quality effect is unproven on this fixture.
+- **Treatment:** description-only edits on 10 component masters in the duplicate, restored afterwards; before and after text is in [`figma/e04_descriptions.json`](figma/e04_descriptions.json). Both treatment runs received the new text verbatim in `get_design_context`, and the descriptions block grew from 6 components to 10.
+- **Quality:** already at ceiling in the control (5/5 variants, 3/3 destructive). The treatment held 2/2 with no measurable gain.
+- **Retrieval behaviour changed:** the template lookup in `src/figma` dropped from 3/3 runs to 0/2.
+- **What didn't change:** the descriptions did not restore `Form`, which was 0/2 again. No description mentioned `Form`, because the frame contains no form component to describe.
 
 ### E05: Targeted retrieval vs a full context dump (CODE-ONLY)
 
-- **Control:** the agent read `DESIGN_SYSTEM_DOCS.md` up front: 4,132 lines (about 25–30k tokens) made of every `AGENTS.md` plus all `src/ui` component source. It then used 3/3 `ButtonDanger`, 15/15 reuse, and the **fewest tool calls (7.3), lowest cumulative input (504k) and fastest time (69 s)**. Its final context was the largest (130k).
-- **Treatment:** the search runs, shared with E01: 2/3 destructive, 12.3 calls, 1,119k cumulative input, 90 s.
-- **Verdict:** at SDS's size, a full dump was cheaper and slightly more accurate than self-directed search. Two caveats: this probably doesn't scale to a large design system, and the dump was a file the agent had to read rather than text in the prompt.
+- **Full dump** (a 4,132-line `DESIGN_SYSTEM_DOCS.md` read up front): 3/3 destructive, 15/15 reuse. It had the **fewest tool calls (7.3)**, the **lowest cumulative input (504k)** and the **fastest time (69 s)**, though the largest final context (130k).
+- **Targeted search** (the E01 treatment): 2/3 destructive, 12.3 calls, 1,119k cumulative input.
+- **Verdict:** at SDS's size (about 30k tokens of docs), a full dump was cheaper and at least as accurate. This probably doesn't scale to much larger systems (next-steps.md).
 
 ### E06: Does a validation loop reduce violations? (CODE-ONLY)
 
-- **The loop had nothing to catch.** In the control, all 4 runs had 0 new `tsc` errors, 0 ESLint errors, and builds that passed (checked after the fact). In the treatment, the validation pass found nothing to repair in 3/3 runs: r1 and r3 ran a single pass, and r2 ran a second pass after reformatting.
-- **Cost:** about 55% more wall time on average (124 s vs 80 s; r2 took 179 s). There were no correction loops caused by errors.
-- **It doesn't check the right things.** Destructive-variant correctness was 1/3, the same as the control; r1 also omitted `ButtonGroup`.
-- **Verdict:** generic typecheck/lint/build guardrails bring no measurable benefit for this task. The violations that do occur are semantic, and these tools cannot see them.
+- **The loop had nothing to catch.** Text-only runs already had 0 new `tsc`/lint errors (6/6), and the treatment's validation pass found nothing to repair.
+- **Cost:** about 57% more wall time (124 s vs 79 s), for 1/3 destructive versus 3/6 in the control.
+- **Verdict:** generic typecheck, lint and build can't see the semantic defects that actually occur. (E14 tests a targeted rule.)
 
-### E13: Minimal instructions vs a design-system skill (CODE-ONLY)
+### E10: How does the agent handle ambiguity? (CODE-ONLY and REAL)
 
-- **Treatment:** a 12-line SDS skill appended to the prompt ([`prompts/extra_skill.md`](prompts/extra_skill.md)). Runs scored 3/3 `ButtonDanger`, 15/15 reuse and 5/5 variants. They had the lowest final context (86k), and the second-lowest tool calls and time.
-- **All 3 created a local `MemberRow` composition,** which the skill explicitly allowed. That kept the abstraction local to the page, the intended boundary (E09).
-- **Verdict:** a strong positive for a small, cheap intervention (3/3 vs 1/4, p = 0.14 at this sample size).
+- **Brief change:** the same brief with item 7 (mobile at 375 px) removed, and the page-level error dropped from item 6 ([`prompts/base_ambiguous.md`](prompts/base_ambiguous.md)).
+- **Text arm** (3 runs):
+  - **Page-level error:** 0/3 added one; they followed the brief literally (behaviour B3 failed, as expected).
+  - **Mobile:** 2/3 had no responsive logic at all (no `useMediaQuery`), and **1/3 overflowed horizontally at 375 px**. Under the full brief, 3/38 runs overflowed, and none of the 9 text-only or search runs.
+  - **Assumptions:** none of the 3 mentioned mobile or the omitted requirements in their stated assumptions.
+- **Figma arm** (3 runs, same reduced brief plus the frame):
+  - **Page-level error:** 3/3 rebuilt the alert banner from the frame ("1 field needs attention").
+  - **Mobile:** 2/3 still added mobile padding through `useMediaQuery`, and 0/3 overflowed. One run noted explicitly: "the design shows only desktop".
+  - **`Form`:** 0/3, the same structural loss as E02.
+- **Verdict:**
+  - Text-only agents fill gaps **silently**, which caused a real regression (overflow).
+  - A design artifact is good evidence for **states it shows** (the error banner) but says nothing about states it doesn't (mobile).
+  - No run asked a question or flagged the gap, partly because the prompt allowed no questions.
 
-### E07, E08, E09: variant correctness, composition, abstraction boundary (scored across all runs)
+### E11: Stale example vs the TypeScript API (CODE-ONLY)
 
-- **E07: variant opportunities V1–V5.** These are: destructive Remove, non-primary Cancel, Save with `isDisabled`, a disabled locked switch, and the alert variant for errors. V2, V3 and V5 were correct in 21/21 runs. V4 was correct in 20/21: [`E06-treatment-r3`](runs/E06-treatment-r3/) used `isReadOnly`, a defensible alternative but not the SDS disabled state. V1 is the variant that differed between conditions (see the table above).
-- **E08: composition.** Every run used `InputField`, `SwitchField`, `SelectField`, `Avatar`, `Notification`, `Section` and `Flex` (21/21), plus `AvatarBlock` (20/21) and `ButtonGroup` (20/21; [`E06-treatment-r1`](diffs/E06-treatment-r1.patch) skipped it). **Non-visual structural wrappers depended on the condition:**
-  - **SDS `Form`:** used in 15/16 non-Figma runs but **0/5 Figma runs**. Three Figma runs wrote a raw `<form>`, and two submitted via `onPress` with no form element.
-  - **`SwitchGroup`:** **0/3** in the E02 runs (the frame has no Switch Group), versus 18/18 in all other runs.
-  - **Member list:** all 5 Figma runs used a raw `<ul>` plus custom CSS; most others used `Flex` with list roles.
+- **Fixture:** `src/AGENTS.md`, the file every run reads, was given a "Destructive actions use the danger variants of Button" example: `<Button variant="danger-primary">` / `<Button variant="danger-subtle">`. `Button`'s type rejects that ([`diffs/fixture-E11.patch`](diffs/fixture-E11.patch)).
+- **Results:**
+  - **Exposure:** traces show the stale doc being read in 5/6 runs (the 6th is unclear, because traces cut long commands).
+  - **Copying:** **0/6 copied the stale example.** All 6 used `ButtonDanger` (5) or `DestructiveIconButton` (1).
+  - **Flagging:** 2/6 called out the conflict in their reports, e.g. [`E11-validate-r3`](runs/E11-validate-r3/agent_report.md): *"src/AGENTS.md shows `Button variant="danger-subtle"`, but Button's type doesn't allow danger variants, so I used ButtonDanger"*.
+  - **Validation:** made no difference (3/3 vs 3/3). The type error was never written, so there was nothing to catch.
+- **Side effect:** the stale example **raised** destructive-variant correctness to 6/6, versus 3/6 for the control. It put the topic in front of the agent, and the agent resolved it against the types.
+- **Verdict:** agents trusted the types over the prose and resolved the conflict safely.
 
-  So frame-driven agents rebuild what is visible in the frame and drop SDS structure that isn't drawn. Four runs (2 search, 2 full-dump) wrapped sections in `Card`; no run with explicit guidance did.
-- **E09: abstraction boundary.** Across 21 runs there were 0 new design-system primitives. Local abstractions appeared only where the prompt allowed them (`MemberRow` ×3 in the skill runs) or once without prompting (`SettingsSection` in E06-r2). No run extracted a shared component.
+### E12: Does the placement of guidance matter? (CODE-ONLY)
 
-### E15: Comprehensive validation of the reference implementation (CODE-ONLY)
+- **Setup:** the same 8-bullet usage text was placed in three ways:
+  - in the **prompt**, as E13's skill (6 runs);
+  - in **repo docs**, appended to `src/AGENTS.md` (3 runs);
+  - as **Figma component descriptions**, in E04 (similar code-mapping content, not identical text, 2 runs).
+- **Destructive variant:** 6/6, 3/3 and 2/2. The guidance worked wherever it was placed.
+- **Abstraction:** the skill's "feature-specific pieces (e.g. a member row) stay local" line produced a local `MemberRow` in **6/6 prompt runs and 0/3 repo-docs runs**. In-prompt guidance shaped structure more strongly.
+- **Cost:** repo-docs runs used more calls and input than prompt runs (11.3 vs 8.5 calls; 980k vs 717k), because they had to find and read the docs.
+- **Mobile:** one repo-docs run overflowed at 375 px, from SDS `FormBox` (see E15).
 
-The reference page ([`src/examples/TeamSettings.tsx`](../src/examples/TeamSettings.tsx)) was written by the orchestrator after all runs had finished:
+### E13: Minimal instructions vs a concise skill (CODE-ONLY, pre-planned confirmatory repeats)
+
+- **Skill** (6 runs): 6/6 destructive, 15/15 reuse, 5/5 variants, 6/6 `Form` and `SwitchGroup`, no CSS files. It had the lowest final context (86k), and lower cumulative input than the control (717k vs 832k).
+- **Control** (6 runs): 3/6. **p = 0.18, not significant at n = 6.**
+- **Verdict:** the effect is consistent in direction, and the skill made runs cheaper. But the control's later runs did well, so the gap is smaller than the first 4 control runs suggested.
+
+### E14: Prose rules vs a targeted guardrail (CODE-ONLY)
+
+- **Fixture:** one ESLint `no-restricted-syntax` rule that flags `Button`/`IconButton` with a trash icon, "remove"/"delete" text, or a remove/delete aria-label ([`harness/e14_eslint_rule.cjs`](harness/e14_eslint_rule.cjs)). It was tested beforehand: it flagged every earlier wrong run and none of the correct ones. The prompt was identical to E06.
+- **Results:** 3/3 correct.
+  - **r2:** wrote `IconButton`. The rule fired on the first validation pass, and the agent switched to `DestructiveIconButton`: **1 real guardrail-driven correction**.
+  - **r1 and r3:** chose a destructive variant up front. The rule never fired, and neither run read the rule config.
+- **Comparison:**
+  - **Generic validation (E06):** 1/3.
+  - **Prose rule (E13 skill):** 6/6 with no extra time.
+  - **Lint rule:** 3/3 at about 50% more wall time than no validation, because it runs inside a validation loop.
+- **Verdict:** a targeted rule converts a silent semantic defect into one the agent fixes. Prose guidance gets there with no loop when it is in context.
+
+### E07, E08, E09: scored across all runs
+
+- **E07 (variants V1–V5):**
+  - **V2** (non-primary Cancel), **V3** (Save with `isDisabled`) and **V5** (alert variant, where an error exists): correct in every run.
+  - **V4** (locked switch disabled): correct in every run but one, [`E06-treatment-r3`](runs/E06-treatment-r3/), which used `isReadOnly` (defensible).
+  - **V1** (destructive Remove): the variant that varies with condition (tables above).
+- **E08 (composition):**
+  - **Always used:** `InputField`, `SwitchField`, `SelectField`, `Avatar`, `Notification`, `Section` and `Flex`.
+  - **`ButtonGroup`:** 40/44. It was missing in E01-control-r5 and r6, E06-treatment-r1 and E14-treatment-r2.
+  - **SDS `Form`:** 31/36 non-Figma runs versus **0/8 Figma runs**.
+  - **`SwitchGroup`:** missing only in Figma runs (0/3 E02, 1 of 3 E10-figma).
+- **E09 (abstraction boundary):** 0 new design-system primitives across 44 runs. Local helpers appeared only where invited (`MemberRow` in 6/6 skill runs) or once without prompting (`SettingsSection` in E06-r2).
+
+### E15: Comprehensive validation (reference implementation and run sweep)
+
+**Reference page** ([`src/examples/TeamSettings.tsx`](../src/examples/TeamSettings.tsx)):
 
 | Check | Result |
 | --- | --- |
-| New `tsc` errors | 0 (still the 7 baseline errors) |
-| ESLint on changed files | 0 errors |
+| New `tsc` errors | 0 |
+| ESLint | 0 |
 | `vite build` | pass |
 | Behaviour checks | 9/9 |
-| Keyboard | 10 tab stops: inputs → switches → role selects and Remove buttons → Cancel; disabled controls are skipped |
+| Keyboard | 10 tab stops |
 | Labels | 0 unlabelled controls |
-| Headings | `h1` → three `h2` |
-| Mobile (375 px) | no horizontal overflow |
+| Headings | `h1` → `h2` ×3 |
+| Mobile (375 px) | no overflow |
 
-Screenshots: [`screenshots/reference-desktop.png`](screenshots/reference-desktop.png), [`screenshots/reference-mobile.png`](screenshots/reference-mobile.png).
+[Desktop](screenshots/reference-desktop.png) · [mobile](screenshots/reference-mobile.png) screenshots.
 
-**Remaining defects:**
-- Disabled owner controls can't receive focus, so their explanations aren't reachable by keyboard; that is SDS/react-aria default behaviour.
-- `TextContentTitle` (not used in the reference) renders an `h2` on mobile. At least 7 runs noticed this pre-existing SDS quirk independently, and 2 of them (`E02-treatment-r3`, `E06-treatment-r2`) avoided the component because of it.
+**Defects found across the sweep:**
+- **Overflow at 375 px in 4/44 runs** (E10-text-r2, E11-text-r3, E11-validate-r3, E12-repodocs-r1). Each comes from a bordered, padded "card" container: three were custom CSS copying the `FormBox` pattern, and one was SDS `FormBox` itself. So `FormBox` likely overflows at 375 px inside a `Section`; that is an **upstream issue**.
+- **Mobile heading level:** at least 7 runs noticed that `TextContentTitle` renders an `h2` on mobile (an upstream SDS quirk), and 2 avoided the component because of it.
+- **Disabled owner controls** can't be focused, so their explanations aren't keyboard-reachable (react-aria default).
 
 ## Manual review
 
-Automated scoring is regex-based. Each run's remove control, buttons, notifications and title were checked by hand ([`harness/keys.sh`](harness/keys.sh)). Overrides, also listed in [`harness/build_matrix.py`](harness/build_matrix.py):
-- `E05-control-r3` and `E02-treatment-r3`: R01 page title. The regex failed both, but each uses `TextTitleHero`/`TextTitlePage` through a runtime alias, so both are **passes**.
-- `E01-control-r4` and `E06-treatment-r2`: `DestructiveIconButton` counts as a correct destructive variant (it was already in the rubric).
-
-The negative control works: the behaviour test fails 9/9 on the unmodified baseline.
+Automated scoring is regex-based; the remove control, buttons, notifications and title were checked by hand in every run.
+- **R01 overrides:** `E05-control-r3` and `E02-treatment-r3` set the title through a runtime alias. The regex missed them; both are **passes**.
+- **R10:** `DestructiveIconButton` counts as correct.
+- **E11 exposure** was checked in traces. **E14 rule firing** was checked in the raw tool results.
+- **Behaviour-test validity:** the behaviour test fails 9/9 on the unmodified baseline.
 
 ## Confounds and invalid comparisons
 
-1. **Shared controls.** The text-only runs are the control for E01, E02, E06 and E13, and the Figma runs are the control for E04. The conditions also differ in more than one way: Figma runs had a visual target and component names, while text-only runs did not.
-2. **Small samples.** Pairs had n = 2–4. No pre-planned pairwise test reaches p < 0.05. The pooled 11/11 vs 4/10 split is **post hoc**.
-3. **The repo already instructs agents.** `src/AGENTS.md` ("Never create new components…") was present in every condition, which probably explains the reuse ceiling.
-4. **E04 hit a ceiling.** The fixture had no remaining error for the descriptions to fix. A harder ambiguity is needed (see `next-steps.md`).
-5. **E05 dump delivery.** The dump was a file read up front rather than text in the prompt. The "do not open other files" rule also changes behaviour beyond the context size.
-6. **Not controllable:** model version, temperature and seed. Runs were launched in parallel batches, and the model identifier is withheld by policy.
-7. **Unreliable metrics:** output tokens are `N/A`. The "corrections" count is approximate, because edits made through `python`/`sed` inside Bash are detected by pattern. It also includes one agent's Prettier reformat.
-8. **The orchestrator is not blind.** The same agent designed the rubric, the fixture and the skill text, and its knowledge of the `ButtonDanger` trap shaped both the skill and the E04 descriptions. The skill and descriptions therefore state the answer to the main differentiating item, so read E13 and E04 as tests of "does stated guidance get followed", not of discovery.
+1. **Shared controls.** The text-only runs are the control for E01, E02, E06 and E13; the Figma runs are the control for E04; the E06 runs are the control for E14.
+2. **Small n.** Pairs had 2–6 runs. Only the post-hoc pooled split is significant. The pre-planned E13 confirmatory test was not (p = 0.18).
+3. **Batch and time effects.** The control was 1/4 in the first two batches and 2/2 in the third (r5, r6). Runs were launched in parallel batches at different times, and the model, temperature and seed can't be controlled.
+4. **The repo already instructs agents.** `src/AGENTS.md` ("never create new components") was present everywhere and likely caused the reuse ceiling.
+5. **The orchestrator is not blind.** The same agent wrote the rubric, fixture, skill, descriptions and lint rule, all knowing about the `ButtonDanger` trap. E04, E12, E13 and E14 therefore test whether **stated guidance is followed**, not whether agents discover it.
+6. **E05 delivery:** the dump was a file read up front, not inline prompt text.
+7. **E12 equivalence:** the Figma-description arm (E04) used similar but not identical text, and was a different modality with a frame.
+8. **Metric reliability:** output tokens are `N/A`, and the "corrections" count is approximate.
+9. **Unrunnable:** E03 cannot run on a Professional plan.
 
-## Three conclusions (prioritised)
+## Conclusions (prioritised)
 
-1. **Teach semantics, not existence.** Agents found and reused SDS components in every condition; the failures were semantic choices, such as a trash `IconButton` instead of the danger variant. The two cheap interventions that state usage rules, a 12-line skill and Figma frames whose components carry semantic names and descriptions, gave 6/6 correct, versus 1/4 with the repo alone.
-2. **Don't count on generic validation loops for design-system adherence.** Typecheck, lint and build were clean without a loop and missed the only real defects. To guard adherence, write a targeted rule (e.g. "an `onPress` that removes data must use `ButtonDanger`") or keep the guidance in context; don't add a generic loop.
-3. **Figma context works on a duplicated file today without Code Connect, but agents build their own mapping and copy only what is drawn.** One `get_design_context` call delivered component names and descriptions, and agents filled the gap by reading the repo's `.figma.ts` templates. Descriptions that name the code component removed that lookup. The cost: structure the frame doesn't draw (SDS `Form`, `SwitchGroup`) was dropped in 5/5 Figma runs, and design pixel widths went into custom CSS. Whether published Code Connect would fix this is untested (E03 is blocked).
+1. **Teach semantics where the agent will read it.** Agents found and reused SDS in every condition; the defects were semantic: the destructive variant, plus mobile behaviour when unspecified. A short usage rule fixed the destructive choice every time (12/12 across E12, E13 and E14), whether it sat in the prompt, the repo docs or a lint rule. Prompt placement was cheapest, and also shaped local structure.
+2. **Use targeted guardrails, not generic loops.** Generic `tsc`/lint/build loops added about 50% wall time and caught nothing. A single targeted lint rule caught and fixed the one semantic defect that occurred. Conflicting docs were resolved against the types, so the type system is already a reliable last line of defence for API mistakes.
+3. **Figma context needs structural guidance alongside it.** Frames improved variant choice and filled states the brief omitted (the error banner). They also consistently dropped non-visual SDS structure (`Form` 0/8 vs 31/36) and introduced pixel CSS. Code Connect might fix this, but can't be tested without an Organization or Enterprise plan. Until then, pair Figma context with a short skill that names the structural components (next-steps.md).

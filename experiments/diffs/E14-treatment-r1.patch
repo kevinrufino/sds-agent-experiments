@@ -1,0 +1,301 @@
+diff --git a/src/App.tsx b/src/App.tsx
+index b7ca42c..638dfe7 100644
+--- a/src/App.tsx
++++ b/src/App.tsx
+@@ -6,12 +6,14 @@ import { PanelSections } from "./examples/PanelSections";
+ import { PricingGrid } from "./examples/PricingGrid";
+ import { ProductDetails } from "./examples/ProductDetails";
+ import { ProductGrid } from "./examples/ProductGrid";
++import { TeamSettings } from "./examples/TeamSettings";
+ import { WelcomeHero } from "./examples/WelcomeHero";
+ 
+ function App() {
+   return (
+     <AllProviders>
+       <Header />
++      <TeamSettings />
+       <Demo />
+       <WelcomeHero />
+       <PanelSections />
+diff --git a/src/examples/TeamSettings.tsx b/src/examples/TeamSettings.tsx
+new file mode 100644
+index 0000000..dbba7bd
+--- /dev/null
++++ b/src/examples/TeamSettings.tsx
+@@ -0,0 +1,276 @@
++import { useMediaQuery } from "hooks";
++import { IconAlertCircle, IconCheckCircle, IconTrash2 } from "icons";
++import { Flex, FlexItem, Section } from "layout";
++import {
++  Avatar,
++  Button,
++  ButtonGroup,
++  DestructiveIconButton,
++  FieldGroup,
++  Fieldset,
++  Form,
++  InputField,
++  Notification,
++  SelectField,
++  SelectItem,
++  SwitchField,
++  SwitchGroup,
++  Text,
++  TextHeading,
++  TextSmall,
++  TextStrong,
++  TextSubtitle,
++  TextTitlePage,
++} from "primitives";
++import { useState } from "react";
++
++type Role = "Owner" | "Admin" | "Editor" | "Viewer";
++type Member = { id: string; name: string; email: string; role: Role };
++type Settings = {
++  name: string;
++  email: string;
++  jobTitle: string;
++  productUpdates: boolean;
++  weeklyDigest: boolean;
++  members: Member[];
++};
++
++const ROLES: Role[] = ["Owner", "Admin", "Editor", "Viewer"];
++const INITIAL: Settings = {
++  name: "Ada Lovelace",
++  email: "ada@example.com",
++  jobTitle: "Engineering Lead",
++  productUpdates: true,
++  weeklyDigest: false,
++  members: (
++    [
++      ["Ada Lovelace", "Owner"],
++      ["Grace Hopper", "Admin"],
++      ["Alan Turing", "Editor"],
++      ["Katherine Johnson", "Viewer"],
++    ] as const
++  ).map(([name, role], i) => ({
++    id: String(i),
++    name,
++    email: `${name.split(" ")[0].toLowerCase()}@example.com`,
++    role,
++  })),
++};
++
++const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
++const initials = (name: string) => name.replace(/[^A-Z]/g, "").slice(0, 2);
++
++export function TeamSettings() {
++  const { isMobile } = useMediaQuery();
++  const [saved, setSaved] = useState<Settings>(INITIAL);
++  const [form, setForm] = useState<Settings>(INITIAL);
++  const [confirmation, setConfirmation] = useState(false);
++
++  const emailInvalid = !EMAIL_PATTERN.test(form.email.trim());
++  const nameInvalid = form.name.trim() === "";
++  const isInvalid = emailInvalid || nameInvalid;
++  const isDirty = JSON.stringify(form) !== JSON.stringify(saved);
++
++  const update = (patch: Partial<Settings>) => {
++    setForm((prev) => ({ ...prev, ...patch }));
++    setConfirmation(false);
++  };
++  const updateMember = (id: string, role: Role) =>
++    update({
++      members: form.members.map((m) => (m.id === id ? { ...m, role } : m)),
++    });
++  const removeMember = (id: string) =>
++    update({ members: form.members.filter((m) => m.id !== id) });
++
++  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
++    event.preventDefault();
++    if (isInvalid || !isDirty) return;
++    setSaved(form);
++    setConfirmation(true);
++  };
++  const onCancel = () => {
++    setForm(saved);
++    setConfirmation(false);
++  };
++
++  return (
++    <Section
++      padding={isMobile ? "600" : "1600"}
++      aria-labelledby="team-settings-title"
++    >
++      <Flex
++        container
++        direction="column"
++        alignSecondary="stretch"
++        gap={isMobile ? "600" : "800"}
++      >
++        <Flex direction="column" gap="200">
++          <TextTitlePage elementType="h1" id="team-settings-title">
++            Team settings
++          </TextTitlePage>
++          <TextSubtitle>
++            Manage your profile, notifications and who has access to your team.
++          </TextSubtitle>
++        </Flex>
++
++        {isInvalid && (
++          <Notification variant="alert" role="alert" icon={<IconAlertCircle />}>
++            <Text>Please fix the highlighted fields before saving.</Text>
++          </Notification>
++        )}
++        {confirmation && (
++          <Notification role="status" icon={<IconCheckCircle />}>
++            <Text>Your changes have been saved.</Text>
++          </Notification>
++        )}
++
++        <Form onSubmit={onSubmit} aria-labelledby="team-settings-title">
++          <Flex
++            direction="column"
++            alignSecondary="stretch"
++            gap={isMobile ? "600" : "800"}
++          >
++            <Fieldset aria-labelledby="profile-heading">
++              <TextHeading elementType="h2" id="profile-heading">
++                Profile
++              </TextHeading>
++              <FieldGroup>
++                <InputField
++                  label="Full name"
++                  name="name"
++                  isRequired
++                  value={form.name}
++                  onChange={(name) => update({ name })}
++                  isInvalid={nameInvalid}
++                  errorMessage="Enter your full name."
++                />
++                <InputField
++                  label="Email"
++                  name="email"
++                  type="email"
++                  isRequired
++                  value={form.email}
++                  onChange={(email) => update({ email })}
++                  isInvalid={emailInvalid}
++                  errorMessage="Enter a valid email address, like name@example.com."
++                />
++                <InputField
++                  label="Job title"
++                  name="jobTitle"
++                  value={form.jobTitle}
++                  onChange={(jobTitle) => update({ jobTitle })}
++                  description="Shown to teammates next to your name."
++                />
++              </FieldGroup>
++            </Fieldset>
++
++            <Fieldset aria-labelledby="notifications-heading">
++              <TextHeading elementType="h2" id="notifications-heading">
++                Notifications
++              </TextHeading>
++              <SwitchGroup>
++                <SwitchField
++                  label="Product updates"
++                  description="News about new features and improvements."
++                  isSelected={form.productUpdates}
++                  onChange={(productUpdates) => update({ productUpdates })}
++                />
++                <SwitchField
++                  label="Weekly digest"
++                  description="A summary of your team's activity every Monday."
++                  isSelected={form.weeklyDigest}
++                  onChange={(weeklyDigest) => update({ weeklyDigest })}
++                />
++                <SwitchField
++                  label="Security alerts"
++                  description="Always on to keep your account safe."
++                  isSelected
++                  isDisabled
++                />
++              </SwitchGroup>
++            </Fieldset>
++
++            <Flex
++              direction="column"
++              alignSecondary="stretch"
++              gap="400"
++              role="group"
++              aria-labelledby="members-heading"
++            >
++              <TextHeading elementType="h2" id="members-heading">
++                Team members
++              </TextHeading>
++              {form.members.map((member) => {
++                const isOwner = member.role === "Owner";
++                return (
++                  <Flex
++                    key={member.id}
++                    direction={isMobile ? "column" : "row"}
++                    alignSecondary={isMobile ? "stretch" : "center"}
++                    gap="400"
++                  >
++                    <FlexItem size="fill">
++                      <Flex alignSecondary="center" gap="300">
++                        <Avatar initials={initials(member.name)} />
++                        <Flex direction="column">
++                          <TextStrong>{member.name}</TextStrong>
++                          <TextSmall>{member.email}</TextSmall>
++                        </Flex>
++                      </Flex>
++                    </FlexItem>
++                    <Flex alignSecondary="end" gap="200">
++                      <SelectField
++                        aria-label={`Role for ${member.name}`}
++                        selectedKey={member.role}
++                        onSelectionChange={(key) =>
++                          updateMember(member.id, key as Role)
++                        }
++                        isDisabled={isOwner}
++                        disabledKeys={["Owner"]}
++                      >
++                        {ROLES.map((role) => (
++                          <SelectItem key={role} id={role}>
++                            {role}
++                          </SelectItem>
++                        ))}
++                      </SelectField>
++                      <DestructiveIconButton
++                        variant="danger-subtle"
++                        aria-label={
++                          isOwner
++                            ? `${member.name} is the owner and cannot be removed`
++                            : `Remove ${member.name}`
++                        }
++                        isDisabled={isOwner}
++                        onPress={() => removeMember(member.id)}
++                      >
++                        <IconTrash2 />
++                      </DestructiveIconButton>
++                    </Flex>
++                  </Flex>
++                );
++              })}
++            </Flex>
++
++            <ButtonGroup align={isMobile ? "justify" : "end"}>
++              <Button
++                variant="neutral"
++                onPress={onCancel}
++                isDisabled={!isDirty}
++              >
++                Cancel
++              </Button>
++              <Button
++                type="submit"
++                variant="primary"
++                isDisabled={!isDirty || isInvalid}
++              >
++                Save changes
++              </Button>
++            </ButtonGroup>
++          </Flex>
++        </Form>
++      </Flex>
++    </Section>
++  );
++}

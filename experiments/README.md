@@ -37,14 +37,15 @@ Because upstream is not green, every run is scored on the **delta**: new `tsc` e
 | `get_code_connect_map` on component set `4185:3778`, variant `4185:3779`, set `9762:1902` | **`{}`**: no Code Connect mappings are published for the duplicate |
 | `get_design_context` on `9762:1902` and on the fixture frame | ok. Returns reference code, a screenshot, and a **"Component descriptions"** block. No Code Connect snippets. |
 
-The repo's `src/figma/**/*.figma.ts` templates point at the **upstream** file key `J0KLPKXiONDRssXD1AX9Oi` through `figma.config.json`. A checked-in template is not the same as MCP serving Code Connect, so E03 is **BLOCKED** (see `results.md`).
+The repo's `src/figma/**/*.figma.ts` templates point at the **upstream** file key `J0KLPKXiONDRssXD1AX9Oi` through `figma.config.json`. A checked-in template is not the same as MCP serving Code Connect. E03 is **BLOCKED**: writing mappings is refused on a Professional plan (see `results.md`).
 
 ## Figma artifacts created (duplicate file only)
 
 - One new page, **"Agent Experiment Fixture"** (`3005:2`), holding one frame, **"Team Settings (experiment fixture)"** (`3005:3`): https://www.figma.com/design/mchDCUgpbpnntD9vMBJlzC/Simple-Design-System--Community-?node-id=3005-3
   It contains only instances of existing SDS components: Text Content Title, Notification (Alert), Text Heading ×3, Input Field ×3 (incl. Error state), Switch Field ×3 (incl. Disabled), Avatar Block ×3, Select Field ×3 (incl. Disabled), Button Danger (Subtle/Small) ×3, Button Group with Button Neutral + Button Primary (Disabled). The member rows are plain auto-layout frames, so no new components were made. Screenshot: [`screenshots/figma-fixture-3005-3.png`](screenshots/figma-fixture-3005-3.png).
 - **E04 description treatment.** Descriptions on 10 component masters were changed for the E04 runs only, then restored. Before and after values with node IDs are in [`figma/e04_descriptions.json`](figma/e04_descriptions.json). After restoring, every node was read back and matched the original exactly.
-- No Code Connect mappings were published or added. `add_code_connect_map` and `send_code_connect_mappings` were never called.
+- **Code Connect (E03), attempted after your approval.** `get_code_connect_suggestions` listed 13 unmapped components in the fixture frame. `add_code_connect_map` was refused twice, once with a full template and once as a simple mapping: *"Code connections can only be made in libraries that are in Organization or Enterprise plans"*. Nothing was written. The prepared payload is in [`figma/e03_code_connect_payload_refused.json`](figma/e03_code_connect_payload_refused.json).
+- **Run ordering:** the E10 Figma runs completed before the Code Connect attempt, so every Figma run saw the same file state.
 
 ## Common task fixture
 
@@ -61,6 +62,12 @@ One brief, identical in every run, word for word ([`prompts/base.md`](prompts/ba
 | `figma` with E04 descriptions | identical text to `figma`; only the Figma descriptions differ | **used** | forbidden |
 | `fulldump` | + "read `DESIGN_SYSTEM_DOCS.md` (all AGENTS.md + all ui/ component source, 4,132 lines) in full; don't open other files except App.tsx" | forbidden | forbidden |
 | `skill` | + a concise 12-line SDS usage skill | forbidden | forbidden |
+| `ambig_text` / `ambig_figma` (E10) | the brief minus item 7 (mobile) and minus the page-level error ([`prompts/base_ambiguous.md`](prompts/base_ambiguous.md)), with the `text_only` or `figma` block | as named | forbidden |
+| `stale_text` / `stale_validate` (E11) | `text_only` / `validate` block; **fixture commit** adds a stale `<Button variant="danger-*">` example to `src/AGENTS.md` | forbidden | as named |
+| `repodocs` (E12) | `text_only` block; **fixture commit** appends the E13 skill text to `src/AGENTS.md` | forbidden | forbidden |
+| `validate+lintrule` (E14) | `validate` block; **fixture commit** adds one `no-restricted-syntax` ESLint rule | forbidden | **required** |
+
+Fixture commits sit on top of `05525f7` in the run's branch and are labelled `fixture(...)`; each run's diff is measured against its fixture commit ([`diffs/fixture-*.patch`](diffs/)).
 
 Isolation:
 - **Clean start.** Every run got a fresh sub-agent (no shared conversation) and its own `git worktree` on branch `experiment/<RUN>`, created from `05525f7`. `node_modules` was symlinked from the main checkout, which was kept at the baseline commit with no experiment files while runs executed.

@@ -1,0 +1,68 @@
+{
+ "files": [
+  "src/App.tsx",
+  "src/examples/TeamSettings.tsx",
+  "src/examples/teamSettings.css"
+ ],
+ "rubric": {
+  "R01_page_title_sds": true,
+  "R02_section_headings_sds": true,
+  "R03_inputs_InputField": true,
+  "R04_email_error_via_field": true,
+  "R05_help_text_description": true,
+  "R06_prefs_SwitchOrCheckboxField": true,
+  "R07_security_disabled": true,
+  "R08_member_AvatarBlock_or_Avatar": true,
+  "R09_role_SelectField_or_Radio": true,
+  "R10_remove_ButtonDanger": true,
+  "R11_save_Button_isDisabled": true,
+  "R12_cancel_nonprimary": true,
+  "R13_ButtonGroup": false,
+  "R14_feedback_Notification": true,
+  "R15_layout_components": true
+ },
+ "reuse_score": "14/15",
+ "reuse_n": 14,
+ "raw": {
+  "raw_button": 0,
+  "raw_input": 0,
+  "raw_select": 0,
+  "raw_heading": 0,
+  "raw_label": 0
+ },
+ "danger_variant_on_Button": 0,
+ "rac_imports": 0,
+ "sds_imports": [
+  "Avatar",
+  "AvatarBlock",
+  "Button",
+  "ButtonDanger",
+  "Flex",
+  "IconAlertCircle",
+  "IconCheckCircle",
+  "IconTrash",
+  "InputField",
+  "Notification",
+  "Section",
+  "SelectField",
+  "SelectItem",
+  "SwitchField",
+  "SwitchGroup",
+  "Text",
+  "TextHeading",
+  "TextTitlePage",
+  "useMediaQuery"
+ ],
+ "local_components": [
+  "TeamSettings"
+ ],
+ "inline_styles": 0,
+ "css": {
+  "css_hex": 0,
+  "css_px": 1,
+  "css_layout": 2,
+  "css_vars": 8
+ },
+ "loc_tsx": 240,
+ "loc_css": 47
+}

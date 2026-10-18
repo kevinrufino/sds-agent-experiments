@@ -1,0 +1,33 @@
+{
+ "url_ok": true,
+ "desktop": {
+  "block_height": 1261,
+  "horizontal_overflow": false
+ },
+ "keyboard_focus_sequence": [
+  "input:Full name",
+  "input:Email",
+  "input:Job title",
+  "input[switch]:Product updates\nNews about fea",
+  "input[switch]:Weekly digest\nA summary of tea",
+  "button:Role for Jordan Lee",
+  "button:Remove Jordan Lee",
+  "button:Role for Sam Patel",
+  "button:Remove Sam Patel",
+  "button:Role for Riley Kim",
+  "button:Remove Riley Kim",
+  "button:Cancel"
+ ],
+ "headings": [
+  "h1:Team settings",
+  "h2:Profile",
+  "h2:Notifications",
+  "h2:Team members"
+ ],
+ "unlabelled_controls": [],
+ "mobile": {
+  "block_height": 1725,
+  "horizontal_overflow": false
+ },
+ "page_errors": []
+}
