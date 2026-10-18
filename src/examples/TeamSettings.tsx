@@ -1,0 +1,245 @@
+import { Card } from "compositions";
+import { useMediaQuery } from "hooks";
+import { IconAlertCircle, IconCheckCircle } from "icons";
+import { Flex, Section } from "layout";
+import {
+  Avatar,
+  AvatarBlock,
+  Button,
+  ButtonDanger,
+  ButtonGroup,
+  Form,
+  InputField,
+  Notification,
+  SelectField,
+  SelectItem,
+  SwitchField,
+  SwitchGroup,
+  Text,
+  TextHeading,
+  TextStrong,
+  TextSubtitle,
+  TextTitlePage,
+} from "primitives";
+import { useState } from "react";
+
+type Role = "Owner" | "Admin" | "Editor" | "Viewer";
+type Member = { id: string; name: string; email: string; role: Role };
+type Settings = {
+  fullName: string;
+  email: string;
+  jobTitle: string;
+  productUpdates: boolean;
+  weeklyDigest: boolean;
+  members: Member[];
+};
+
+const ROLES: Role[] = ["Owner", "Admin", "Editor", "Viewer"];
+
+const INITIAL_SETTINGS: Settings = {
+  fullName: "Avery Chen",
+  email: "avery.chen@example.com",
+  jobTitle: "Product designer",
+  productUpdates: true,
+  weeklyDigest: false,
+  members: [
+    { id: "1", name: "Avery Chen", email: "avery.chen@example.com", role: "Owner" },
+    { id: "2", name: "Jordan Lee", email: "jordan.lee@example.com", role: "Admin" },
+    { id: "3", name: "Sam Patel", email: "sam.patel@example.com", role: "Editor" },
+    { id: "4", name: "Riley Moore", email: "riley.moore@example.com", role: "Viewer" },
+  ],
+};
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const initialsOf = (name: string) =>
+  name
+    .split(" ")
+    .map((part) => part[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+
+export function TeamSettings() {
+  const { isMobile } = useMediaQuery();
+  const [saved, setSaved] = useState<Settings>(INITIAL_SETTINGS);
+  const [values, setValues] = useState<Settings>(INITIAL_SETTINGS);
+  const [showSaved, setShowSaved] = useState(false);
+
+  const emailError = EMAIL_PATTERN.test(values.email.trim())
+    ? undefined
+    : "Enter a valid email address, like name@example.com.";
+  const isInvalid = !!emailError;
+  const isDirty = JSON.stringify(values) !== JSON.stringify(saved);
+
+  const update = (patch: Partial<Settings>) => {
+    setValues((current) => ({ ...current, ...patch }));
+    setShowSaved(false);
+  };
+  const updateMember = (id: string, role: Role) =>
+    update({ members: values.members.map((m) => (m.id === id ? { ...m, role } : m)) });
+  const removeMember = (id: string) =>
+    update({ members: values.members.filter((m) => m.id !== id) });
+
+  const onSave = () => {
+    if (!isDirty || isInvalid) return;
+    setSaved(values);
+    setShowSaved(true);
+  };
+  const onCancel = () => {
+    setValues(saved);
+    setShowSaved(false);
+  };
+
+  return (
+    <Section padding={isMobile ? "600" : "1600"} variant="neutral">
+      <Flex container direction="column" alignSecondary="stretch" gap={isMobile ? "600" : "800"}>
+        <Flex direction="column" gap="200">
+          <TextTitlePage elementType="h1">Team settings</TextTitlePage>
+          <TextSubtitle>Manage your profile, notifications and who has access to your team.</TextSubtitle>
+        </Flex>
+
+        <div aria-live="polite">
+          {isInvalid && (
+            <Notification variant="alert" role="alert" icon={<IconAlertCircle size="20" />}>
+              <TextStrong>Please fix the errors below</TextStrong>
+              <Text>Your changes can't be saved until every field is valid.</Text>
+            </Notification>
+          )}
+          {showSaved && !isInvalid && (
+            <Notification role="status" icon={<IconCheckCircle size="20" />}>
+              <TextStrong>Changes saved</TextStrong>
+              <Text>Your team settings have been updated.</Text>
+            </Notification>
+          )}
+        </div>
+
+        <Form
+          validationBehavior="aria"
+          onSubmit={(event) => {
+            event.preventDefault();
+            onSave();
+          }}
+        >
+          <Flex direction="column" alignSecondary="stretch" gap={isMobile ? "600" : "800"}>
+            <Card variant="stroke" padding="600" role="region" aria-labelledby="team-settings-profile">
+              <Flex direction="column" alignSecondary="stretch" gap="600">
+                <TextHeading elementType="h2" id="team-settings-profile">Profile</TextHeading>
+                <InputField
+                  label="Full name"
+                  name="fullName"
+                  autoComplete="name"
+                  value={values.fullName}
+                  onChange={(fullName) => update({ fullName })}
+                />
+                <InputField
+                  label="Email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  isRequired
+                  value={values.email}
+                  onChange={(email) => update({ email })}
+                  isInvalid={isInvalid}
+                  errorMessage={emailError}
+                />
+                <InputField
+                  label="Job title"
+                  name="jobTitle"
+                  autoComplete="organization-title"
+                  description="Shown to teammates next to your name."
+                  value={values.jobTitle}
+                  onChange={(jobTitle) => update({ jobTitle })}
+                />
+              </Flex>
+            </Card>
+
+            <Card variant="stroke" padding="600" role="region" aria-labelledby="team-settings-notifications">
+              <Flex direction="column" alignSecondary="stretch" gap="600">
+                <TextHeading elementType="h2" id="team-settings-notifications">Notifications</TextHeading>
+                <SwitchGroup>
+                  <SwitchField
+                    label="Product updates"
+                    description="News about new features and improvements."
+                    isSelected={values.productUpdates}
+                    onChange={(productUpdates) => update({ productUpdates })}
+                  />
+                  <SwitchField
+                    label="Weekly digest"
+                    description="A summary of your team's activity every Monday."
+                    isSelected={values.weeklyDigest}
+                    onChange={(weeklyDigest) => update({ weeklyDigest })}
+                  />
+                  <SwitchField
+                    label="Security alerts"
+                    description="Always on to keep your account safe. This can't be turned off."
+                    isSelected
+                    isDisabled
+                  />
+                </SwitchGroup>
+              </Flex>
+            </Card>
+
+            <Card variant="stroke" padding="600" role="region" aria-labelledby="team-settings-members">
+              <Flex direction="column" alignSecondary="stretch" gap="600">
+                <TextHeading elementType="h2" id="team-settings-members">Team members</TextHeading>
+                <Flex direction="column" alignSecondary="stretch" gap="600" role="list">
+                  {values.members.map((member) => {
+                    const isOwner = member.role === "Owner";
+                    return (
+                      <Flex
+                        key={member.id}
+                        role="listitem"
+                        direction={isMobile ? "column" : "row"}
+                        alignPrimary="space-between"
+                        alignSecondary={isMobile ? "stretch" : "center"}
+                        gap="400"
+                      >
+                        <AvatarBlock title={member.name} description={member.email}>
+                          <Avatar initials={initialsOf(member.name)} />
+                        </AvatarBlock>
+                        <Flex direction="row" alignSecondary="center" gap="300">
+                          <SelectField
+                            aria-label={`Role for ${member.name}`}
+                            selectedKey={member.role}
+                            onSelectionChange={(key) => updateMember(member.id, key as Role)}
+                            isDisabled={isOwner}
+                            disabledKeys={isOwner ? [] : ["Owner"]}
+                          >
+                            {ROLES.map((role) => (
+                              <SelectItem key={role} id={role}>
+                                {role}
+                              </SelectItem>
+                            ))}
+                          </SelectField>
+                          <ButtonDanger
+                            variant="danger-subtle"
+                            size="small"
+                            aria-label={`Remove ${member.name}`}
+                            isDisabled={isOwner}
+                            onPress={() => removeMember(member.id)}
+                          >
+                            Remove
+                          </ButtonDanger>
+                        </Flex>
+                      </Flex>
+                    );
+                  })}
+                </Flex>
+              </Flex>
+            </Card>
+
+            <ButtonGroup align={isMobile ? "stack" : "end"}>
+              <Button type="button" variant="neutral" onPress={onCancel}>
+                Cancel
+              </Button>
+              <Button type="submit" variant="primary" isDisabled={!isDirty || isInvalid}>
+                Save changes
+              </Button>
+            </ButtonGroup>
+          </Flex>
+        </Form>
+      </Flex>
+    </Section>
+  );
+}
