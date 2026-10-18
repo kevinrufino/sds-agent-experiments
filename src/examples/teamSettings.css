@@ -1,0 +1,44 @@
+.team-settings {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sds-size-space-800);
+  margin-inline: auto;
+  max-width: 48rem;
+  width: 100%;
+}
+
+.team-settings-card {
+  background: var(--sds-color-background-default-default);
+  border: var(--sds-size-stroke-border) solid
+    var(--sds-color-border-default-default);
+  border-radius: var(--sds-size-radius-200);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sds-size-space-600);
+  padding: var(--sds-size-space-600);
+}
+
+.team-settings-members {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  > li {
+    padding-block: var(--sds-size-space-400);
+  }
+  > li + li {
+    border-top: var(--sds-size-stroke-border) solid
+      var(--sds-color-border-default-default);
+  }
+  .avatar-block {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+}
+
+.team-settings-role {
+  flex: 1;
+  min-width: 8.5rem;
+}
