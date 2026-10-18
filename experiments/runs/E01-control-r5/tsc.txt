@@ -1,0 +1,33 @@
+src/figma/primitives/tag/Tag.figma.ts(10,7): error TS6133: 'onRemove' is declared but its value is never read.
+src/ui/primitives/Button/Button.tsx(27,6): error TS2322: Type '{ children: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ... 228 more ... | undefined; ... 92 more ...; onHoverChange?: ((isHovering: boolean) => void) | undefined; }' is not assignable to type 'LinkProps'.
+  Types of property 'onClickCapture' are incompatible.
+    Type 'MouseEventHandler<HTMLDivElement> | MouseEventHandler<HTMLButtonElement> | undefined' is not assignable to type 'MouseEventHandler<HTMLDivElement> | undefined'.
+      Type 'MouseEventHandler<HTMLButtonElement>' is not assignable to type 'MouseEventHandler<HTMLDivElement>'.
+        Property 'align' is missing in type 'HTMLButtonElement' but required in type 'HTMLDivElement'.
+src/ui/primitives/Button/Button.tsx(35,6): error TS2322: Type '{ children: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ... 46 more ... | undefined; ... 92 more ...; onHoverChange?: ((isHovering: boolean) => void) | undefined; }' is not assignable to type 'ButtonProps'.
+  Types of property 'onClickCapture' are incompatible.
+    Type 'MouseEventHandler<HTMLDivElement> | MouseEventHandler<HTMLButtonElement> | undefined' is not assignable to type 'MouseEventHandler<HTMLButtonElement> | undefined'.
+      Type 'MouseEventHandler<HTMLDivElement>' is not assignable to type 'MouseEventHandler<HTMLButtonElement>'.
+        Type 'HTMLDivElement' is missing the following properties from type 'HTMLButtonElement': disabled, form, formAction, formEnctype, and 15 more.
+src/ui/primitives/Button/Button.tsx(73,6): error TS2322: Type '{ children: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ... 228 more ... | undefined; ... 92 more ...; onHoverChange?: ((isHovering: boolean) => void) | undefined; }' is not assignable to type 'LinkProps'.
+  Types of property 'onClickCapture' are incompatible.
+    Type 'MouseEventHandler<HTMLDivElement> | MouseEventHandler<HTMLButtonElement> | undefined' is not assignable to type 'MouseEventHandler<HTMLDivElement> | undefined'.
+      Type 'MouseEventHandler<HTMLButtonElement>' is not assignable to type 'MouseEventHandler<HTMLDivElement>'.
+        Property 'align' is missing in type 'HTMLButtonElement' but required in type 'HTMLDivElement'.
+src/ui/primitives/Button/Button.tsx(81,6): error TS2322: Type '{ children: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ... 46 more ... | undefined; ... 92 more ...; onHoverChange?: ((isHovering: boolean) => void) | undefined; }' is not assignable to type 'ButtonProps'.
+  Types of property 'onClickCapture' are incompatible.
+    Type 'MouseEventHandler<HTMLDivElement> | MouseEventHandler<HTMLButtonElement> | undefined' is not assignable to type 'MouseEventHandler<HTMLButtonElement> | undefined'.
+      Type 'MouseEventHandler<HTMLDivElement>' is not assignable to type 'MouseEventHandler<HTMLButtonElement>'.
+        Type 'HTMLDivElement' is missing the following properties from type 'HTMLButtonElement': disabled, form, formAction, formEnctype, and 15 more.
+src/ui/utils/AnchorOrButton.tsx(36,6): error TS2322: Type '{ children: ((string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | ((values: LinkRenderProps & { ...; }) => ReactNode)) & (string | ... 4 more ... | ReactPortal)) | null | undefined; ... 110 more ...; href?: string | undefined; } | { ...; }' is not assignable to type 'IntrinsicAttributes & LinkProps & RefAttributes<HTMLAnchorElement>'.
+  Type '{ children: ((string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | ((values: LinkRenderProps & { ...; }) => ReactNode)) & (string | ... 4 more ... | ReactPortal)) | null | undefined; ... 110 more ...; href?: string | undefined; }' is not assignable to type 'LinkProps'.
+    Types of property 'onClickCapture' are incompatible.
+      Type 'MouseEventHandler<HTMLButtonElement> | undefined' is not assignable to type 'MouseEventHandler<HTMLDivElement> | undefined'.
+        Type 'MouseEventHandler<HTMLButtonElement>' is not assignable to type 'MouseEventHandler<HTMLDivElement>'.
+          Property 'align' is missing in type 'HTMLButtonElement' but required in type 'HTMLDivElement'.
+src/ui/utils/AnchorOrButton.tsx(44,6): error TS2322: Type '{ children: ((string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | ((values: ButtonRenderProps & { ...; }) => ReactNode)) & (string | ... 4 more ... | ReactPortal)) | null | undefined; ... 110 more ...; href?: string | undefined; } | { ...; }' is not assignable to type 'IntrinsicAttributes & ButtonProps & RefAttributes<HTMLButtonElement>'.
+  Type '{ children: ((string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | ((values: ButtonRenderProps & { ...; }) => ReactNode)) & (string | ... 4 more ... | ReactPortal)) | null | undefined; ... 99 more ...; key?: Key | ... 1 more ... | undefined; }' is not assignable to type 'ButtonProps'.
+    Types of property 'onClickCapture' are incompatible.
+      Type 'MouseEventHandler<HTMLDivElement> | undefined' is not assignable to type 'MouseEventHandler<HTMLButtonElement> | undefined'.
+        Type 'MouseEventHandler<HTMLDivElement>' is not assignable to type 'MouseEventHandler<HTMLButtonElement>'.
+          Type 'HTMLDivElement' is missing the following properties from type 'HTMLButtonElement': disabled, form, formAction, formEnctype, and 15 more.

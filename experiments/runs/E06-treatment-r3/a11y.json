@@ -1,0 +1,34 @@
+{
+ "url_ok": true,
+ "desktop": {
+  "block_height": 1272,
+  "horizontal_overflow": false
+ },
+ "keyboard_focus_sequence": [
+  "input:Full name",
+  "input:Email",
+  "input:Job title",
+  "input[switch]:Product updates\nNews about fea",
+  "input[switch]:Weekly digest\nA summary of you",
+  "input[switch]:Security alerts\nAlways on to k",
+  "button:Role for Liam Chen",
+  "button:Remove Liam Chen",
+  "button:Role for Sofia Rossi",
+  "button:Remove Sofia Rossi",
+  "button:Role for Noah Patel",
+  "button:Remove Noah Patel",
+  "button:Cancel"
+ ],
+ "headings": [
+  "h1:Team settings",
+  "h2:Profile",
+  "h2:Notifications",
+  "h2:Team members"
+ ],
+ "unlabelled_controls": [],
+ "mobile": {
+  "block_height": 1681,
+  "horizontal_overflow": false
+ },
+ "page_errors": []
+}

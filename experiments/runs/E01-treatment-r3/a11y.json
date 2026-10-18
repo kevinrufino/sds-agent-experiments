@@ -1,0 +1,32 @@
+{
+ "url_ok": true,
+ "desktop": {
+  "block_height": 1493,
+  "horizontal_overflow": false
+ },
+ "keyboard_focus_sequence": [
+  "input:Full name",
+  "input:Email",
+  "input:Job title",
+  "input[switch]:Product updates\nNews about new",
+  "input[switch]:Weekly digest\nA summary of you",
+  "button:Admin",
+  "button:Remove Sam Lee",
+  "button:Editor",
+  "button:Remove Priya Patel",
+  "button:Viewer",
+  "button:Remove Jordan Kim"
+ ],
+ "headings": [
+  "h1:Team settings",
+  "h2:Profile",
+  "h2:Notifications",
+  "h2:Team members"
+ ],
+ "unlabelled_controls": [],
+ "mobile": {
+  "block_height": 1983,
+  "horizontal_overflow": false
+ },
+ "page_errors": []
+}

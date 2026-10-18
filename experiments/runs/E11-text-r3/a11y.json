@@ -1,0 +1,32 @@
+{
+ "url_ok": true,
+ "desktop": {
+  "block_height": 1539,
+  "horizontal_overflow": true
+ },
+ "keyboard_focus_sequence": [
+  "input:Full name",
+  "input:Email",
+  "input:Job title",
+  "input[switch]:Product updates\nNews about fea",
+  "input[switch]:Weekly digest\nA summary of tea",
+  "button:Role for Priya Shah",
+  "button:Remove Priya Shah",
+  "button:Role for Diego Ramos",
+  "button:Remove Diego Ramos",
+  "button:Role for Mei Chen",
+  "button:Remove Mei Chen"
+ ],
+ "headings": [
+  "h1:Team settings",
+  "h2:Profile",
+  "h2:Notifications",
+  "h2:Team members"
+ ],
+ "unlabelled_controls": [],
+ "mobile": {
+  "block_height": 1945,
+  "horizontal_overflow": true
+ },
+ "page_errors": []
+}

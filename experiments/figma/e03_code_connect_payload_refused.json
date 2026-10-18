@@ -1,0 +1,119 @@
+[
+ {
+  "nodeId": "2153:7838",
+  "componentName": "TextContentTitle",
+  "source": "https://github.com/kevinrufino/sds-agent-experiments/blob/main/src/ui/primitives/Text/Text.tsx",
+  "label": "React",
+  "template": "// source=https://github.com/figma/sds/blob/main/src/ui/primitives/Text/Text.tsx\n// component=TextContentTitle\n\nimport figma from \"figma\"\n\nconst align = figma.selectedInstance.getEnum(\"Align\", {\n  Center: \"center\",\n})\nconst title = figma.selectedInstance.getString(\"Title\")\nconst subtitle = figma.selectedInstance.getString(\"Subtitle\")\n\nexport default {\n  id: \"TextContentTitle\",\n  imports: ['import { TextContentTitle } from \"primitives\";'],\n  example: figma.code`<TextContentTitle\n      ${align ? figma.code`align=\"${align}\"` : \"\"}\n      ${figma.helpers.react.renderProp(\"title\", title)}\n      ${figma.helpers.react.renderProp(\"subtitle\", subtitle)}\n    />`,\n  metadata: { nestable: true },\n}\n",
+  "templateDataJson": "{\"isParserless\": true, \"imports\": [\"import { TextContentTitle } from \\\"primitives\\\";\"], \"nestable\": true}",
+  "_file": "primitives/text/TextContentTitle.figma.ts"
+ },
+ {
+  "nodeId": "124:8256",
+  "componentName": "Notification",
+  "source": "https://github.com/kevinrufino/sds-agent-experiments/blob/main/src/ui/primitives/Notification/Notification.tsx",
+  "label": "React",
+  "template": "// source=https://github.com/figma/sds/blob/main/src/ui/primitives/Notification/Notification.tsx\n// component=Notification\n\nimport figma from \"figma\";\n\nconst instance = figma.selectedInstance;\nconst rp = figma.helpers.react.renderProp;\n\nconst title = instance.getString(\"Title\");\nconst icon = instance.getBoolean(\"Has Icon\", {\n  true: instance.getInstanceSwap(\"Icon\")?.executeTemplate().example,\n  false: undefined,\n});\nconst isDismissible = instance.getBoolean(\"Dismissible\");\nconst button = figma.properties.children([\"Button\"]);\nconst body = instance.getString(\"Body\");\nconst variant = instance.getEnum(\"Variant\", {\n  Message: \"message\",\n  Alert: \"alert\",\n});\n\nexport default {\n  id: \"Notification\",\n  imports: ['import { Notification, Text, TextStrong } from \"primitives\";'],\n  example: figma.code`<Notification\n    ${rp(\"icon\", icon)}\n    ${rp(\"isDismissible\", isDismissible)}\n    ${rp(\"variant\", variant)}\n    >\n      <TextStrong>${title}</TextStrong>\n      <Text>${body}</Text>\n      ${button}\n    </Notification>`,\n  metadata: { nestable: true },\n};\n",
+  "templateDataJson": "{\"isParserless\": true, \"imports\": [\"import { Notification, Text, TextStrong } from \\\"primitives\\\";\"], \"nestable\": true}",
+  "_file": "primitives/Notification.figma.ts"
+ },
+ {
+  "nodeId": "2087:8488",
+  "componentName": "TextHeading",
+  "source": "https://github.com/kevinrufino/sds-agent-experiments/blob/main/src/ui/primitives/Text/Text.tsx",
+  "label": "React",
+  "template": "// source=https://github.com/figma/sds/blob/main/src/ui/primitives/Text/Text.tsx\n// component=TextHeading\n\nimport figma from \"figma\"\n\nconst text = figma.selectedInstance.getString(\"Text\")\n\nexport default {\n  id: \"TextHeading\",\n  imports: ['import { TextHeading } from \"primitives\";'],\n  example: figma.code`<TextHeading>${text}</TextHeading>`,\n  metadata: { nestable: true },\n}\n",
+  "templateDataJson": "{\"isParserless\": true, \"imports\": [\"import { TextHeading } from \\\"primitives\\\";\"], \"nestable\": true}",
+  "_file": "primitives/text/TextHeading.figma.ts"
+ },
+ {
+  "nodeId": "2136:2263",
+  "componentName": "InputField",
+  "source": "https://github.com/kevinrufino/sds-agent-experiments/blob/main/src/ui/primitives/Input/Input.tsx",
+  "label": "React",
+  "template": "// source=https://github.com/figma/sds/blob/main/src/ui/primitives/Input/Input.tsx\n// component=InputField\n\nimport figma from \"figma\";\n\nconst instance = figma.selectedInstance;\nconst hasLabel = instance.getPropertyValue(\"Has Label\");\n\nconst isDisabled = instance.getEnum(\"State\", { Disabled: true });\nconst value = instance.getEnum(\"Value Type\", {\n  Default: instance.getString(\"Value\"),\n});\nconst placeholder = instance.getEnum(\"Value Type\", {\n  default: \"I am a placeholder...\",\n  Placeholder: instance.getString(\"Value\"),\n});\nconst errorMessage = hasLabel\n  ? instance.getEnum(\"State\", { Error: instance.getString(\"Error\") })\n  : undefined;\nconst label = hasLabel ? instance.getString(\"Label\") : undefined;\nconst description = hasLabel\n  ? instance.getBoolean(\"Has Description\", {\n      true: instance.getString(\"Description\"),\n      false: undefined,\n    })\n  : undefined;\n\nconst rp = figma.helpers.react.renderProp;\nconst imports = hasLabel\n  ? ['import { InputField } from \"primitives\";']\n  : ['import { Input } from \"primitives\";'];\n\nexport default {\n  id: \"InputField\",\n  imports,\n  example: figma.code`<${hasLabel ? \"InputField\" : \"Input\"}\n      ${rp(\"isDisabled\", isDisabled)}\n      ${rp(\"errorMessage\", errorMessage)}\n      ${rp(\"label\", label)}\n      ${rp(\"description\", description)}\n      ${rp(\"value\", value)}\n      ${rp(\"placeholder\", placeholder)}\n    />`,\n  metadata: { nestable: true },\n};\n",
+  "templateDataJson": "{\"isParserless\": true, \"imports\": [\"import { InputField } from \\\"primitives\\\";\", \"import { Input } from \\\"primitives\\\";\"], \"nestable\": true}",
+  "_file": "primitives/InputField.figma.ts"
+ },
+ {
+  "nodeId": "9762:1902",
+  "componentName": "SwitchField",
+  "source": "https://github.com/kevinrufino/sds-agent-experiments/blob/main/src/ui/primitives/Switch/Switch.tsx",
+  "label": "React",
+  "template": "// source=https://github.com/figma/sds/blob/main/src/ui/primitives/Switch/Switch.tsx\n// component=SwitchField\n\nimport figma from \"figma\";\n\nconst instance = figma.selectedInstance;\nconst rp = figma.helpers.react.renderProp;\n\nconst label = instance.getString(\"Label\");\nconst description = instance.getBoolean(\"Has Description\", {\n  true: instance.getString(\"Description\"),\n  false: undefined,\n});\nconst defaultSelected = instance.getEnum(\"Value Type\", { Checked: true });\nconst isDisabled = instance.getEnum(\"State\", { Disabled: true });\n\nexport default {\n  id: \"SwitchField\",\n  imports: ['import { SwitchField } from \"primitives\";'],\n  example: figma.code`<SwitchField\n      ${rp(\"label\", label)}\n      ${rp(\"description\", description)}\n      ${rp(\"defaultSelected\", defaultSelected)}\n      ${rp(\"isDisabled\", isDisabled)}\n    />`,\n  metadata: { nestable: true },\n};\n",
+  "templateDataJson": "{\"isParserless\": true, \"imports\": [\"import { SwitchField } from \\\"primitives\\\";\"], \"nestable\": true}",
+  "_file": "primitives/SwitchField.figma.ts"
+ },
+ {
+  "nodeId": "2010:15581",
+  "componentName": "AvatarBlock",
+  "source": "https://github.com/kevinrufino/sds-agent-experiments/blob/main/src/ui/primitives/Avatar/Avatar.tsx",
+  "label": "React",
+  "template": "// source=https://github.com/figma/sds/blob/main/src/ui/primitives/Avatar/Avatar.tsx\n// component=AvatarBlock\n\nimport figma from \"figma\"\n\nconst instance = figma.selectedInstance\nconst title = instance.getString(\"Title\")\nconst description = instance.getString(\"Description\")\nconst children = figma.properties.children([\"Avatar\"])\n\nexport default {\n  id: \"AvatarBlock\",\n  imports: ['import { AvatarBlock } from \"primitives\";'],\n  example: figma.code`<AvatarBlock\n      title=\"${title}\"\n      description=\"${description}\"\n    >\n      ${children}\n    </AvatarBlock>`,\n  metadata: { nestable: true },\n}\n",
+  "templateDataJson": "{\"isParserless\": true, \"imports\": [\"import { AvatarBlock } from \\\"primitives\\\";\"], \"nestable\": true}",
+  "_file": "primitives/avatar/AvatarBlock.figma.ts"
+ },
+ {
+  "nodeId": "9762:1103",
+  "componentName": "Avatar",
+  "source": "https://github.com/kevinrufino/sds-agent-experiments/blob/main/src/ui/primitives/Avatar/Avatar.tsx",
+  "label": "React",
+  "template": "// source=https://github.com/figma/sds/blob/main/src/ui/primitives/Avatar/Avatar.tsx\n// component=Avatar\n\nimport figma from \"figma\";\n\nconst instance = figma.selectedInstance;\nconst rp = figma.helpers.react.renderProp;\nconst square = instance.getEnum(\"Shape\", { Square: true });\nconst size = instance.getEnum(\"Size\", { Large: \"large\", Small: \"small\" });\nconst initials = instance.getEnum(\"Type\", {\n  Initial: instance.getString(\"Initials\"),\n});\nconst src = instance.getEnum(\"Type\", { Image: true });\n\nexport default {\n  id: \"Avatar\",\n  imports: [\n    'import { Avatar } from \"primitives\";',\n    'import { placeholder } from \"images\";',\n  ],\n  example: figma.code`<Avatar\n      ${rp(\"square\", square)}\n      ${rp(\"initials\", initials)}\n      ${rp(\"size\", size)}\n      ${rp(\"src\", src ? \"placeholder\" : undefined)}\n    />`,\n  metadata: { nestable: true },\n};\n",
+  "templateDataJson": "{\"isParserless\": true, \"imports\": [\"import { Avatar } from \\\"primitives\\\";\", \"import { placeholder } from \\\"images\\\";\"], \"nestable\": true}",
+  "_file": "primitives/avatar/Avatar.figma.ts"
+ },
+ {
+  "nodeId": "2136:2336",
+  "componentName": "SelectField",
+  "source": "https://github.com/kevinrufino/sds-agent-experiments/blob/main/src/ui/primitives/Select/Select.tsx",
+  "label": "React",
+  "template": "// source=https://github.com/figma/sds/blob/main/src/ui/primitives/Select/Select.tsx\n// component=SelectField\n\nimport figma from \"figma\";\n\nconst instance = figma.selectedInstance;\nconst hasLabel = instance.getPropertyValue(\"Has Label\");\n\nconst rp = figma.helpers.react.renderProp;\n\nconst isDisabled = instance.getEnum(\"State\", { Disabled: true });\nconst value = instance.getEnum(\"Value Type\", {\n  Default: instance.getString(\"Value\"),\n});\nconst placeholder = instance.getEnum(\n  \"Value Type\",\n  hasLabel\n    ? {\n        Default: \"I am a placeholder...\",\n        Placeholder: instance.getString(\"Value\"),\n      }\n    : {\n        default: \"I am a placeholder...\",\n        Placeholder: instance.getString(\"Value\"),\n      },\n);\nconst defaultSelectedKey = instance.getString(\"Value\");\nconst errorMessage = hasLabel\n  ? instance.getEnum(\"State\", { Error: instance.getString(\"Error\") })\n  : undefined;\nconst label = hasLabel ? instance.getString(\"Label\") : undefined;\nconst description = hasLabel\n  ? instance.getBoolean(\"Has Description\", {\n      true: instance.getString(\"Description\"),\n      false: undefined,\n    })\n  : undefined;\n\nconst imports = hasLabel\n  ? ['import { SelectField, SelectItem } from \"primitives\";']\n  : ['import { Select, SelectItem } from \"primitives\";'];\n\nexport default {\n  id: \"SelectField\",\n  imports,\n  example: figma.code`<${hasLabel ? \"SelectField\" : \"Select\"}\n      ${rp(\"defaultSelectedKey\", defaultSelectedKey)}\n      ${rp(\"isDisabled\", isDisabled)}\n      ${rp(\"errorMessage\", errorMessage)}\n      ${rp(\"label\", label)}\n      ${rp(\"description\", description)}\n      ${rp(\"value\", value)}\n      ${rp(\"placeholder\", placeholder)}\n    >\n      <SelectItem>${defaultSelectedKey}</SelectItem>\n      <SelectItem>Option 2</SelectItem>\n      <SelectItem>Option 3</SelectItem>\n      <SelectItem>Option 4</SelectItem>\n      <SelectItem>Option 5</SelectItem>\n    </${hasLabel ? \"SelectField\" : \"Select\"}>`,\n  metadata: { nestable: true },\n};\n",
+  "templateDataJson": "{\"isParserless\": true, \"imports\": [\"import { SelectField, SelectItem } from \\\"primitives\\\";\", \"import { Select, SelectItem } from \\\"primitives\\\";\"], \"nestable\": true}",
+  "_file": "primitives/SelectField.figma.ts"
+ },
+ {
+  "nodeId": "185:852",
+  "componentName": "Button",
+  "source": "https://github.com/kevinrufino/sds-agent-experiments/blob/main/src/ui/primitives/Button/Button.tsx",
+  "label": "React",
+  "template": "// source=https://github.com/figma/sds/blob/main/src/ui/primitives/Button/Button.tsx\n// component=Button\n\nimport figma from \"figma\";\n\nconst instance = figma.selectedInstance;\nconst rp = figma.helpers.react.renderProp;\n\nconst variant = instance.getEnum(\"Variant\", {\n  Subtle: \"danger-subtle\",\n});\nconst label = instance.getString(\"Label\");\nconst iconStartSwap = instance.getInstanceSwap(\"Icon Start\");\nconst iconStart = instance.getBoolean(\"Has Icon Start\", {\n  true: iconStartSwap?.executeTemplate().example,\n});\nconst iconEndSwap = instance.getInstanceSwap(\"Icon End\");\nconst iconEnd = instance.getBoolean(\"Has Icon End\", {\n  true: iconEndSwap?.executeTemplate().example,\n});\nconst size = instance.getEnum(\"Size\", {\n  Small: \"small\",\n});\nconst isDisabled = instance.getEnum(\"State\", {\n  Disabled: true,\n});\n\nexport default {\n  id: \"Button\",\n  imports: ['import { ButtonDanger } from \"primitives\";'],\n  example: figma.code`<ButtonDanger\n      onPress={() => {}}\n      ${rp(\"variant\", variant)}\n      ${rp(\"size\", size)}\n      ${rp(\"isDisabled\", isDisabled)}\n    >\n      ${iconStart}\n      ${label}\n      ${iconEnd}\n    </ButtonDanger>`,\n  metadata: { nestable: true },\n};\n",
+  "templateDataJson": "{\"isParserless\": true, \"imports\": [\"import { ButtonDanger } from \\\"primitives\\\";\"], \"nestable\": true}",
+  "_file": "primitives/button/ButtonDanger.figma.ts"
+ },
+ {
+  "nodeId": "2072:9432",
+  "componentName": "ButtonGroup",
+  "source": "https://github.com/kevinrufino/sds-agent-experiments/blob/main/src/ui/primitives/Button/Button.tsx",
+  "label": "React",
+  "template": "// source=https://github.com/figma/sds/blob/main/src/ui/primitives/Button/Button.tsx\n// component=ButtonGroup\n\nimport figma from \"figma\";\nconst instance = figma.selectedInstance;\nconst rp = figma.helpers.react.renderProp;\n\nconst align = instance.getEnum(\"Align\", {\n  Center: \"center\",\n  End: \"end\",\n  Justify: \"justify\",\n  Stack: \"stack\",\n});\nconst children = figma.properties.children([\"Button\"]);\n\nexport default {\n  id: \"ButtonGroup\",\n  imports: ['import { ButtonGroup } from \"primitives\";'],\n  example: figma.code`<ButtonGroup\n      ${rp(\"align\", align)}\n    >\n      ${children}\n    </ButtonGroup>`,\n  metadata: { nestable: true },\n};\n",
+  "templateDataJson": "{\"isParserless\": true, \"imports\": [\"import { ButtonGroup } from \\\"primitives\\\";\"], \"nestable\": true}",
+  "_file": "primitives/button/ButtonGroup.figma.ts"
+ },
+ {
+  "nodeId": "4185:3778",
+  "componentName": "Button",
+  "source": "https://github.com/kevinrufino/sds-agent-experiments/blob/main/src/ui/primitives/Button/Button.tsx",
+  "label": "React",
+  "template": "// source=https://github.com/figma/sds/blob/main/src/ui/primitives/Button/Button.tsx\n// component=Button\n\nimport figma from \"figma\";\n\nconst instance = figma.selectedInstance;\nconst rp = figma.helpers.react.renderProp;\nconst variant = instance.getEnum(\"Variant\", {\n  Primary: \"primary\",\n  Neutral: \"neutral\",\n  Subtle: \"subtle\",\n});\nconst label = instance.getString(\"Label\");\nconst iconStartSwap = instance.getInstanceSwap(\"Icon Start\");\nconst iconStart = instance.getBoolean(\"Has Icon Start\", {\n  true: iconStartSwap?.executeTemplate().example,\n});\nconst iconEndSwap = instance.getInstanceSwap(\"Icon End\");\nconst iconEnd = instance.getBoolean(\"Has Icon End\", {\n  true: iconEndSwap?.executeTemplate().example,\n});\nconst size = instance.getEnum(\"Size\", {\n  Small: \"small\",\n});\nconst isDisabled = instance.getEnum(\"State\", {\n  Disabled: true,\n});\n\nexport default {\n  id: \"Button\",\n  imports: ['import { Button } from \"primitives\";'],\n  example: figma.code`<Button\n      onPress={() => {}}\n      ${rp(\"variant\", variant)}\n      ${rp(\"size\", size)}\n      ${rp(\"isDisabled\", isDisabled)}\n    >\n      ${iconStart}\n      ${label}\n      ${iconEnd}\n    </Button>`,\n  metadata: { nestable: true },\n};\n",
+  "templateDataJson": "{\"isParserless\": true, \"imports\": [\"import { Button } from \\\"primitives\\\";\"], \"nestable\": true}",
+  "_file": "primitives/button/Button.figma.ts"
+ },
+ {
+  "nodeId": "4039:12985",
+  "componentName": "IconInfo",
+  "source": "https://github.com/kevinrufino/sds-agent-experiments/blob/main/src/ui/icons/IconInfo.tsx",
+  "label": "React",
+  "template": "import figma from \"figma\";\n\nexport default {\n  id: \"IconInfo\",\n  imports: ['import { IconInfo } from \"icons\";'],\n  example: figma.code`<IconInfo />`,\n  metadata: { nestable: true },\n};\n",
+  "templateDataJson": "{\"isParserless\": true, \"imports\": [\"import { IconInfo } from \\\"icons\\\";\"], \"nestable\": true}",
+  "_file": "(derived from icons/Icons.figma.batch.ts)"
+ },
+ {
+  "nodeId": "68:15643",
+  "componentName": "IconChevronDown",
+  "source": "https://github.com/kevinrufino/sds-agent-experiments/blob/main/src/ui/icons/IconChevronDown.tsx",
+  "label": "React",
+  "template": "import figma from \"figma\";\n\nexport default {\n  id: \"IconChevronDown\",\n  imports: ['import { IconChevronDown } from \"icons\";'],\n  example: figma.code`<IconChevronDown />`,\n  metadata: { nestable: true },\n};\n",
+  "templateDataJson": "{\"isParserless\": true, \"imports\": [\"import { IconChevronDown } from \\\"icons\\\";\"], \"nestable\": true}",
+  "_file": "(derived from icons/Icons.figma.batch.ts)"
+ }
+]

@@ -1,0 +1,17 @@
+[
+ {
+  "tool": "mcp__Figma__get_design_context",
+  "input": {
+   "fileKey": "mchDCUgpbpnntD9vMBJlzC",
+   "nodeId": "3005:3",
+   "clientFrameworks": "react",
+   "clientLanguages": "typescript,css",
+   "skillNames": "figma-design-to-code"
+  },
+  "result_chars": 34688,
+  "mentions_code_connect": false,
+  "has_image": true,
+  "component_descriptions_block": "Component descriptions: The following components have usage descriptions or documentation links defined in Figma. These descriptions provide important context about the intended usage, best practices, and any constraints for each component. Follow these guidelines when implementing or using these components.\n\n## Notification\n**Node ID:** 124:8256\n\nKeywords: message, alert, feedback, callout, banner\n\n## Switch Field\n**Node ID:** 9762:1902\n\nKeywords: toggle\n\n## Avatar\n**Node ID:** 9762:1103\n\nInitials should be single e.g. A, B, or C, and not multiple e.g. AA, BB, or CC. This is because the widths of the avatars would force the text to overflow outside.\n\n## Select Field\n**Node ID:** 2136:2336\n\nKeywords: dropdown\n\n## Button Danger\n**Node ID:** 185:852\n\nKeywords: action, negative, destructive\n\n## Button Group\n**Node ID:** 2072:9432\n\nKeywords: actions\nThe generated code contains image and SVG URL constants, e.g. const image = `${assetPathPrefix}/<asset file name>`, where assetPathPrefix is declared once at the top of the code and every asset URL interpolates it. These URLs are temporary download sources and expire after 7 days. Download each asset into the project with curl -L, then replace its URL in the generated code with a reference to the downloaded asset. Never use the temporary URLs as runtime image sources.\n[Image: source: /root/.claude/projects/-home-user-sds-agent-experiments/cbd70087-78b0-57e7-90af-7738bbc36e01/tool-results/mcp-Figma-blob-1792331634188-3cwqgv.png]",
+  "code_connect_lines": []
+ }
+]

@@ -1,0 +1,2 @@
+changed=src/App.tsx src/examples/TeamSettings.tsx 
+tsc_total=7 tsc_baseline=7 tsc_new=0 tsc_in_changed_files=0 eslint_errors=0 eslint_warnings=0 vite_build=pass

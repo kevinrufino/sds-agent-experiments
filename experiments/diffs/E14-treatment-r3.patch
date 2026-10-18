@@ -1,0 +1,281 @@
+diff --git a/src/App.tsx b/src/App.tsx
+index b7ca42c..638dfe7 100644
+--- a/src/App.tsx
++++ b/src/App.tsx
+@@ -6,12 +6,14 @@ import { PanelSections } from "./examples/PanelSections";
+ import { PricingGrid } from "./examples/PricingGrid";
+ import { ProductDetails } from "./examples/ProductDetails";
+ import { ProductGrid } from "./examples/ProductGrid";
++import { TeamSettings } from "./examples/TeamSettings";
+ import { WelcomeHero } from "./examples/WelcomeHero";
+ 
+ function App() {
+   return (
+     <AllProviders>
+       <Header />
++      <TeamSettings />
+       <Demo />
+       <WelcomeHero />
+       <PanelSections />
+diff --git a/src/examples/TeamSettings.tsx b/src/examples/TeamSettings.tsx
+new file mode 100644
+index 0000000..388054d
+--- /dev/null
++++ b/src/examples/TeamSettings.tsx
+@@ -0,0 +1,237 @@
++import { useMediaQuery } from "hooks";
++import { IconTrash2 } from "icons";
++import { Flex, Section } from "layout";
++import {
++  Avatar,
++  AvatarBlock,
++  Button,
++  ButtonGroup,
++  DestructiveIconButton,
++  Form,
++  InputField,
++  Notification,
++  SelectField,
++  SelectItem,
++  SwitchField,
++  SwitchGroup,
++  TextHeading,
++  TextSubtitle,
++  TextTitlePage,
++} from "primitives";
++import { useState, type FormEvent } from "react";
++import "./teamSettings.css";
++
++type Role = "Owner" | "Admin" | "Editor" | "Viewer";
++type Member = { id: string; name: string; email: string; role: Role };
++type Settings = {
++  name: string;
++  email: string;
++  jobTitle: string;
++  productUpdates: boolean;
++  weeklyDigest: boolean;
++  members: Member[];
++};
++
++const ROLES: Role[] = ["Owner", "Admin", "Editor", "Viewer"];
++
++const INITIAL: Settings = {
++  name: "Avery Chen",
++  email: "avery@example.com",
++  jobTitle: "Product designer",
++  productUpdates: true,
++  weeklyDigest: false,
++  members: [
++    { id: "1", name: "Avery Chen", email: "avery@example.com", role: "Owner" },
++    { id: "2", name: "Jordan Lee", email: "jordan@example.com", role: "Admin" },
++    { id: "3", name: "Sam Patel", email: "sam@example.com", role: "Editor" },
++    { id: "4", name: "Riley Kim", email: "riley@example.com", role: "Viewer" },
++  ],
++};
++
++const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
++const initials = (name: string) =>
++  name
++    .split(" ")
++    .map((part) => part[0])
++    .join("")
++    .slice(0, 2);
++
++export function TeamSettings() {
++  const { isMobile } = useMediaQuery();
++  const [saved, setSaved] = useState<Settings>(INITIAL);
++  const [values, setValues] = useState<Settings>(INITIAL);
++  const [showSaved, setShowSaved] = useState(false);
++
++  const update = (patch: Partial<Settings>) => {
++    setValues((current) => ({ ...current, ...patch }));
++    setShowSaved(false);
++  };
++  const updateMember = (id: string, role: Role) =>
++    update({
++      members: values.members.map((m) => (m.id === id ? { ...m, role } : m)),
++    });
++  const removeMember = (id: string) =>
++    update({ members: values.members.filter((m) => m.id !== id) });
++
++  const nameError = values.name.trim() ? undefined : "Enter your full name.";
++  const emailError = EMAIL_PATTERN.test(values.email.trim())
++    ? undefined
++    : "Enter a valid email address, like name@example.com.";
++  const isInvalid = Boolean(nameError || emailError);
++  const isDirty = JSON.stringify(values) !== JSON.stringify(saved);
++
++  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
++    event.preventDefault();
++    if (isInvalid || !isDirty) return;
++    setSaved(values);
++    setShowSaved(true);
++  };
++  const handleCancel = () => {
++    setValues(saved);
++    setShowSaved(false);
++  };
++
++  return (
++    <Section padding={isMobile ? "600" : "1200"} variant="stroke">
++      <Flex container direction="column" gap="800" className="team-settings">
++        <Flex direction="column" gap="200">
++          <TextTitlePage elementType="h1">Team settings</TextTitlePage>
++          <TextSubtitle>
++            Manage your profile, notifications and who has access to your team.
++          </TextSubtitle>
++        </Flex>
++
++        {isInvalid && (
++          <Notification variant="alert" role="alert">
++            Some fields need attention:{" "}
++            {[nameError, emailError].filter(Boolean).join(" ")}
++          </Notification>
++        )}
++        {showSaved && (
++          <Notification role="status">
++            Your changes have been saved.
++          </Notification>
++        )}
++
++        <Form validationBehavior="aria" onSubmit={handleSubmit}>
++          <Flex direction="column" gap="800">
++            <Flex direction="column" gap="400">
++              <TextHeading elementType="h2">Profile</TextHeading>
++              <InputField
++                label="Full name"
++                autoComplete="name"
++                value={values.name}
++                onChange={(name) => update({ name })}
++                isRequired
++                isInvalid={!!nameError}
++                errorMessage={nameError}
++              />
++              <InputField
++                label="Email"
++                type="email"
++                autoComplete="email"
++                value={values.email}
++                onChange={(email) => update({ email })}
++                isRequired
++                isInvalid={!!emailError}
++                errorMessage={emailError}
++              />
++              <InputField
++                label="Job title"
++                autoComplete="organization-title"
++                description="Shown to teammates next to your name."
++                value={values.jobTitle}
++                onChange={(jobTitle) => update({ jobTitle })}
++              />
++            </Flex>
++
++            <Flex direction="column" gap="400">
++              <TextHeading elementType="h2">Notifications</TextHeading>
++              <SwitchGroup>
++                <SwitchField
++                  label="Product updates"
++                  description="News about features and improvements."
++                  isSelected={values.productUpdates}
++                  onChange={(productUpdates) => update({ productUpdates })}
++                />
++                <SwitchField
++                  label="Weekly digest"
++                  description="A summary of team activity every Monday."
++                  isSelected={values.weeklyDigest}
++                  onChange={(weeklyDigest) => update({ weeklyDigest })}
++                />
++                <SwitchField
++                  label="Security alerts"
++                  description="Always on to keep your account safe."
++                  isSelected
++                  isDisabled
++                />
++              </SwitchGroup>
++            </Flex>
++
++            <Flex direction="column" gap="400">
++              <TextHeading elementType="h2">Team members</TextHeading>
++              <ul className="team-settings-members">
++                {values.members.map((member) => {
++                  const isOwner = member.role === "Owner";
++                  return (
++                    <li key={member.id} className="team-settings-member">
++                      <Flex
++                        direction={isMobile ? "column" : "row"}
++                        alignPrimary="space-between"
++                        alignSecondary={isMobile ? "stretch" : "center"}
++                        gap="400"
++                      >
++                        <AvatarBlock
++                          title={member.name}
++                          description={member.email}
++                        >
++                          <Avatar initials={initials(member.name)} />
++                        </AvatarBlock>
++                        <Flex direction="row" alignSecondary="end" gap="200">
++                          <SelectField
++                            aria-label={`Role for ${member.name}`}
++                            selectedKey={member.role}
++                            onSelectionChange={(key) =>
++                              updateMember(member.id, key as Role)
++                            }
++                            isDisabled={isOwner}
++                          >
++                            {ROLES.filter(
++                              (role) => isOwner || role !== "Owner",
++                            ).map((role) => (
++                              <SelectItem key={role} id={role}>
++                                {role}
++                              </SelectItem>
++                            ))}
++                          </SelectField>
++                          <DestructiveIconButton
++                            variant="danger-subtle"
++                            aria-label={`Remove ${member.name}`}
++                            isDisabled={isOwner}
++                            onPress={() => removeMember(member.id)}
++                          >
++                            <IconTrash2 />
++                          </DestructiveIconButton>
++                        </Flex>
++                      </Flex>
++                    </li>
++                  );
++                })}
++              </ul>
++            </Flex>
++
++            <ButtonGroup align={isMobile ? "stack" : "end"}>
++              <Button variant="neutral" onPress={handleCancel}>
++                Cancel
++              </Button>
++              <Button type="submit" isDisabled={!isDirty || isInvalid}>
++                Save changes
++              </Button>
++            </ButtonGroup>
++          </Flex>
++        </Form>
++      </Flex>
++    </Section>
++  );
++}
+diff --git a/src/examples/teamSettings.css b/src/examples/teamSettings.css
+new file mode 100644
+index 0000000..764c477
+--- /dev/null
++++ b/src/examples/teamSettings.css
+@@ -0,0 +1,13 @@
++.team-settings-members {
++  list-style: none;
++  margin: 0;
++  padding: 0;
++  border-top: var(--sds-size-stroke-border) solid
++    var(--sds-color-border-default-default);
++}
++
++.team-settings-member {
++  padding-block: var(--sds-size-space-400);
++  border-bottom: var(--sds-size-stroke-border) solid
++    var(--sds-color-border-default-default);
++}

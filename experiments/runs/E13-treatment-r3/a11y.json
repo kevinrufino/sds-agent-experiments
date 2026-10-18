@@ -1,0 +1,32 @@
+{
+ "url_ok": true,
+ "desktop": {
+  "block_height": 1733,
+  "horizontal_overflow": false
+ },
+ "keyboard_focus_sequence": [
+  "input:Full name",
+  "input:Email",
+  "input:Job title",
+  "input[switch]:Product updates\nNews about fea",
+  "input[switch]:Weekly digest\nA summary of you",
+  "button:Admin",
+  "button:Remove Blake Rivera",
+  "button:Editor",
+  "button:Remove Casey Kim",
+  "button:Viewer",
+  "button:Remove Devon Patel"
+ ],
+ "headings": [
+  "h1:Team settings",
+  "h3:Profile",
+  "h3:Notifications",
+  "h3:Team members"
+ ],
+ "unlabelled_controls": [],
+ "mobile": {
+  "block_height": 2195,
+  "horizontal_overflow": false
+ },
+ "page_errors": []
+}

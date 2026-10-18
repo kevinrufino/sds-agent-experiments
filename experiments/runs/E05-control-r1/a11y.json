@@ -1,0 +1,32 @@
+{
+ "url_ok": true,
+ "desktop": {
+  "block_height": 1319,
+  "horizontal_overflow": false
+ },
+ "keyboard_focus_sequence": [
+  "input:Full name",
+  "input:Email",
+  "input:Job title",
+  "input[switch]:Product updates\nNews about fea",
+  "input[switch]:Weekly digest\nA summary of you",
+  "button:Role for Sam Lee",
+  "button:Remove Sam Lee",
+  "button:Role for Priya Patel",
+  "button:Remove Priya Patel",
+  "button:Role for Diego Ramos",
+  "button:Remove Diego Ramos"
+ ],
+ "headings": [
+  "h1:Team settings",
+  "h2:Profile",
+  "h2:Notifications",
+  "h2:Team members"
+ ],
+ "unlabelled_controls": [],
+ "mobile": {
+  "block_height": 1767,
+  "horizontal_overflow": false
+ },
+ "page_errors": []
+}

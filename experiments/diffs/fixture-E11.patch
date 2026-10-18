@@ -1,0 +1,19 @@
+diff --git a/src/AGENTS.md b/src/AGENTS.md
+index dc13fb5..af1d61a 100644
+--- a/src/AGENTS.md
++++ b/src/AGENTS.md
+@@ -188,6 +188,14 @@ When you see `hidden={true}` in Figma data, it indicates that the node should be
+ <Button variant="primary" size="medium">
+   Button Text
+ </Button>
++
++// Destructive actions (delete, remove) use the danger variants of Button
++<Button variant="danger-primary" onPress={onDelete}>
++  Delete
++</Button>
++<Button variant="danger-subtle" size="small" onPress={onRemove}>
++  Remove
++</Button>
+ ```
+ 
+ ### Navigation
