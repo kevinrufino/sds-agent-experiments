@@ -1,0 +1,43 @@
+.team-settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sds-size-space-600);
+  margin-inline: auto;
+  max-width: 720px;
+  width: 100%;
+}
+
+.team-settings-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sds-size-space-400);
+  padding: var(--sds-size-space-600);
+  background: var(--sds-color-background-default-default);
+  border: var(--sds-size-stroke-border) solid
+    var(--sds-color-border-default-default);
+  border-radius: var(--sds-size-radius-200);
+}
+
+.team-settings-members {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sds-size-space-400);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.team-settings-member {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sds-size-space-300);
+  justify-content: space-between;
+  > .avatar-block {
+    min-width: 0;
+  }
+}
+
+.team-settings-role {
+  min-width: 140px;
+}
