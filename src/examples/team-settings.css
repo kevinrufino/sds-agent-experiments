@@ -1,0 +1,39 @@
+.team-settings-members {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sds-size-space-600);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.team-settings-member {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sds-size-space-600);
+
+  > .avatar-block {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  > .team-settings-role {
+    width: 200px;
+  }
+}
+
+@media (max-width: 767px) {
+  .team-settings-member {
+    gap: var(--sds-size-space-300);
+
+    > .avatar-block {
+      flex-basis: 100%;
+    }
+
+    > .team-settings-role {
+      flex: 1 1 0;
+      width: auto;
+    }
+  }
+}
