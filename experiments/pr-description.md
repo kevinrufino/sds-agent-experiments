@@ -1,0 +1,7 @@
+This adds a small Team Settings demo using existing SDS components and reports isolated code-only experiments for discovery prompts, concise SDS guidance, and one compiler-guided validation repair. A shared baseline repair makes the existing app compile; no dependencies or lockfiles change.
+
+Three fresh generations plus one repair yielded four artifacts. The repair reduced nine TypeScript diagnostics to zero through five import-path changes. The explicit-search output passed compiler, focused lint, and 15 browser checks. A separate post-hoc audit found that success feedback concealed incorrect Save→edit→Cancel behavior in three artifacts; the delivered demo fixes this with a saved in-memory snapshot. Original experimental commits and scores are preserved.
+
+`experiments/results.md`, `matrix.csv`, prompts/rubric, actual repository retrieval logs, source patches, and desktop/mobile/error/focus screenshots document the evidence and single-run limitations. E02–E04 remain BLOCKED: no real Figma MCP connection, published Code Connect coverage, or description access was available. Local parsing of 383 templates is not treated as live integration.
+
+Validation: app and Storybook production builds pass; App.tsx focused lint passes; final browser checks pass 15/15 and the separate saved-snapshot audit passes. Full-repository lint retains 19 pre-existing errors/3 warnings. External font requests are denied in the current environment, so screenshots use fallback fonts. No Figma writes, Code Connect publishing, paid services, or production deployment occurred.

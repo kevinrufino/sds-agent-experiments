@@ -1,0 +1,536 @@
+# Simple Design System (SDS) Agent Instructions
+
+Welcome to the Simple Design System repository! This is a comprehensive React-based design system with Figma integration using Code Connect. This guide will help you understand how to work with the codebase effectively.
+
+## Repository Overview
+
+SDS is a production-ready design system featuring:
+
+- 🎨 **Figma Integration**: Full Code Connect integration with variables, styles, and components
+- ⚛️ **React Components**: Built on React Aria/Stately for accessibility
+- 🎯 **TypeScript**: Fully typed component library
+- 📚 **Storybook**: Comprehensive component documentation
+- 🎨 **Design Tokens**: CSS custom properties with light/dark mode support
+- 📱 **Responsive**: Mobile-first responsive design patterns
+
+## Getting Started
+
+### Development Commands
+
+- `npm run app:dev` - Start development server at localhost:8000
+- `npm run storybook` - Launch Storybook at localhost:6006
+- `npm run app:build` - Build the application
+- `npm run storybook:build` - Build Storybook
+- `npm run script:tokens` - Sync design tokens from Figma
+- `npm run script:icons` - Sync icons from Figma
+
+### Key Resources
+
+- [Live Storybook](https://figma.github.io/sds/storybook) - Component documentation
+- [Figma Community File](https://www.figma.com/community/file/1380235722331273046/simple-design-system) - Design source
+
+## Quick Start Checklist
+
+Before implementing any Figma design, follow this checklist:
+
+1. ✅ **Use Figma MCP tools** to extract design data when prompted.
+
+- When trying to get a high level understanding of the design, you can use #get_image to get image representation of the design to contextualize what is selected in Figma
+- Whenever you want more information about the specific UI elements that are selected, use #get_code
+- With the get_code, get_code_connect_map, and get_variable_map tools you will receive information about patterns that should already be defined in this repository.
+- If patterns dont already exist, you should ask for permission and clarify what about the design isn't already accounted for in this codebase that is present in the design.
+
+2. ✅ **Read component APIs** in the actual TypeScript files before using
+3. ✅ **Use SDS components only** - never import from `@react-aria`, `@react-stately`, etc.
+4. ✅ **Use CSS variables** - never hardcode colors, spacing, or typography
+5. ✅ **Use layout components** - never write custom CSS for positioning
+
+## Importing Aliases
+
+When importing SDS components, use aliases to ensure correct paths. These are described in the `vite.config.ts` file under `resolve.alias`:
+
+```tsx
+import { Footer, Header } from "compositions";
+import {
+  useAuth,
+  usePricing,
+  useProducts,
+  AuthProvider,
+  PricingProvider,
+  ProductsProvider,
+  AllProviders,
+} from "data";
+import { useMediaQuery } from "hooks";
+import { IconChevronLeft } from "icons";
+import { placeholder } from "images";
+import { Flex, Section } from "layout";
+import {
+  Accordion,
+  AccordionItem,
+  Button,
+  TextContentHeading,
+  TextContentTitle,
+} from "primitives";
+```
+
+## Figma to SDS Translation Guidelines
+
+When implementing designs from Figma, follow these guidelines to ensure proper translation to the SDS component library.
+
+## Annotations
+
+In the MCP server response from Figma, you will see annotation attributes that provide context. The annotations can be describing behavior for the current node, or its descendants.
+
+```jsx
+<div
+  data-content-annotations="Cards' button text is dynamic. They should say upgrade or downgrade if there is a current plan and it is better or worse."
+  data-interaction-annotations="Card buttons should be disabled if they are the current plan and their text should say 'current plan'. The pill buttons should update the cards to show annual or monthly pricing."
+/>
+```
+
+The prefix is a category for the annotation and describes the type of annotation. For example, "content" refers to text or image content annotations, and "interaction" refers to user interaction notes.
+
+Always read these annotations carefully, as they provide important context for implementing the design correctly.
+
+## CSS Variables & Design Tokens
+
+All design tokens from Figma are defined as CSS variables in [src/theme.css](./theme.css). **Always use these variables instead of hardcoded values.**
+
+- Colors: Use `var(--sds-color-*)` variables (e.g., `var(--sds-color-text-default-default)`)
+- Spacing: Use `var(--sds-size-space-*)` variables (e.g., `var(--sds-size-space-400)`)
+  - **important**: These variables can map to a prop value numerically. For example, `<Section padding="400">` corresponds to `padding: var(--sds-size-space-400)` in a Figma response.
+- Typography: Use `var(--sds-typography-*)` or `var(--sds-font-*)` variables
+- Border radius: Use `var(--sds-size-radius-*)` variables
+- Shadows: Use `var(--sds-effects-shadows-*)` variables
+
+### Example Usage
+
+```css
+.custom-element {
+  background: var(--sds-color-background-default-default);
+  color: var(--sds-color-text-default-default);
+  padding: var(--sds-size-space-400);
+  border-radius: var(--sds-size-radius-200);
+}
+```
+
+## File Structure & Architecture
+
+### Core Directories
+
+```
+src/
+├── data/               # Data layer - contexts, providers, services, types
+│   ├── contexts/       # React context definitions (AuthContext, PricingContext, ProductsContext)
+│   ├── providers/      # Context providers with state management
+│   ├── services/       # API and business logic services
+│   ├── types/          # TypeScript type definitions for data models
+│   └── hooks/          # Data-specific custom hooks (useAuth, usePricing, useProducts)
+├── ui/                 # UI component library
+│   ├── primitives/     # Atomic components (Button, Input, etc.)
+│   ├── compositions/   # Complex components (Cards, Forms, etc.)
+│   ├── layout/         # Layout components (Flex, Section, Grid)
+│   ├── hooks/          # UI-specific custom hooks (useMediaQuery)
+│   ├── icons/          # SVG icon components
+│   ├── images/         # Image assets
+│   └── utils/          # Utility functions and components
+├── stories/            # Storybook stories for all components
+├── examples/           # Examples of how to use components together in larger complete sections
+├── figma/              # Figma [Code Connect](https://developers.figma.com/docs/code-connect/template-files/) files
+│   ├── primitives/     # Maps Figma components to React primitives
+│   ├── compositions/   # Maps Figma compositions to React components
+│   └── icons/          # Maps Figma icons to React icons
+├── theme.css           # CSS custom properties (design tokens)
+├── reset.css           # CSS reset
+├── responsive.css      # Responsive utilities
+└── App.tsx             # Demo application
+```
+
+### Scripts Directory
+
+```
+scripts/
+├── tokens/             # Design token sync from Figma
+├── icons/              # Icon sync from Figma
+├── component-metadata/ # Component metadata management
+└── dev-resources/      # Development resource generation
+```
+
+## Component Library Structure
+
+All UI components are in [src/ui](./ui). **Never create new components - always use existing SDS components.**
+
+All data management (contexts, providers, services, types, and data hooks) are in [src/data](./data). Use the provided context providers and custom hooks for state management.
+
+## SDS Component Hierarchy
+
+When you see `hidden={true}` in Figma data, it indicates that the node should be ignored. This can happen with Figma components frequently, as nodes that can be toggled with a prop need to exist, even when the prop is false.
+
+**Discovery tip**: When implementing Figma designs, check `codeDependencies` first, then browse the actual component files to understand available props and variants. See the complete component list in the Component Categories section below.
+
+## Figma Translation Process
+
+1. **Extract design using Figma tools**: Always use the Figma MCP tools to get the design data
+2. **Identify SDS components**: Map Figma components to existing SDS primitives, compositions, and layouts
+   - Use the `codeDependencies` field to find the correct component path
+   - If no direct mapping exists, look for similar components or compositions
+3. **Check component APIs**: Read the actual component files to understand props and usage patterns
+4. **Use semantic imports**: Import from correct paths (e.g., `import { Button } from "ui/primitives/Button/Button"`)
+5. **Apply design tokens**: Use CSS variables for all styling values
+
+## Common Translation Patterns
+
+### Buttons
+
+```tsx
+// Figma: Button with variant="Primary" and icon
+// SDS Implementation:
+<Button variant="primary" size="medium">
+  Button Text
+</Button>
+```
+
+### Navigation
+
+```tsx
+// Figma: Navigation Pills with selection states
+// SDS Implementation:
+<Navigation>
+  <NavigationPill isSelected>Active Item</NavigationPill>
+  <NavigationPill>Inactive Item</NavigationPill>
+</Navigation>
+```
+
+### Typography
+
+```tsx
+// Figma: Text with specific styles
+// SDS Implementation:
+<TextHeading>Heading Text</TextHeading>
+<Text>Body text</Text>
+<TextSmall>Small text</TextSmall>
+```
+
+### Layout
+
+```tsx
+// Figma: Cards in a grid
+// SDS Implementation:
+<Section>
+  <Flex direction="row" gap="400" type="third">
+    <div>Card 1</div>
+    <div>Card 2</div>
+    <div>Card 3</div>
+  </Flex>
+</Section>
+```
+
+```tsx
+// Complex layout with responsive behavior
+function ResponsiveExample() {
+  const { isMobile } = useMediaQuery();
+
+  return (
+    <Section variant="stroke" padding={isMobile ? "600" : "1600"}>
+      <Flex
+        direction="column"
+        container
+        gap={isMobile ? "600" : "1200"}
+        alignPrimary="center"
+      >
+        {/* Navigation Pills */}
+        <Navigation direction="row">
+          <NavigationPill isSelected>Active</NavigationPill>
+          <NavigationPill>Inactive</NavigationPill>
+        </Navigation>
+
+        {/* Content Grid */}
+        <Flex direction={isMobile ? "column" : "row"} gap="1600" type="third">
+          {content.map((item) => (
+            <Card key={item.id} {...item} />
+          ))}
+        </Flex>
+      </Flex>
+    </Section>
+  );
+}
+```
+
+## Best Practices & Common Pitfalls
+
+### Component API Guidelines
+
+- **Always check existing component props**: Read the TypeScript definitions in component files
+- **Use semantic prop names**: `isSelected` not `active`, `variant` not `type`
+- **Leverage composition**: Combine primitives rather than creating custom components
+- **Follow naming conventions**: PascalCase for components, camelCase for props
+
+### Essential Rules
+
+- **Never hardcode colors, spacing, or typography values** - Always use CSS variables
+- **Always import components from their specific paths** - Use the alias imports
+- **Check component props before using** - Read the TypeScript definitions
+- **Use layout components instead of CSS Grid/Flexbox** - Never write custom layout CSS
+- **Reference existing stories in [src/stories](./stories/) for usage examples**
+
+### Common Pitfalls & Solutions
+
+### ❌ Pitfall 1: Hardcoding design values
+
+```tsx
+<div style={{ color: "#111111", padding: "16px" }}> // WRONG
+```
+
+**Fix**: Use CSS variables via class names: `<div className="example">` and `.example { color: var(--sds-color-text-default-default); padding: var(--sds-size-space-400); }`
+
+### ❌ Pitfall 2: Creating custom layout CSS
+
+```tsx
+<div className="grid grid-cols-3 gap-4"> // WRONG
+```
+
+**Fix**: Use layout components: `<Flex direction="row" gap="400" type="third">`
+
+### ❌ Pitfall 3: Not reading component APIs
+
+```tsx
+<Button active={true}> // WRONG - prop doesn't exist
+```
+
+**Fix**: Read the TypeScript file: `<Button isSelected>` or `<Button variant="primary">`
+
+## Figma Integration
+
+SDS uses Figma Code Connect for seamless design-to-code integration. Here's how it works:
+
+- **Design Tokens**: Figma styles are synced as CSS custom properties (e.g., `--sds-color-primary`)
+- **Components**: Figma components are mapped to SDS components with equivalent props and variants
+- **Assets**: Figma images and icons are exported as React components or assets
+
+### Figma File Setup
+
+To enable Code Connect:
+
+1. Use the **"SDS - Design Tokens"** and **"SDS - Components"** styles in Figma
+2. Organize components in Figma using the same structure as SDS (primitives, compositions, etc.)
+3. Publish changes in Figma, then run `npm run script:tokens` and `npm run script:icons` to sync
+
+### Known Limitations
+
+- Not all Figma features have 1:1 parity with SDS components (e.g., complex interactions)
+- Some manual adjustment may be needed after syncing, especially for layout and spacing
+- Ensure Figma components are named and organized according to SDS conventions for best results
+# Simple Design System (alpha)
+
+Using Figma's [Code Connect](https://github.com/figma/code-connect).
+
+Simple Design System (SDS) is a base design system that shows how Figma’s Variables, Styles, Components, and Code Connect can be used alongside a React codebase to form a complete picture of a responsive web design system.
+
+SDS is not just another design system in Figma. There are still many gaps between design and development, and SDS provides some best practices for how to bridge them. SDS tries to remain honest about its implications in code, while also offering customizability in design beyond the simple theming layer that is typical of many code-first component libraries.
+
+Whether you’re looking to use SDS to start a new project, or are looking for examples of some common design systems best practices, you'll find tools inside this codebase and design file to steer you in the right direction.
+
+## Resources
+
+- [Storybook](https://figma.github.io/sds/storybook)
+- [Figma Community File](https://www.figma.com/community/file/1380235722331273046/simple-design-system)
+
+## Setup
+
+- `npm i` to install dependencies
+- `npm run app:dev` will run server at [localhost:8000](http://localhost:8000) which renders contents of [App.tsx](src/App.tsx)
+- `npm run storybook` to start storybook at [localhost:6006](http://localhost:6006)
+
+### Figma Auth
+
+- [Create a Figma API token](https://www.figma.com/developers/api#authentication) and request the following scopes to work with Code Connect
+  - ```file_code_connect_scope:write``` - to work with Code Connect
+  - [More on Code Connect scopes](https://developers.figma.com/docs/code-connect/quickstart-guide/#before-you-begin)
+
+and these scopes, if you want to use the integrations in [scripts](./scripts/)
+  - ```file_dev_resources:read```- Read dev resources in files.
+  - ```file_dev_resources:write``` - Write dev resources to files
+  - ```file_variables:read``` - Read variables in files. Note: Enterprise plan only.
+  - ```file_variables:write``` - Write variables and collections in files. Note: Enterprise plan only.
+  - ```file_metadata:read``` - Read metadata of files.
+  - ```file_versions:read``` - Read the version history for files you can access.
+  - [More on REST API scopes](https://www.figma.com/developers/api#authentication-scopes)
+- Duplicate [.env-rename](./.env-rename)
+- Rename it to `.env`, it will be ignored by git.
+  - Set `FIGMA_ACCESS_TOKEN=` as your token in `.env`
+  - Set `FIGMA_FILE_KEY=` as your file's key (grab it from the file URL) in `.env`
+
+### Code Connect
+
+SDS is fully backed by Figma's Code Connect. This includes examples for how to connect [primitives](./src/figma/primitives/), as well as [compositions](./src/figma/compositions/) of those primitives for your design system.
+
+This repo utilizes `documentUrlSubstitutions` in [figma.config.json](./figma.config.json). This allows us to keep our templates Figma file-agnostic and colocates all the Figma file-specific information for easy url swapping. The document URL substitutions are also named in a way that helps you find the associated component without clicking a link. A key `<FIGMA_INPUTS_CHECKBOX_GROUP>` is broken down as `<FIGMA_[PAGE_NAME]_[COMPONENT_NAME]>`.
+
+```json
+{
+  "documentUrlSubstitutions": {
+    "<FIGMA_INPUTS_CHECKBOX_GROUP>": "https://figma.com/design/whatever?node-id=123-456"
+  }
+}
+```
+
+Allows us to have more expressive URLs in our Code Connect templates:
+
+```ts
+// url=<FIGMA_INPUTS_CHECKBOX_GROUP>
+```
+
+### Connecting this repo to a duplicated Figma file
+
+With the above in mind, a fresh clone of the Simple Design System Figma file should maintain all the node-ids. The steps should be as follows:
+
+- Duplicate the [Figma Community File](https://www.figma.com/community/file/1380235722331273046/simple-design-system)
+- Clone this repo
+- Update urls in [figma.config.json](./figma.config.json) to point to your Figma file
+  - Note: the file keys (eg. `J0KLPKXiONDRssXD1AX9Oi`) should be the only change in the urls unless you're creating new components, detaching and recreating.
+- Create and set your [Figma Auth Token](#figma-auth)
+- At that point, `npx figma connect publish` should work and your new file should have Code Connect.
+
+## Structure
+
+All components and styles are in [src/ui](./src/ui). Within that directory, code is broken down into a few categories.
+
+### [src/ui/compositions](./src/ui/compositions/)
+
+Example arrangements of primitive components to demonstrate how you might use SDS to build a responsive website.
+
+### [src/ui/hooks](./src/ui/hooks/)
+
+Custom React hook definitions
+
+### [src/ui/icons](./src/ui/icons/)
+
+All icon components. Automatically generated by [scripts/icons](./scripts/icons)
+
+### [src/ui/images](./src/ui/images/)
+
+Placeholder images.
+
+### [src/ui/layout](./src/ui/layout/)
+
+Layout components. Crucial to SDS layouts, but do not have analogous component in Figma.
+
+### [src/ui/primitives](./src/ui/primitives/)
+
+The main component library. SDS primitives can't be reduced further into sub components.
+
+### [src/ui/providers](./src/ui/providers/)
+
+Custom React provider definitions
+
+### [src/ui/utils](./src/ui/utils/)
+
+Custom utilities and utility components
+
+### Code Connect and Storybook
+
+All Code Connect templates and Storybook stories follow the same categorization are defined in [src/figma](./src/figma) and [src/stories](./src/stories).
+
+## Scripts
+
+Some example integrations are available in `scripts` directory. They may require additional API scope that your org may or may not have access to. Where possible, there are some plugin examples to help fill gaps.
+
+### [scripts/component-metadata](./scripts/component-metadata)
+
+- Scripts to run in the JS Console in Figma
+- Bulk manage descriptions for all components in the file. Instead of making a complicated plugin, you can do this more simply by running scripts directly from the JavaScript console.
+- Copy the contents of [scripts/component-metadata/exportComponentJSON.js](./scripts/component-metadata/exportComponentJSON.js) and run in the console with the file open.
+  - "Copy as object" the result and paste into [scripts/component-metadata/components.json](./scripts/component-metadata/components.json).
+- There you can modify descriptions more easily.
+- Once you have modified the descriptions, copy the JSON and paste at the top of [scripts/component-metadata/importComponentJSON.js](./scripts/component-metadata/importComponentJSON.js) as the value of the `json` variable.
+- Copy all the contents of the import file and run in the console to batch update descriptions for the entire file.
+- **This will only update the descriptions.** To update Dev Resources, you can use [scripts/dev-resources](#scriptsdev-resources).
+
+### [scripts/dev-resources](./scripts/dev-resources)
+
+- `npm run script:dev-resources` (REST API only)
+- Sets dev resources for all components described in [scripts/dev-resources/devResources.mjs](./scripts/dev-resources/devResources.mjs) to match.
+- Useful when swapping urls in bulk. Requires `Dev Resources: Write` scope on your REST API token.
+
+### [scripts/icons](./scripts/icons)
+
+- `npm run script:icons:rest`
+- Gets all icons from the file, and generates components in the [src/ui/icons](./src/ui/icons) directory.
+- Also generates [src/figma/icons/Icons.figma.batch.json](./src/figma/icons/Icons.figma.batch.json) for Code Connect.
+- `npm run script:icons` regenerates those outputs from the checked-in [scripts/icons/icons.json](./scripts/icons/icons.json) cache without calling the REST API.
+
+### [scripts/tokens](./scripts/tokens)
+
+- `npm run script:tokens:rest`
+- Gets all variables and styles from Figma, and converts them to [src/theme.css](./src/theme.css).
+- Creates [scripts/tokens/tokensCodeSyntaxes.js](./scripts/tokens/tokensCodeSyntaxes.js) which is a script you can run in the JS console in Figma to update all the variable's [codeSyntaxes](https://www.figma.com/plugin-docs/api/Variable/#codesyntax) with CSS that matches this repo.
+- Includes some example plugins for how to get the same data without the Variables REST API.
+  - [Install plugins](https://www.figma.com/plugin-docs/plugin-quickstart-guide/) in Development
+  - Run plugins, and copy plugin outputs into [scripts/tokens/styles.json](./scripts/tokens/styles.json) and [scripts/tokens/tokens.json](./scripts/tokens/tokens.json)
+  - Run `npm run script:tokens` (without `:rest`) and it will reference the JSON files directly without making a REST API request to update them
+import { Footer, Header } from "compositions";
+import { AllProviders } from "data";
+import { Demo } from "./examples/Demo";
+import { FAQs } from "./examples/FAQs";
+import { PanelSections } from "./examples/PanelSections";
+import { PricingGrid } from "./examples/PricingGrid";
+import { ProductDetails } from "./examples/ProductDetails";
+import { ProductGrid } from "./examples/ProductGrid";
+import { WelcomeHero } from "./examples/WelcomeHero";
+
+function App() {
+  return (
+    <AllProviders>
+      <Header />
+      <Demo />
+      <WelcomeHero />
+      <PanelSections />
+      <PricingGrid />
+      <FAQs />
+      <ProductDetails />
+      <ProductGrid />
+      <Footer />
+    </AllProviders>
+  );
+}
+
+export default App;
+# Primitives
+
+Single-purpose, reusable components (alphabetically ordered):
+
+- **Accordion** - Expandable content sections with `Accordion` and `AccordionItem`
+- **Avatar** - User profile images and placeholders
+- **Button** - Primary, neutral, subtle variants with size options
+- **Checkbox** - Boolean selection controls with validation states
+- **Dialog** - Modal dialogs and overlays with backdrop
+- **Fieldset** - Form fieldset grouping with legend
+- **Icon** - Consistent icon rendering (check [src/ui/icons](../icons/) for available icons)
+- **IconButton** - Icon-only buttons with accessible labels
+- **Image** - Responsive images with loading states
+- **Input** - Form input fields with validation states and labels
+- **Link** - Navigation and external links with proper styling
+- **ListBox** - Selection lists with keyboard navigation
+- **Logo** - Brand logos and identity elements
+- **Menu** - Dropdown menus and context menus
+- **Navigation** - Navigation pills and buttons with selection states
+- **Notification** - Toast notifications and alerts
+- **Pagination** - Page navigation controls with page numbers
+- **Radio** - Single selection from multiple options
+- **Search** - Search input fields with suggestions
+- **Select** - Dropdown selection components with search
+- **Slider** - Range input controls with min/max values
+- **Switch** - Toggle controls for boolean settings
+- **Tab** - Tab navigation with panels
+- **Table** - Data tables with sorting, filtering, and pagination
+- **Tag** - Labels, badges, and category indicators
+- **Text** - Typography components with semantic variants
+- **Textarea** - Multi-line text input with resize options
+- **Tooltip** - Contextual help and information overlays
+# Layout
+
+Structural components for positioning:
+
+- **Flex** - Flexbox layouts with gap, alignment, and responsive props
+- **Section** - Page sections with padding and background variants
+- **Grid** - CSS Grid layouts (when Flex isn't sufficient)

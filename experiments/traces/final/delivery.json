@@ -1,0 +1,13 @@
+{
+  "delivery_commit": "486e978b84e699a83481194ce44a8df6495f7ba4",
+  "selected_experiment": "E01-search-r1",
+  "post_experiment_repair": "saved in-memory snapshot; Cancel restores last successful Save",
+  "app_build": "PASS",
+  "storybook_build": "PASS",
+  "focused_lint": "PASS",
+  "browser_checks": "15/15",
+  "saved_snapshot_posthoc": "PASS",
+  "pixel_fidelity": "N/A",
+  "resource_limit": "external fonts blocked; fallback fonts used",
+  "generated_at": "2026-10-18T05:38:00.904880+00:00"
+}

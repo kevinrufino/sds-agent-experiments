@@ -1,0 +1,35 @@
+{
+  "run_id": "E06-validated-r1",
+  "posthoc": true,
+  "reason": "Independent reviewer identified missing Save -> edit -> Cancel semantic check and unresolved resource console errors",
+  "failed_requests": [
+    {
+      "url": "https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap",
+      "failure": "net::ERR_TUNNEL_CONNECTION_FAILED"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap",
+      "failure": "net::ERR_TUNNEL_CONNECTION_FAILED"
+    }
+  ],
+  "http_errors": [],
+  "after_cancel": {
+    "name": "Studio team",
+    "email": "team@example.com"
+  },
+  "saved_snapshot_restored": false,
+  "focus_styles": {
+    "before": {
+      "boxShadow": "rgb(217, 217, 217) 0px 0px 0px 1px inset",
+      "borderColor": "rgb(30, 30, 30)",
+      "focusVisible": false
+    },
+    "after": {
+      "boxShadow": "rgb(68, 68, 68) 0px 0px 0px 1px inset",
+      "borderColor": "rgb(30, 30, 30)",
+      "focusVisible": true,
+      "sdsFocusVisible": true
+    },
+    "changed": true
+  }
+}

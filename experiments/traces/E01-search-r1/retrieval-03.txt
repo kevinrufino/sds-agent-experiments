@@ -1,0 +1,719 @@
+import { clsx } from "clsx";
+import { Description, FieldError, Label, SharedFieldProps } from "primitives";
+import React from "react";
+import {
+  Input as RACInput,
+  TextField as RACTextField,
+  type InputProps as RACInputProps,
+  type TextFieldProps as RACTextFieldProps,
+} from "react-aria-components";
+import "./input.css";
+
+export type InputFieldProps = SharedFieldProps & RACTextFieldProps;
+export function InputField({
+  className,
+  placeholder,
+  label,
+  description,
+  errorMessage,
+  ...props
+}: InputFieldProps) {
+  const classNames = clsx(className, "field");
+  return (
+    <RACTextField className={classNames} {...props}>
+      {label && <Label>{label}</Label>}
+      <Input placeholder={placeholder} />
+      {description && <Description>{description}</Description>}
+      <FieldError>{errorMessage}</FieldError>
+    </RACTextField>
+  );
+}
+
+export type InputProps = RACInputProps;
+export const Input = React.forwardRef(function Input(
+  { className, ...props }: InputProps,
+  ref: React.ForwardedRef<HTMLInputElement>,
+) {
+  const classNames = clsx(className, "input");
+  return <RACInput className={classNames} ref={ref} {...props} />;
+});
+import { clsx } from "clsx";
+import { Description, FieldError, Label, SharedFieldProps } from "primitives";
+import type React from "react";
+import {
+  Switch as RACSwitch,
+  type SwitchProps as RACSwitchProps,
+} from "react-aria-components";
+import "./switch.css";
+
+export type SwitchGroupProps = React.ComponentPropsWithoutRef<"div">;
+export function SwitchGroup({ className, ...props }: SwitchGroupProps) {
+  const classNames = clsx(className, "switch-group");
+  return <div {...props} className={classNames} />;
+}
+
+export type SwitchFieldProps = RACSwitchProps & SharedFieldProps;
+export function SwitchField({
+  children,
+  className,
+  label,
+  description,
+  errorMessage,
+  ...props
+}: SwitchFieldProps) {
+  const classNames = clsx(className, "switch-field");
+  const labelText: string | undefined =
+    label || (typeof children === "string" ? children : undefined);
+  return (
+    <RACSwitch className={classNames} {...props}>
+      <>
+        <Label>{labelText}</Label>
+        <Switch />
+        {description && <Description>{description}</Description>}
+        <FieldError>{errorMessage}</FieldError>
+        {labelText !== children && children}
+      </>
+    </RACSwitch>
+  );
+}
+
+export type SwitchProps = React.ComponentPropsWithoutRef<"div">;
+export function Switch({ className, ...props }: SwitchProps) {
+  const classNames = clsx(className, "switch");
+  return (
+    <div className={classNames} {...props}>
+      <span aria-hidden="true" className="switch-icon" />
+    </div>
+  );
+}
+import { clsx } from "clsx";
+import { IconCheck, IconChevronDown } from "icons";
+import {
+  Description,
+  Field,
+  FieldError,
+  Label,
+  ListBox,
+  ListBoxItem,
+  SharedFieldProps,
+  type ListBoxItemProps,
+} from "primitives";
+import {
+  Button as RACButton,
+  Popover as RACPopover,
+  Select as RACSelect,
+  SelectValue as RACSelectValue,
+  type SelectProps as RACSelectProps,
+} from "react-aria-components";
+import "./select.css";
+
+export interface SelectFieldProps<T extends object>
+  extends Omit<SelectProps<T>, "children">,
+    SharedFieldProps {
+  items?: Iterable<T>;
+  children: React.ReactNode | ((item: T) => React.ReactNode);
+}
+export function SelectField<T extends object>({
+  className,
+  label,
+  description,
+  errorMessage,
+  children,
+  items,
+  ...props
+}: SelectFieldProps<T>) {
+  const classNames = clsx(className, "select-container");
+  return (
+    <Select className={classNames} {...props}>
+      <Field>
+        {label && <Label>{label}</Label>}
+        <RACButton className="select">
+          <RACSelectValue className="select-value" />
+          <IconChevronDown aria-hidden="true" />
+        </RACButton>
+        <RACPopover>
+          <ListBox items={items}>{children}</ListBox>
+        </RACPopover>
+        {description && <Description>{description}</Description>}
+        <FieldError>{errorMessage}</FieldError>
+      </Field>
+    </Select>
+  );
+}
+
+export type SelectProps<T extends object> = RACSelectProps<T>;
+export function Select<T extends object>({ ...props }: SelectProps<T>) {
+  return <RACSelect<T> {...props} />;
+}
+
+export type SelectItemProps = ListBoxItemProps;
+export function SelectItem({ children, className, ...props }: SelectItemProps) {
+  const classNames = clsx(className, "select-item");
+  const textValue = typeof children === "string" ? children : "";
+  return (
+    <ListBoxItem textValue={textValue} className={classNames} {...props}>
+      <>
+        <IconCheck className="select-item-check" />
+        {children}
+      </>
+    </ListBoxItem>
+  );
+}
+import { clsx } from "clsx";
+import React, { ComponentPropsWithoutRef } from "react";
+import { Button as RACButton, Link as RACLink } from "react-aria-components";
+import { type AnchorOrButtonProps } from "utils";
+import "./button.css";
+
+export type ButtonProps = Omit<ButtonBaseProps, "variant"> & {
+  variant?: Exclude<
+    ButtonBaseProps["variant"],
+    "danger-primary" | "danger-subtle"
+  >;
+};
+export const Button = React.forwardRef(function Button(
+  { className, size = "medium", variant = "primary", ...props }: ButtonProps,
+  ref: React.ForwardedRef<HTMLElement>,
+) {
+  const classNames = clsx(
+    className,
+    "button",
+    `button-size-${size}`,
+    `button-variant-${variant}`,
+  );
+
+  if (isAnchorProps(props)) {
+    const { style, ...sharedProps } = props;
+    return (
+      <RACLink
+        {...sharedProps}
+        className={classNames}
+        ref={ref as React.ForwardedRef<HTMLAnchorElement>}
+      >
+        {props.children}
+      </RACLink>
+    );
+  }
+
+  if (isButtonProps(props)) {
+    const { style, ...sharedProps } = props;
+    return (
+      <RACButton
+        {...sharedProps}
+        className={classNames}
+        ref={ref as React.ForwardedRef<HTMLButtonElement>}
+      >
+        {props.children}
+      </RACButton>
+    );
+  }
+
+  return null;
+});
+
+export type ButtonDangerProps = Omit<ButtonBaseProps, "variant"> & {
+  variant?: Exclude<
+    ButtonBaseProps["variant"],
+    "primary" | "subtle" | "neutral"
+  >;
+};
+/**
+ * Only used for destructive actions
+ */
+export const ButtonDanger = React.forwardRef(function Button(
+  {
+    className,
+    size = "medium",
+    variant = "danger-primary",
+    ...props
+  }: ButtonDangerProps,
+  ref: React.ForwardedRef<HTMLElement>,
+) {
+  const classNames = clsx(
+    className,
+    "button",
+    `button-size-${size}`,
+    `button-variant-${variant}`,
+  );
+
+  if (isAnchorProps(props)) {
+    const { style, ...sharedProps } = props;
+    return (
+      <RACLink
+        {...sharedProps}
+        className={classNames}
+        ref={ref as React.ForwardedRef<HTMLAnchorElement>}
+      >
+        {props.children}
+      </RACLink>
+    );
+  }
+
+  if (isButtonProps(props)) {
+    const { style, ...sharedProps } = props;
+    return (
+      <RACButton
+        {...sharedProps}
+        className={classNames}
+        ref={ref as React.ForwardedRef<HTMLButtonElement>}
+      >
+        {props.children}
+      </RACButton>
+    );
+  }
+
+  return null;
+});
+
+type ButtonBaseProps = {
+  type?: ComponentPropsWithoutRef<"button">["type"];
+  size?: "small" | "medium";
+  variant?:
+    | "primary"
+    | "neutral"
+    | "subtle"
+    | "danger-primary"
+    | "danger-subtle";
+} & AnchorOrButtonProps;
+
+function isAnchorProps(
+  props: ButtonBaseProps | ButtonDangerProps,
+): props is (ButtonBaseProps | ButtonDangerProps) &
+  ComponentPropsWithoutRef<typeof RACLink> {
+  return "href" in props;
+}
+
+function isButtonProps(
+  props: ButtonBaseProps | ButtonDangerProps,
+): props is (ButtonBaseProps | ButtonDangerProps) &
+  ComponentPropsWithoutRef<typeof RACButton> {
+  return !("href" in props);
+}
+
+export type ButtonGroupProps = React.ComponentPropsWithoutRef<"div"> & {
+  align?: "start" | "end" | "center" | "justify" | "stack";
+};
+export const ButtonGroup = ({
+  align = "start",
+  className,
+  ...props
+}: ButtonGroupProps) => {
+  const classNames = clsx(
+    className,
+    "button-group",
+    `button-group-align-${align}`,
+  );
+  return <div className={classNames} {...props} />;
+};
+import clsx from "clsx";
+import { ComponentPropsWithoutRef } from "react";
+import "./flex.css";
+
+export type FlexProps = ComponentPropsWithoutRef<"div"> & {
+  alignPrimary?: "start" | "end" | "center" | "stretch" | "space-between";
+  alignSecondary?: "start" | "end" | "center" | "stretch" | "space-between";
+  direction?: "row" | "row-reverse" | "column" | "column-reverse";
+  gap?: "100" | "200" | "300" | "400" | "600" | "800" | "1200" | "1600";
+  type?: "quarter" | "third" | "half" | "auto";
+  container?: boolean;
+  wrap?: boolean;
+};
+export function Flex({
+  className,
+  alignPrimary = "start",
+  alignSecondary = "start",
+  container = false,
+  direction = "row",
+  gap,
+  type = "auto",
+  wrap = false,
+  ...props
+}: FlexProps) {
+  const classNames = clsx(
+    className,
+    "flex",
+    container && "flex-container",
+    `flex-align-primary-${alignPrimary}`,
+    `flex-align-secondary-${alignSecondary}`,
+    `flex-direction-${direction}`,
+    `flex-type-${type}`,
+    gap && `flex-gap-${gap}`,
+    wrap && `flex-wrap`,
+  );
+  return (
+    <div
+      style={{
+        "--flex-align-primary": alignPrimary,
+        "--flex-align-secondary": alignSecondary,
+        "--flex-direction": direction,
+      }}
+      className={classNames}
+      {...props}
+    />
+  );
+}
+
+type FlexItemSize = "full" | "major" | "minor" | "half" | "fill";
+export type FlexItemProps = ComponentPropsWithoutRef<"div"> & {
+  size?: FlexItemSize;
+};
+export function FlexItem({ className, children, size }: FlexItemProps) {
+  const classNames = clsx(
+    className,
+    "flex-item",
+    size && `flex-item-size-${size}`,
+  );
+  return <div className={classNames}>{children}</div>;
+}
+import clsx from "clsx";
+import { Image } from "primitives";
+import { ComponentPropsWithoutRef } from "react";
+import "./section.css";
+
+export type SectionProps = ComponentPropsWithoutRef<
+  "section" | "header" | "footer"
+> & {
+  elementType?: "section" | "header" | "footer";
+  padding?: "600" | "800" | "1200" | "1600" | "4000";
+  paddingTop?: "600" | "800" | "1200" | "1600" | "4000";
+  paddingBottom?: "600" | "800" | "1200" | "1600" | "4000";
+} & (
+    | {
+        variant?: "brand" | "neutral" | "stroke" | "subtle";
+        src?: undefined;
+      }
+    | {
+        variant: "image";
+        /**
+         * An image src
+         */
+        src: string;
+      }
+  );
+export function Section({
+  children,
+  className,
+  elementType = "section",
+  padding = "600",
+  paddingBottom,
+  paddingTop,
+  ...props
+}: SectionProps) {
+  const { variant = "subtle", ...spreadProps } = props;
+  const classNames = clsx(
+    className,
+    "section",
+    `section-variant-${props.variant}`,
+    `section-padding-top-${paddingTop || padding}`,
+    `section-padding-bottom-${paddingBottom || padding}`,
+  );
+  const image =
+    props.variant === "image" ? (
+      <Image
+        alt="Background image"
+        role="presentation"
+        src={props.src}
+        size="fill"
+        aspectRatio="fill"
+        className="section-image"
+      />
+    ) : null;
+  switch (elementType) {
+    case "section":
+      return (
+        <section className={classNames} {...spreadProps}>
+          {image} {children}
+        </section>
+      );
+    case "header":
+      return (
+        <header className={classNames} {...spreadProps}>
+          {image} {children}
+        </header>
+      );
+    case "footer":
+      return (
+        <footer className={classNames} {...spreadProps}>
+          {image} {children}
+        </footer>
+      );
+  }
+}
+import type { Meta, StoryObj } from "@storybook/react";
+import { InputField } from "primitives";
+
+const meta: Meta<typeof InputField> = {
+  component: InputField,
+  title: "SDS Primitives/Inputs",
+  parameters: { layout: "centered" },
+};
+export default meta;
+type Story = StoryObj<typeof InputField>;
+
+export const StoryInputField: Story = {
+  name: "Input Field",
+  args: {
+    label: "I am a field",
+    description: "I am a description",
+    isDisabled: false,
+    placeholder: "I am a placeholder",
+    isRequired: false,
+    type: "email",
+  },
+  render: (args) => <InputField {...args} />,
+};
+import type { Meta, StoryObj } from "@storybook/react";
+import { SwitchField, SwitchGroup } from "primitives";
+
+const meta: Meta<typeof SwitchField> = {
+  component: SwitchField,
+  title: "SDS Primitives/Inputs",
+  parameters: { layout: "centered" },
+};
+export default meta;
+
+export const StorySwitchField: StoryObj<typeof SwitchField> = {
+  name: "Switch Field",
+  args: {
+    isDisabled: false,
+  },
+  render: (args) => (
+    <SwitchField
+      {...args}
+      label="Enable"
+      description="Allow others to embed your event details on their own site."
+    />
+  ),
+};
+
+export const StorySwitchGroup: StoryObj<typeof SwitchGroup> = {
+  name: "Switch Group",
+  args: {},
+  render: (args) => {
+    return (
+      <SwitchGroup {...args}>
+        <SwitchField
+          label="Enable"
+          description="Allow others to embed your event details on their own site."
+        />
+        <SwitchField label="Dont you love it" description="Something magical" />
+      </SwitchGroup>
+    );
+  },
+};
+import type { Meta, StoryObj } from "@storybook/react";
+import { SelectField, SelectItem } from "primitives";
+
+const meta: Meta<typeof SelectField> = {
+  component: SelectField,
+  title: "SDS Primitives/Inputs",
+  parameters: { layout: "centered" },
+};
+export default meta;
+type Story = StoryObj<typeof SelectField>;
+
+export const StorySelectField: Story = {
+  name: "Select Field",
+  args: {},
+  render: (args) => (
+    <SelectField
+      {...args}
+      label="Hello there..."
+      description="Wowie!"
+      defaultSelectedKey="monday"
+      placeholder="Select a day"
+    >
+      <SelectItem textValue="monday">Monday</SelectItem>
+      <SelectItem>Tuesday</SelectItem>
+      <SelectItem>Wednesday</SelectItem>
+      <SelectItem>Thursday</SelectItem>
+      <SelectItem>Friday</SelectItem>
+      <SelectItem>Saturday</SelectItem>
+      <SelectItem>Sunday</SelectItem>
+    </SelectField>
+  ),
+};
+import type { Meta, StoryObj } from "@storybook/react";
+import { IconActivity, IconArrowLeft } from "icons";
+import { Button, ButtonDanger, ButtonGroup } from "primitives";
+
+const meta: Meta<typeof Button> = {
+  component: Button,
+  title: "SDS Primitives/Buttons",
+  parameters: { layout: "centered" },
+};
+export default meta;
+
+export const StoryButton: StoryObj<typeof Button> = {
+  name: "Button",
+  args: {
+    children: "Hello world",
+    variant: "primary",
+  },
+  argTypes: {
+    children: {
+      control: { type: "text" },
+    },
+    size: {
+      control: { type: "select" },
+    },
+    variant: {
+      control: { type: "select" },
+      options: ["primary", "neutral", "subtle"],
+    },
+  },
+  render: ({ children, ...props }) => (
+    <Button {...props}>
+      <IconArrowLeft />
+      {children}
+      <IconActivity />
+    </Button>
+  ),
+};
+
+export const StoryButtonDanger: StoryObj<typeof ButtonDanger> = {
+  name: "Button Danger",
+  args: {
+    children: "Hello world",
+    variant: "danger-primary",
+  },
+  argTypes: {
+    children: {
+      control: { type: "text" },
+    },
+    size: {
+      control: { type: "select" },
+    },
+    variant: {
+      control: { type: "select" },
+      options: ["danger-primary", "danger-subtle"],
+    },
+  },
+  render: ({ children, ...props }) => (
+    <ButtonDanger {...props}>
+      <IconArrowLeft />
+      {children}
+      <IconActivity />
+    </ButtonDanger>
+  ),
+};
+
+export const StoryButtonGroup: StoryObj<typeof ButtonGroup> = {
+  name: "Button Group",
+  args: {
+    align: "center",
+  },
+  argTypes: {
+    align: {
+      control: { type: "select" },
+      options: ["center", "start", "end", "justify", "stack"],
+    },
+  },
+  render: ({ ...props }) => (
+    <ButtonGroup {...props} style={{ width: 300 }}>
+      <Button variant="neutral">Cancel</Button>
+      <Button variant="primary">Submit</Button>
+    </ButtonGroup>
+  ),
+};
+import type { Meta, StoryObj } from "@storybook/react";
+import { IconInfo } from "icons";
+import {
+  Button,
+  ButtonDanger,
+  Notification,
+  Text,
+  TextStrong,
+} from "primitives";
+import { ComponentProps } from "react";
+
+const meta: Meta<typeof Notification> = {
+  component: Notification,
+  title: "SDS Primitives/Notification",
+  parameters: { layout: "centered" },
+};
+export default meta;
+
+export const StoryNotification: StoryObj<
+  Omit<ComponentProps<typeof Notification>, "variant"> & {
+    "[type]": "message" | "alert";
+  }
+> = {
+  name: "Notification",
+  args: { isDismissible: true, "[type]": "message" },
+  argTypes: {
+    "[type]": { control: { type: "select" }, options: ["message", "alert"] },
+  },
+  render: ({ "[type]": _type, ...args }) => {
+    const variant = _type === "message" ? "message" : "alert";
+    return (
+      <Notification {...args} variant={variant} icon={<IconInfo size="20" />}>
+        <TextStrong>Notification Title</TextStrong>
+        <Text>Hello there! This is a message</Text>
+        {_type === "message" ? (
+          <Button size="small">Hello</Button>
+        ) : (
+          <ButtonDanger size="small">Hello</ButtonDanger>
+        )}
+      </Notification>
+    );
+  },
+};
+import clsx from "clsx";
+import { IconX } from "icons";
+import { DestructiveIconButton, IconButton } from "primitives";
+import { ReactNode } from "react";
+import "./notification.css";
+
+type NotificationVariant = "message" | "alert";
+
+// TODO: notification still needs an onDismiss handler or something
+export type NotificationProps = React.ComponentPropsWithoutRef<"div"> & {
+  isDismissible?: boolean;
+  icon?: ReactNode;
+  variant?: NotificationVariant;
+};
+export function Notification({
+  children,
+  className,
+  isDismissible,
+  icon,
+  variant = "message",
+  ...props
+}: NotificationProps) {
+  const classNames = clsx(
+    className,
+    "notification",
+    `notification-variant-${variant}`,
+  );
+  return (
+    <div className={classNames} {...props}>
+      {icon && <span className="notification-icon">{icon}</span>}
+      <div className="notification-content">{children}</div>
+      {isDismissible &&
+        (variant === "alert" ? (
+          <DestructiveIconButton
+            size="small"
+            variant="danger-subtle"
+            aria-label="Dismiss notification"
+          >
+            <IconX />
+          </DestructiveIconButton>
+        ) : (
+          <IconButton
+            size="small"
+            variant="subtle"
+            aria-label="Dismiss notification"
+          >
+            <IconX />
+          </IconButton>
+        ))}
+    </div>
+  );
+}
+# Hooks
+
+UI-specific custom React hooks:
+
+- **useMediaQuery** - Responsive breakpoint detection
+cat: src/ui/hooks/useMediaQuery.ts: No such file or directory

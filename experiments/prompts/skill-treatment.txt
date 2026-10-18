@@ -1,0 +1,6 @@
+Local SDS usage skill (repository guidance proxy):
+1. Map each requested UI capability to an existing SDS primitive, then inspect only relevant APIs and stories.
+2. Use Section/Flex and useMediaQuery for responsive spacing; use tokens via supported props, no CSS additions.
+3. Prefer InputField for labeled input/help/error, Switch for controlled notifications, SelectField/SelectItem for roles, Button and ButtonDanger for actions, Notification for feedback.
+4. Keep a draft and saved snapshot; Cancel restores the snapshot, Save validates before updating it. Give every repeated control a distinct accessible label.
+5. Disabled actions must use the component's disabled prop, destructive actions its danger variant. A local feature composition is appropriate; a new primitive is not.

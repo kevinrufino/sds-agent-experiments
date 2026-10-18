@@ -1,0 +1,240 @@
+{
+  "run_id": "E01-search-r1",
+  "browser": "system Chromium via provided playwright-core",
+  "viewport": {
+    "width": 1440,
+    "height": 1000
+  },
+  "checks": [
+    {
+      "id": "heading",
+      "status": "PASS",
+      "evidence": "One h1 named Team Settings"
+    },
+    {
+      "id": "populated_fields",
+      "status": "PASS",
+      "evidence": "Name and email have accessible labels and nonempty local data"
+    },
+    {
+      "id": "notification_toggle",
+      "status": "PASS",
+      "evidence": "Space toggles controlled switch"
+    },
+    {
+      "id": "role_change",
+      "status": "PASS",
+      "evidence": "Two labeled selectors; first changes to Viewer"
+    },
+    {
+      "id": "invalid_email",
+      "status": "PASS",
+      "evidence": {
+        "aria_invalid": true,
+        "associated_description": "Team updates will be sent to this address. Enter a valid email address, such as team@example.com."
+      }
+    },
+    {
+      "id": "cancel_restores",
+      "status": "PASS",
+      "evidence": "Cancel restores initial name/email/toggle/members/role"
+    },
+    {
+      "id": "save_feedback",
+      "status": "PASS",
+      "evidence": "Team settings saved successfully for this session."
+    },
+    {
+      "id": "disabled_invitation",
+      "status": "PASS",
+      "evidence": "Invitation is actually disabled"
+    },
+    {
+      "id": "destructive_removal",
+      "status": "PASS",
+      "evidence": "Danger variant; Enter removes one member"
+    },
+    {
+      "id": "remove_focus_retained",
+      "status": "PASS",
+      "evidence": {
+        "tag": "BUTTON",
+        "text": "Cancel"
+      }
+    },
+    {
+      "id": "action_variants",
+      "status": "PASS",
+      "evidence": "Save primary; Cancel neutral/subtle"
+    },
+    {
+      "id": "keyboard_focus",
+      "status": "PASS",
+      "evidence": {
+        "tag": "INPUT",
+        "focusVisible": true,
+        "outline": "none"
+      }
+    },
+    {
+      "id": "layout_1440",
+      "status": "PASS",
+      "evidence": {
+        "scrollWidth": 1440,
+        "innerWidth": 1440
+      }
+    },
+    {
+      "id": "layout_390",
+      "status": "PASS",
+      "evidence": {
+        "scrollWidth": 390,
+        "innerWidth": 390
+      }
+    },
+    {
+      "id": "runtime_errors",
+      "status": "PASS",
+      "evidence": []
+    }
+  ],
+  "runtime_errors": [],
+  "console_errors": [
+    "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+    "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+    "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+    "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+    "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+    "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+    "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+    "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+    "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+    "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+    "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+    "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+    "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+    "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+    "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+    "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED"
+  ],
+  "browser_version": "154.0.8037.57",
+  "initial_controls": [
+    {
+      "tag": "INPUT",
+      "type": "text",
+      "role": null,
+      "ariaLabel": null,
+      "labels": [
+        "Team name"
+      ],
+      "text": "",
+      "value": "Studio North",
+      "disabled": false,
+      "class": "input"
+    },
+    {
+      "tag": "INPUT",
+      "type": "email",
+      "role": null,
+      "ariaLabel": null,
+      "labels": [
+        "Team email"
+      ],
+      "text": "",
+      "value": "team@studionorth.example",
+      "disabled": false,
+      "class": "input"
+    },
+    {
+      "tag": "INPUT",
+      "type": "checkbox",
+      "role": "switch",
+      "ariaLabel": null,
+      "labels": [
+        "Email notificationsReceive team activity and membership updates."
+      ],
+      "text": "",
+      "value": "on",
+      "disabled": false,
+      "class": ""
+    },
+    {
+      "tag": "BUTTON",
+      "type": "button",
+      "role": null,
+      "ariaLabel": null,
+      "labels": [],
+      "text": "Invite member",
+      "value": "",
+      "disabled": true,
+      "class": "button button-size-medium button-variant-neutral"
+    },
+    {
+      "tag": "BUTTON",
+      "type": "button",
+      "role": null,
+      "ariaLabel": null,
+      "labels": [],
+      "text": "Admin",
+      "value": "",
+      "disabled": false,
+      "class": "select"
+    },
+    {
+      "tag": "BUTTON",
+      "type": "button",
+      "role": null,
+      "ariaLabel": "Remove Maya Chen from team",
+      "labels": [],
+      "text": "Remove member",
+      "value": "",
+      "disabled": false,
+      "class": "button button-size-medium button-variant-danger-subtle"
+    },
+    {
+      "tag": "BUTTON",
+      "type": "button",
+      "role": null,
+      "ariaLabel": null,
+      "labels": [],
+      "text": "Member",
+      "value": "",
+      "disabled": false,
+      "class": "select"
+    },
+    {
+      "tag": "BUTTON",
+      "type": "button",
+      "role": null,
+      "ariaLabel": "Remove Alex Rivera from team",
+      "labels": [],
+      "text": "Remove member",
+      "value": "",
+      "disabled": false,
+      "class": "button button-size-medium button-variant-danger-subtle"
+    },
+    {
+      "tag": "BUTTON",
+      "type": "button",
+      "role": null,
+      "ariaLabel": null,
+      "labels": [],
+      "text": "Cancel",
+      "value": "",
+      "disabled": false,
+      "class": "button button-size-medium button-variant-neutral"
+    },
+    {
+      "tag": "BUTTON",
+      "type": "submit",
+      "role": null,
+      "ariaLabel": null,
+      "labels": [],
+      "text": "Save",
+      "value": "",
+      "disabled": false,
+      "class": "button button-size-medium button-variant-primary"
+    }
+  ]
+}

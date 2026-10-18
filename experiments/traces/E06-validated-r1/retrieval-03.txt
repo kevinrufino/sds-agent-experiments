@@ -1,0 +1,50 @@
+src/App.tsx:4:import { Button, ButtonDanger } from "primitives/Button/Button";
+src/stories/primitives/Button.stories.tsx:12:export const StoryButton: StoryObj<typeof Button> = {
+src/stories/primitives/Button.stories.tsx:39:export const StoryButtonDanger: StoryObj<typeof ButtonDanger> = {
+src/stories/primitives/Button.stories.tsx:66:export const StoryButtonGroup: StoryObj<typeof ButtonGroup> = {
+src/stories/primitives/Tag.stories.tsx:69:export const StoryTagButton: StoryObj<typeof TagButton> = {
+src/stories/primitives/Avatar.stories.tsx:40:export const StoryAvatarButton: StoryObj<typeof AvatarButton> = {
+src/AGENTS.md:50:When importing SDS components, use aliases to ensure correct paths. These are described in the `vite.config.ts` file under `resolve.alias`:
+src/AGENTS.md:178:4. **Use semantic imports**: Import from correct paths (e.g., `import { Button } from "ui/primitives/Button/Button"`)
+src/AGENTS.md:271:- **Always import components from their specific paths** - Use the alias imports
+src/stories/primitives/IconButton.stories.tsx:12:export const StoryIconButton: StoryObj<typeof IconButton> = {
+src/stories/primitives/IconButton.stories.tsx:36:export const StoryDestructiveIconButton: StoryObj<
+src/figma/primitives/button/ButtonDanger.figma.ts:2:// source=https://github.com/figma/sds/blob/main/src/ui/primitives/Button/Button.tsx
+src/figma/primitives/button/ButtonGroup.figma.ts:2:// source=https://github.com/figma/sds/blob/main/src/ui/primitives/Button/Button.tsx
+src/figma/primitives/button/Button.figma.ts:2:// source=https://github.com/figma/sds/blob/main/src/ui/primitives/Button/Button.tsx
+src/data/AGENTS.md:3:Data management layer with contexts, providers, services, and hooks. Each subdirectory has its own `AGENTS.md`:
+src/data/AGENTS.md:5:- [hooks/AGENTS.md](./hooks/AGENTS.md) - Data hooks
+src/data/AGENTS.md:6:- [providers/AGENTS.md](./providers/AGENTS.md) - Context providers
+src/data/AGENTS.md:7:- [services/AGENTS.md](./services/AGENTS.md) - API and business logic services
+src/data/AGENTS.md:8:- [types/AGENTS.md](./types/AGENTS.md) - TypeScript types for data models
+src/stories/primitives/Navigation.stories.tsx:13:export const StoryNavigationButton: StoryObj<typeof Navigation> = {
+src/ui/primitives/Dialog/Dialog.tsx:32:export type DialogCloseProps = Pick<IconButtonProps, "onPress">;
+src/ui/primitives/Dialog/Dialog.tsx:50:export interface DialogButtonProps
+src/ui/primitives/Dialog/Dialog.tsx:57:export function DialogButton({
+src/ui/primitives/index.ts:3:export * from "./Button/Button";
+src/ui/primitives/index.ts:8:export * from "./IconButton/IconButton";
+src/ui/primitives/Tag/Tag.tsx:54:export type TagButtonProps = SharedTagProps & AnchorOrButtonProps;
+src/ui/primitives/Tag/Tag.tsx:55:export const TagButton = React.forwardRef(function Tag(
+src/ui/primitives/IconButton/IconButton.tsx:11:export type IconButtonProps = Omit<ButtonProps, "aria-label"> & {
+src/ui/primitives/IconButton/IconButton.tsx:14:export const IconButton = forwardRef(function IconButton(
+src/ui/primitives/IconButton/IconButton.tsx:22:export type DestructiveIconButtonProps = Omit<
+src/ui/primitives/IconButton/IconButton.tsx:28:export const DestructiveIconButton = forwardRef(function IconButton(
+src/ui/primitives/Logo/Logo.tsx:5:export type LogoProps = AnchorOrButtonProps;
+src/ui/primitives/Menu/Menu.tsx:41:export interface MenuButtonProps<T>
+src/ui/primitives/Menu/Menu.tsx:49:export function MenuButton<T extends object>({
+src/ui/primitives/Button/Button.tsx:7:export type ButtonProps = Omit<ButtonBaseProps, "variant"> & {
+src/ui/primitives/Button/Button.tsx:13:export const Button = React.forwardRef(function Button(
+src/ui/primitives/Button/Button.tsx:53:export type ButtonDangerProps = Omit<ButtonBaseProps, "variant"> & {
+src/ui/primitives/Button/Button.tsx:62:export const ButtonDanger = React.forwardRef(function Button(
+src/ui/primitives/Button/Button.tsx:132:export type ButtonGroupProps = React.ComponentPropsWithoutRef<"div"> & {
+src/ui/primitives/Button/Button.tsx:135:export const ButtonGroup = ({
+src/ui/primitives/Navigation/Navigation.tsx:22:export type NavigationPillProps = AnchorOrButtonProps & {
+src/ui/primitives/Navigation/Navigation.tsx:40:export type NavigationButtonProps = AnchorOrButtonProps & {
+src/ui/primitives/Navigation/Navigation.tsx:46:export function NavigationButton({
+src/ui/primitives/Avatar/Avatar.tsx:72:export type AvatarButtonProps = SharedAvatarProps & AnchorOrButtonProps;
+src/ui/primitives/Avatar/Avatar.tsx:73:export const AvatarButton = React.forwardRef(function AvatarButton(
+src/ui/utils/AnchorOrButton.tsx:12:export type AnchorOrButtonSharedProps = {
+src/ui/utils/AnchorOrButton.tsx:17:export type AnchorOrButtonProps = (
+src/ui/utils/AnchorOrButton.tsx:30:export const AnchorOrButton = forwardRef(function AnchorOrButton(
+src/ui/utils/index.ts:1:export * from "./AnchorOrButton";
+src/ui/compositions/Footers/Footers.tsx:141:export function SocialButtons() {

@@ -1,0 +1,18 @@
+[
+  {
+    "path": "experiments/prompts/common.txt",
+    "sha256": "9fe5701caa1d94d206cf518590a57f5fbf8bc4a4c244ef2995816e62c8ba4baf"
+  },
+  {
+    "path": "experiments/prompts/discovery-treatment.txt",
+    "sha256": "dcaf978204cc45058f12b53941522e745877fd3ec9a21110abfbeaa2f0b83c46"
+  },
+  {
+    "path": "experiments/prompts/skill-treatment.txt",
+    "sha256": "9e4873e132d2c874471901be7f7c693b0ae93eab76c14623a4c1eb466c1c4fd5"
+  },
+  {
+    "path": "experiments/prompts/validation-treatment.txt",
+    "sha256": "494ecbeac55ed9682addfe8bc5f5c6f226be6296071f129384026e631490586f"
+  }
+]

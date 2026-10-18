@@ -1,0 +1,49 @@
+src/AGENTS.md:14:- 📱 **Responsive**: Mobile-first responsive design patterns
+src/AGENTS.md:66:import { Flex, Section } from "layout";
+src/AGENTS.md:70:  Button,
+src/AGENTS.md:71:  TextContentHeading,
+src/AGENTS.md:72:  TextContentTitle,
+src/AGENTS.md:101:  - **important**: These variables can map to a prop value numerically. For example, `<Section padding="400">` corresponds to `padding: var(--sds-size-space-400)` in a Figma response.
+src/AGENTS.md:130:│   ├── primitives/     # Atomic components (Button, Input, etc.)
+src/AGENTS.md:132:│   ├── layout/         # Layout components (Flex, Section, Grid)
+src/AGENTS.md:145:├── responsive.css      # Responsive utilities
+src/AGENTS.md:178:4. **Use semantic imports**: Import from correct paths (e.g., `import { Button } from "ui/primitives/Button/Button"`)
+src/AGENTS.md:183:### Buttons
+src/AGENTS.md:186:// Figma: Button with variant="Primary" and icon
+src/AGENTS.md:188:<Button variant="primary" size="medium">
+src/AGENTS.md:189:  Button Text
+src/AGENTS.md:190:</Button>
+src/AGENTS.md:199:  <NavigationPill isSelected>Active Item</NavigationPill>
+src/AGENTS.md:207:// Figma: Text with specific styles
+src/AGENTS.md:209:<TextHeading>Heading Text</TextHeading>
+src/AGENTS.md:210:<Text>Body text</Text>
+src/AGENTS.md:211:<TextSmall>Small text</TextSmall>
+src/AGENTS.md:219:<Section>
+src/AGENTS.md:220:  <Flex direction="row" gap="400" type="third">
+src/AGENTS.md:224:  </Flex>
+src/AGENTS.md:225:</Section>
+src/AGENTS.md:229:// Complex layout with responsive behavior
+src/AGENTS.md:234:    <Section variant="stroke" padding={isMobile ? "600" : "1600"}>
+src/AGENTS.md:235:      <Flex
+src/AGENTS.md:243:          <NavigationPill isSelected>Active</NavigationPill>
+src/AGENTS.md:248:        <Flex direction={isMobile ? "column" : "row"} gap="1600" type="third">
+src/AGENTS.md:252:        </Flex>
+src/AGENTS.md:253:      </Flex>
+src/AGENTS.md:254:    </Section>
+src/AGENTS.md:264:- **Use semantic prop names**: `isSelected` not `active`, `variant` not `type`
+src/AGENTS.md:273:- **Use layout components instead of CSS Grid/Flexbox** - Never write custom layout CSS
+src/AGENTS.md:292:**Fix**: Use layout components: `<Flex direction="row" gap="400" type="third">`
+src/AGENTS.md:297:<Button active={true}> // WRONG - prop doesn't exist
+src/AGENTS.md:300:**Fix**: Read the TypeScript file: `<Button isSelected>` or `<Button variant="primary">`
+src/ui/layout/AGENTS.md:5:- **Flex** - Flexbox layouts with gap, alignment, and responsive props
+src/ui/layout/AGENTS.md:6:- **Section** - Page sections with padding and background variants
+src/ui/layout/AGENTS.md:7:- **Grid** - CSS Grid layouts (when Flex isn't sufficient)
+src/ui/primitives/AGENTS.md:7:- **Button** - Primary, neutral, subtle variants with size options
+src/ui/primitives/AGENTS.md:12:- **IconButton** - Icon-only buttons with accessible labels
+src/ui/primitives/AGENTS.md:14:- **Input** - Form input fields with validation states and labels
+src/ui/primitives/AGENTS.md:16:- **ListBox** - Selection lists with keyboard navigation
+src/ui/primitives/AGENTS.md:20:- **Notification** - Toast notifications and alerts
+src/ui/primitives/AGENTS.md:24:- **Select** - Dropdown selection components with search
+src/ui/primitives/AGENTS.md:26:- **Switch** - Toggle controls for boolean settings
+src/ui/primitives/AGENTS.md:30:- **Text** - Typography components with semantic variants
+src/ui/primitives/AGENTS.md:31:- **Textarea** - Multi-line text input with resize options
