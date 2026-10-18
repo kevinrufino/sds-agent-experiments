@@ -1,0 +1,148 @@
+
+> sds@0.0.0 storybook:build
+> storybook build --output-dir dist/storybook
+
+@storybook/core v8.6.18
+
+info => Cleaning outputDir: dist/storybook
+info => Loading presets
+info => Building manager..
+info => Manager built ([38;2;181;126;229m232 ms[39m)
+info => Building preview..
+WARN No story files found for the specified pattern: src/stories/**/*.mdx
+info Using tsconfig paths for react-docgen
+vite v6.4.1 building for production...
+(node:4209) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+transforming...
+✓ 1747 modules transformed.
+Export "IconActivity" of module "src/ui/icons/IconActivity.tsx" was reexported through module "src/ui/icons/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/stories/compositions/Cards.stories.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "IconClock" of module "src/ui/icons/IconClock.tsx" was reexported through module "src/ui/icons/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/stories/compositions/Cards.stories.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "IconCode" of module "src/ui/icons/IconCode.tsx" was reexported through module "src/ui/icons/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/stories/compositions/Cards.stories.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "IconSmile" of module "src/ui/icons/IconSmile.tsx" was reexported through module "src/ui/icons/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/stories/compositions/Cards.stories.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "IconCompass" of module "src/ui/icons/IconCompass.tsx" was reexported through module "src/ui/icons/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/stories/compositions/Cards.stories.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "IconArrowLeft" of module "src/ui/icons/IconArrowLeft.tsx" was reexported through module "src/ui/icons/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/stories/primitives/Button.stories.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "IconActivity" of module "src/ui/icons/IconActivity.tsx" was reexported through module "src/ui/icons/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/stories/primitives/Button.stories.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "IconMenu" of module "src/ui/icons/IconMenu.tsx" was reexported through module "src/ui/icons/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/stories/primitives/Dialog.stories.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "IconActivity" of module "src/ui/icons/IconActivity.tsx" was reexported through module "src/ui/icons/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/stories/primitives/IconButton.stories.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "IconMenu" of module "src/ui/icons/IconMenu.tsx" was reexported through module "src/ui/icons/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/stories/primitives/Menu.stories.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "IconStar" of module "src/ui/icons/IconStar.tsx" was reexported through module "src/ui/icons/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/stories/primitives/Navigation.stories.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "IconInfo" of module "src/ui/icons/IconInfo.tsx" was reexported through module "src/ui/icons/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/stories/primitives/Notification.stories.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "IconTrash" of module "src/ui/icons/IconTrash.tsx" was reexported through module "src/ui/icons/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/stories/primitives/Table.stories.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "IconCheck" of module "src/ui/icons/IconCheck.tsx" was reexported through module "src/ui/icons/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/stories/primitives/Tag.stories.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "IconAirplay" of module "src/ui/icons/IconAirplay.tsx" was reexported through module "src/ui/icons/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/stories/primitives/Tag.stories.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "IconArrowUp" of module "src/ui/icons/IconArrowUp.tsx" was reexported through module "src/ui/icons/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/stories/primitives/Tooltip.stories.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "IconArrowDown" of module "src/ui/icons/IconArrowDown.tsx" was reexported through module "src/ui/icons/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/stories/primitives/Tooltip.stories.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "IconArrowLeft" of module "src/ui/icons/IconArrowLeft.tsx" was reexported through module "src/ui/icons/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/stories/primitives/Tooltip.stories.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "IconArrowRight" of module "src/ui/icons/IconArrowRight.tsx" was reexported through module "src/ui/icons/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/stories/primitives/Tooltip.stories.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "IconStar" of module "src/ui/icons/IconStar.tsx" was reexported through module "src/ui/icons/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/ui/compositions/Cards/Cards.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "IconMenu" of module "src/ui/icons/IconMenu.tsx" was reexported through module "src/ui/icons/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/ui/compositions/Headers/Headers.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "IconX" of module "src/ui/icons/IconX.tsx" was reexported through module "src/ui/icons/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/ui/compositions/Headers/Headers.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "IconChevronDown" of module "src/ui/icons/IconChevronDown.tsx" was reexported through module "src/ui/icons/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/ui/compositions/Headers/Headers.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+node_modules/@storybook/core/dist/preview/runtime.js (3683:15): Use of eval in "node_modules/@storybook/core/dist/preview/runtime.js" is strongly discouraged as it poses security risks and may cause issues with minification.
+node_modules/@storybook/core/dist/preview/runtime.js (3685:16): Use of eval in "node_modules/@storybook/core/dist/preview/runtime.js" is strongly discouraged as it poses security risks and may cause issues with minification.
+rendering chunks...
+computing gzip size...
+dist/storybook/iframe.html                                18.34 kB │ gzip:   5.21 kB
+dist/storybook/assets/Panels-QsQOgIRp.css                  3.76 kB │ gzip:   0.89 kB
+dist/storybook/assets/preview-DpfY7rCM.css                34.15 kB │ gzip:   4.05 kB
+dist/storybook/assets/Grid-DueiVv2n.css                   60.85 kB │ gzip:   8.40 kB
+dist/storybook/assets/index-Cl6Lk43g.js                    0.13 kB │ gzip:   0.12 kB
+dist/storybook/assets/preview-dImWHx-Q.js                  0.16 kB │ gzip:   0.16 kB
+dist/storybook/assets/preview-CvbIS5ZJ.js                  0.18 kB │ gzip:   0.16 kB
+dist/storybook/assets/index-D0d0J8lj.js                    0.42 kB │ gzip:   0.27 kB
+dist/storybook/assets/preview-DHQbi4pV.js                  0.61 kB │ gzip:   0.42 kB
+dist/storybook/assets/useMediaQuery.stories-CqObYcX7.js    0.67 kB │ gzip:   0.41 kB
+dist/storybook/assets/chunk-XP5HYGXS-BHXC9YeQ.js           0.71 kB │ gzip:   0.40 kB
+dist/storybook/assets/preview-DGUiP6tS.js                  0.71 kB │ gzip:   0.50 kB
+dist/storybook/assets/useMediaQuery-DOPVQ3S0.js            0.77 kB │ gzip:   0.43 kB
+dist/storybook/assets/index-DrFu-skq.js                    0.77 kB │ gzip:   0.47 kB
+dist/storybook/assets/Link.stories-Bcqb4mD1.js             0.84 kB │ gzip:   0.49 kB
+dist/storybook/assets/react-18-CjiRST7e.js                 0.89 kB │ gzip:   0.50 kB
+dist/storybook/assets/preview-DA9m1dmJ.js                  0.92 kB │ gzip:   0.58 kB
+dist/storybook/assets/Slider.stories-C5cfWv9r.js           0.98 kB │ gzip:   0.55 kB
+dist/storybook/assets/Input.stories-CPkhEPUF.js            1.00 kB │ gzip:   0.52 kB
+dist/storybook/assets/jsx-runtime-SwSI87LU.js              1.00 kB │ gzip:   0.62 kB
+dist/storybook/assets/Forms.stories-CGhzfrIF.js            1.28 kB │ gzip:   0.65 kB
+dist/storybook/assets/Select.stories-B4wUf68x.js           1.47 kB │ gzip:   0.62 kB
+dist/storybook/assets/Pagination.stories-BmFM-AEt.js       1.60 kB │ gzip:   0.63 kB
+dist/storybook/assets/Switch.stories-CweFyApy.js           1.71 kB │ gzip:   0.68 kB
+dist/storybook/assets/Notification.stories-CdEUyiDW.js     1.75 kB │ gzip:   0.81 kB
+dist/storybook/assets/Radio.stories-iFJJwO3M.js            1.78 kB │ gzip:   0.72 kB
+dist/storybook/assets/Tab.stories-S2gMJK3h.js              1.85 kB │ gzip:   0.69 kB
+dist/storybook/assets/Menu.stories-D4sZFBoN.js             1.95 kB │ gzip:   0.79 kB
+dist/storybook/assets/ListBox.stories-IlQa89Bc.js          2.25 kB │ gzip:   0.85 kB
+dist/storybook/assets/Image.stories-DVB4phhJ.js            2.27 kB │ gzip:   0.92 kB
+dist/storybook/assets/Checkbox.stories-Dj73-phK.js         2.29 kB │ gzip:   0.91 kB
+dist/storybook/assets/IconButton.stories-D6uKZCQh.js       2.32 kB │ gzip:   0.75 kB
+dist/storybook/assets/Section.stories-DWi5iP31.js          2.38 kB │ gzip:   0.82 kB
+dist/storybook/assets/Accordion.stories-CH3ySkR8.js        2.50 kB │ gzip:   0.70 kB
+dist/storybook/assets/Textarea.stories-C8DGCL5F.js         3.04 kB │ gzip:   1.12 kB
+dist/storybook/assets/Search.stories-B9JqjhKP.js           3.08 kB │ gzip:   1.48 kB
+dist/storybook/assets/index-C62DzI8J.js                    3.18 kB │ gzip:   1.06 kB
+dist/storybook/assets/Tooltip.stories-DtFI9y9g.js          3.22 kB │ gzip:   0.81 kB
+dist/storybook/assets/Button.stories-CbcYJltS.js           3.40 kB │ gzip:   1.00 kB
+dist/storybook/assets/preview-DD_OYowb.js                  3.51 kB │ gzip:   1.69 kB
+dist/storybook/assets/Avatar.stories-D_i48QCY.js           3.73 kB │ gzip:   1.13 kB
+dist/storybook/assets/Text.stories-BVIuB8sx.js             3.82 kB │ gzip:   1.18 kB
+dist/storybook/assets/Hello.stories-Che4rzes.js            3.92 kB │ gzip:   1.32 kB
+dist/storybook/assets/Fieldset.stories-CXLpGuII.js         4.04 kB │ gzip:   1.51 kB
+dist/storybook/assets/Navigation.stories-Bj4G5zqv.js       4.08 kB │ gzip:   0.87 kB
+dist/storybook/assets/Tag.stories-DqpK8oHF.js              4.54 kB │ gzip:   1.29 kB
+dist/storybook/assets/preview-B8lJiyuQ.js                  5.06 kB │ gzip:   1.88 kB
+dist/storybook/assets/Flex.stories-Bw2ac3O0.js             5.13 kB │ gzip:   0.93 kB
+dist/storybook/assets/Dialog.stories-CfrpZJJb.js           6.53 kB │ gzip:   1.50 kB
+dist/storybook/assets/index-C5e9SFkp.js                    7.33 kB │ gzip:   2.96 kB
+dist/storybook/assets/Grid.stories-8hspnz6F.js             7.36 kB │ gzip:   1.67 kB
+dist/storybook/assets/preview-BWzBA1C2.js                  7.62 kB │ gzip:   1.56 kB
+dist/storybook/assets/Table.stories-CIybCIV9.js            7.83 kB │ gzip:   2.26 kB
+dist/storybook/assets/preview-BBWR9nbA.js                  8.12 kB │ gzip:   3.10 kB
+dist/storybook/assets/Cards.stories-CctbsIkT.js           10.55 kB │ gzip:   2.55 kB
+dist/storybook/assets/test-utils-CCuaP9Mu.js              13.05 kB │ gzip:   5.09 kB
+dist/storybook/assets/preview-CKeXc0Bc.js                 21.96 kB │ gzip:   7.31 kB
+dist/storybook/assets/Color-YHDXOIA2-lIJ2WUYK.js          29.37 kB │ gzip:  11.06 kB
+dist/storybook/assets/entry-preview-D4UZJ88I.js           29.76 kB │ gzip:   9.52 kB
+dist/storybook/assets/Panels-Cw1km_M7.js                  42.62 kB │ gzip:  10.87 kB
+dist/storybook/assets/index-DgH-xKnr.js                   57.15 kB │ gzip:  16.28 kB
+dist/storybook/assets/index-Dy23IbDT.js                  134.66 kB │ gzip:  43.22 kB
+dist/storybook/assets/iframe-DdXN-RKe.js                 218.42 kB │ gzip:  73.07 kB
+dist/storybook/assets/entry-preview-docs-BGtbHjH1.js     247.08 kB │ gzip:  73.42 kB
+dist/storybook/assets/index-C1OzuK6-.js                  662.35 kB │ gzip: 156.75 kB
+dist/storybook/assets/Grid-CsYpmW_M.js                   725.25 kB │ gzip: 164.51 kB
+dist/storybook/assets/DocsRenderer-CFRXHY34-DbrlZ5eV.js  887.55 kB │ gzip: 275.62 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 5.46s
+info => Preview built ([38;2;181;126;229m6.48 s[39m)
+info => Output directory: /workspace/sds-agent-experiments/dist/storybook
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice

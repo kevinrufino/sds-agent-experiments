@@ -1,0 +1,14 @@
+{"id":"heading","status":"PASS","evidence":"One h1 named Team Settings"}
+{"id":"populated_fields","status":"PASS","evidence":"Name and email have accessible labels and nonempty local data"}
+{"id":"notification_toggle","status":"PASS","evidence":"Space toggles controlled switch"}
+{"id":"role_change","status":"PASS","evidence":"Two labeled selectors; first changes to Viewer"}
+{"id":"invalid_email","status":"PASS","evidence":{"aria_invalid":true,"associated_description":"Where we send team updates. Enter a valid email address, such as team@example.com."}}
+{"id":"cancel_restores","status":"PASS","evidence":"Cancel restores initial name/email/toggle/members/role"}
+{"id":"save_feedback","status":"PASS","evidence":"Team settings saved locally."}
+{"id":"disabled_invitation","status":"PASS","evidence":"Invitation is actually disabled"}
+{"id":"destructive_removal","status":"PASS","evidence":"Danger variant; Enter removes one member"}
+{"id":"remove_focus_retained","status":"PASS","evidence":{"tag":"BUTTON","text":"Save"}}
+{"id":"action_variants","status":"PASS","evidence":"Save primary; Cancel neutral/subtle"}
+{"id":"keyboard_focus","status":"PASS","evidence":{"tag":"INPUT","focusVisible":true,"outline":"none"}}
+{"id":"layout_1440","status":"PASS","evidence":{"scrollWidth":1440,"innerWidth":1440}}
+{"id":"layout_390","status":"PASS","evidence":{"scrollWidth":390,"innerWidth":390}}

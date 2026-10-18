@@ -1,0 +1,107 @@
+Using "react" parser as package.json containing a "react" peer dependency was found in /workspace/sds-agent-experiments. If this is incorrect, please check you are running Code Connect from your project root, or add a `parser` key to your config file. See https://github.com/figma/code-connect for more information.
+Config file found, parsing /workspace/sds-agent-experiments using specified include globs
+/workspace/sds-agent-experiments/src/figma/primitives/Tooltip.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/TextareaField.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/SwitchField.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/SliderField.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/SelectField.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/Search.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/Notification.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/InputField.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/IconButton.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/text/TextTitlePage.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/text/TextTitleHero.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/text/TextSubtitle.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/text/TextSubheading.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/text/TextStrong.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/text/TextSmall.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/text/TextPrice.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/text/TextListItem.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/text/TextList.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/text/TextLinkListItem.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/text/TextLinkList.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/text/TextLink.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/text/TextHeading.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/text/TextEmphasis.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/text/TextContentTitle.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/text/TextContentHeading.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/text/TextCode.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/text/Text.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/tag/TagToggleGroup.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/tag/TagToggle.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/tag/Tag.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/tab/Tabs.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/tab/Tab.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/radio/RadioGroup.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/radio/RadioField.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/pagination/PaginationPrevious.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/pagination/PaginationPage.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/pagination/PaginationNext.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/pagination/PaginationList.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/pagination/PaginationGap.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/pagination/Pagination.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/navigation/NavigationPillList.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/navigation/NavigationPill.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/navigation/NavigationButtonList.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/navigation/NavigationButton.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/menu/MenuShortcut.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/menu/MenuSeparator.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/menu/MenuItem.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/menu/MenuHeading.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/menu/MenuHeader.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/menu/Menu.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/dialog/DialogBody.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/dialog/Dialog.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/checkbox/CheckboxGroup.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/checkbox/CheckboxField.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/button/ButtonGroup.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/button/ButtonDanger.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/button/Button.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/avatar/AvatarGroup.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/avatar/AvatarBlock.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/avatar/Avatar.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/accordion/AccordionItem.figma.ts
+/workspace/sds-agent-experiments/src/figma/primitives/accordion/Accordion.figma.ts
+/workspace/sds-agent-experiments/src/figma/compositions/Footer.figma.ts
+/workspace/sds-agent-experiments/src/figma/compositions/panel/PanelImageDouble.figma.ts
+/workspace/sds-agent-experiments/src/figma/compositions/panel/PanelImageContentReverse.figma.ts
+/workspace/sds-agent-experiments/src/figma/compositions/panel/PanelImageContent.figma.ts
+/workspace/sds-agent-experiments/src/figma/compositions/panel/PanelImage.figma.ts
+/workspace/sds-agent-experiments/src/figma/compositions/page/PageProductResults.figma.ts
+/workspace/sds-agent-experiments/src/figma/compositions/page/PageProduct.figma.ts
+/workspace/sds-agent-experiments/src/figma/compositions/page/PageNewsletter.figma.ts
+/workspace/sds-agent-experiments/src/figma/compositions/page/PageAccordion.figma.ts
+/workspace/sds-agent-experiments/src/figma/compositions/hero/HeroNewsletter.figma.ts
+/workspace/sds-agent-experiments/src/figma/compositions/hero/HeroImage.figma.ts
+/workspace/sds-agent-experiments/src/figma/compositions/hero/HeroForm.figma.ts
+/workspace/sds-agent-experiments/src/figma/compositions/hero/HeroBasic.figma.ts
+/workspace/sds-agent-experiments/src/figma/compositions/hero/HeroActions.figma.ts
+/workspace/sds-agent-experiments/src/figma/compositions/header/HeaderAuth.figma.ts
+/workspace/sds-agent-experiments/src/figma/compositions/header/Header.figma.ts
+/workspace/sds-agent-experiments/src/figma/compositions/form/FormShipping.figma.ts
+/workspace/sds-agent-experiments/src/figma/compositions/form/FormRegister.figma.ts
+/workspace/sds-agent-experiments/src/figma/compositions/form/FormNewsletter.figma.ts
+/workspace/sds-agent-experiments/src/figma/compositions/form/FormLogIn.figma.ts
+/workspace/sds-agent-experiments/src/figma/compositions/form/FormForgotPassword.figma.ts
+/workspace/sds-agent-experiments/src/figma/compositions/form/FormContact.figma.ts
+/workspace/sds-agent-experiments/src/figma/compositions/card-grid/CardGridTestimonials.figma.ts
+/workspace/sds-agent-experiments/src/figma/compositions/card-grid/CardGridReviews.figma.ts
+/workspace/sds-agent-experiments/src/figma/compositions/card-grid/CardGridPricing.figma.ts
+/workspace/sds-agent-experiments/src/figma/compositions/card-grid/CardGridImage.figma.ts
+/workspace/sds-agent-experiments/src/figma/compositions/card-grid/CardGridIcon.figma.ts
+/workspace/sds-agent-experiments/src/figma/compositions/card-grid/CardGridContentList.figma.ts
+/workspace/sds-agent-experiments/src/figma/compositions/card/TestimonialCard.figma.ts
+/workspace/sds-agent-experiments/src/figma/compositions/card/StatsCard.figma.ts
+/workspace/sds-agent-experiments/src/figma/compositions/card/ReviewCard.figma.ts
+/workspace/sds-agent-experiments/src/figma/compositions/card/ProductInfoCard.figma.ts
+/workspace/sds-agent-experiments/src/figma/compositions/card/PricingCard.figma.ts
+/workspace/sds-agent-experiments/src/figma/compositions/card/Card.figma.ts
+/workspace/sds-agent-experiments/src/figma/icons/Icons.figma.batch.json (287 components)
+Using label "React"
+Using language "jsx"
+Wrote Code Connect JSON to /tmp/sds-code-connect.json
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice
