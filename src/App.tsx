@@ -1,26 +1,210 @@
-import { Footer, Header } from "compositions";
-import { AllProviders } from "data";
-import { Demo } from "./examples/Demo";
-import { FAQs } from "./examples/FAQs";
-import { PanelSections } from "./examples/PanelSections";
-import { PricingGrid } from "./examples/PricingGrid";
-import { ProductDetails } from "./examples/ProductDetails";
-import { ProductGrid } from "./examples/ProductGrid";
-import { WelcomeHero } from "./examples/WelcomeHero";
+import { useRef, useState, type FormEvent } from "react";
+import { useMediaQuery } from "hooks";
+import { Flex, Section } from "layout";
+import {
+  Button,
+  ButtonDanger,
+  ButtonGroup,
+  InputField,
+  Notification,
+  SelectField,
+  SelectItem,
+  SwitchField,
+  Text,
+  TextHeading,
+  TextSmall,
+  TextStrong,
+  TextTitlePage,
+} from "primitives";
+
+const initialSettings = {
+  name: "Studio North",
+  email: "team@studionorth.example",
+  notifications: true,
+  members: [
+    { id: "maya", name: "Maya Chen", email: "maya@example.com", role: "admin" },
+    { id: "alex", name: "Alex Rivera", email: "alex@example.com", role: "member" },
+  ],
+};
 
 function App() {
+  const { isMobile } = useMediaQuery();
+  const [settings, setSettings] = useState(initialSettings);
+  const [attempted, setAttempted] = useState(false);
+  const [message, setMessage] = useState("");
+  const formRef = useRef<HTMLFormElement>(null);
+  const cancelRef = useRef<HTMLElement>(null);
+  const invalidEmail = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(settings.email);
+  const invalidName = !settings.name.trim();
+
+  function save(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setAttempted(true);
+    setMessage("");
+    if (invalidName || invalidEmail) {
+      formRef.current
+        ?.querySelector<HTMLInputElement>(
+          invalidName ? '[name="teamName"]' : '[name="email"]',
+        )
+        ?.focus();
+      return;
+    }
+    setMessage("Team settings saved successfully for this session.");
+  }
+
+  function cancel() {
+    setSettings(initialSettings);
+    setAttempted(false);
+    setMessage("Changes canceled. Initial team settings restored.");
+  }
+
   return (
-    <AllProviders>
-      <Header />
-      <Demo />
-      <WelcomeHero />
-      <PanelSections />
-      <PricingGrid />
-      <FAQs />
-      <ProductDetails />
-      <ProductGrid />
-      <Footer />
-    </AllProviders>
+    <main>
+      <Section padding={isMobile ? "600" : "1600"} variant="subtle">
+        <Flex container direction="column" alignSecondary="stretch" gap="800">
+          <Flex direction="column" gap="200">
+            <TextTitlePage elementType="h1">Team Settings</TextTitlePage>
+            <Text>Manage your team details, notifications, and member access.</Text>
+          </Flex>
+          <form ref={formRef} onSubmit={save} noValidate aria-label="Team settings">
+            <Flex direction="column" alignSecondary="stretch" gap="800">
+              <Flex direction="column" alignSecondary="stretch" gap="400">
+                <TextHeading elementType="h2">Team details</TextHeading>
+                <Flex
+                  direction={isMobile ? "column" : "row"}
+                  alignPrimary="stretch"
+                  alignSecondary="stretch"
+                  gap="600"
+                >
+                  <InputField
+                    label="Team name"
+                    name="teamName"
+                    value={settings.name}
+                    onChange={(name) => {
+                      setSettings((current) => ({ ...current, name }));
+                      setMessage("");
+                    }}
+                    isRequired
+                    validationBehavior="aria"
+                    isInvalid={attempted && invalidName}
+                    errorMessage="Enter a team name."
+                  />
+                  <InputField
+                    label="Team email"
+                    name="email"
+                    type="email"
+                    value={settings.email}
+                    onChange={(email) => {
+                      setSettings((current) => ({ ...current, email }));
+                      setMessage("");
+                    }}
+                    isRequired
+                    validationBehavior="aria"
+                    isInvalid={attempted && invalidEmail}
+                    errorMessage="Enter a valid email address, such as team@example.com."
+                    description="Team updates will be sent to this address."
+                  />
+                </Flex>
+              </Flex>
+              <Flex direction="column" gap="400">
+                <TextHeading elementType="h2">Notifications</TextHeading>
+                <SwitchField
+                  label="Email notifications"
+                  description="Receive team activity and membership updates."
+                  isSelected={settings.notifications}
+                  onChange={(notifications) => {
+                    setSettings((current) => ({ ...current, notifications }));
+                    setMessage("");
+                  }}
+                />
+              </Flex>
+              <Flex direction="column" alignSecondary="stretch" gap="600">
+                <Flex
+                  direction={isMobile ? "column" : "row"}
+                  alignPrimary="space-between"
+                  alignSecondary={isMobile ? "stretch" : "center"}
+                  gap="400"
+                >
+                  <Flex direction="column" gap="200">
+                    <TextHeading elementType="h2">Team members</TextHeading>
+                    <TextSmall>Role changes and removals apply when you save.</TextSmall>
+                  </Flex>
+                  <Flex direction="column" gap="200">
+                    <Button type="button" variant="neutral" isDisabled>
+                      Invite member
+                    </Button>
+                    <TextSmall>Invitations are currently unavailable.</TextSmall>
+                  </Flex>
+                </Flex>
+                {settings.members.map((member) => (
+                  <Flex
+                    key={member.id}
+                    direction={isMobile ? "column" : "row"}
+                    alignPrimary="space-between"
+                    alignSecondary={isMobile ? "stretch" : "center"}
+                    gap="400"
+                  >
+                    <Flex direction="column" gap="100">
+                      <TextStrong>{member.name}</TextStrong>
+                      <TextSmall>{member.email}</TextSmall>
+                    </Flex>
+                    <Flex
+                      direction={isMobile ? "column" : "row"}
+                      alignSecondary={isMobile ? "stretch" : "end"}
+                      gap="400"
+                    >
+                      <SelectField
+                        label={`Role for ${member.name}`}
+                        selectedKey={member.role}
+                        onSelectionChange={(role) => {
+                          if (role === null) return;
+                          setSettings((current) => ({
+                            ...current,
+                            members: current.members.map((item) =>
+                              item.id === member.id ? { ...item, role: String(role) } : item,
+                            ),
+                          }));
+                          setMessage("");
+                        }}
+                      >
+                        <SelectItem id="admin">Admin</SelectItem>
+                        <SelectItem id="member">Member</SelectItem>
+                        <SelectItem id="viewer">Viewer</SelectItem>
+                      </SelectField>
+                      <ButtonDanger
+                        type="button"
+                        variant="danger-subtle"
+                        aria-label={`Remove ${member.name} from team`}
+                        onPress={() => {
+                          setSettings((current) => ({
+                            ...current,
+                            members: current.members.filter((item) => item.id !== member.id),
+                          }));
+                          setMessage(`${member.name} will be removed when you save. Cancel restores members.`);
+                          cancelRef.current?.focus();
+                        }}
+                      >
+                        Remove member
+                      </ButtonDanger>
+                    </Flex>
+                  </Flex>
+                ))}
+                {settings.members.length === 0 && <Text>No team members. Cancel to restore them.</Text>}
+              </Flex>
+              <div role="status" aria-live="polite" aria-atomic="true">
+                {message && <Notification><Text>{message}</Text></Notification>}
+              </div>
+              <ButtonGroup align={isMobile ? "stack" : "end"}>
+                <Button ref={cancelRef} type="button" variant="neutral" onPress={cancel}>
+                  Cancel
+                </Button>
+                <Button type="submit">Save</Button>
+              </ButtonGroup>
+            </Flex>
+          </form>
+        </Flex>
+      </Section>
+    </main>
   );
 }
 
