@@ -1,0 +1,297 @@
+diff --git a/src/App.tsx b/src/App.tsx
+index b7ca42c..638dfe7 100644
+--- a/src/App.tsx
++++ b/src/App.tsx
+@@ -6,12 +6,14 @@ import { PanelSections } from "./examples/PanelSections";
+ import { PricingGrid } from "./examples/PricingGrid";
+ import { ProductDetails } from "./examples/ProductDetails";
+ import { ProductGrid } from "./examples/ProductGrid";
++import { TeamSettings } from "./examples/TeamSettings";
+ import { WelcomeHero } from "./examples/WelcomeHero";
+ 
+ function App() {
+   return (
+     <AllProviders>
+       <Header />
++      <TeamSettings />
+       <Demo />
+       <WelcomeHero />
+       <PanelSections />
+diff --git a/src/examples/TeamSettings.tsx b/src/examples/TeamSettings.tsx
+new file mode 100644
+index 0000000..2eacb85
+--- /dev/null
++++ b/src/examples/TeamSettings.tsx
+@@ -0,0 +1,272 @@
++import { useMediaQuery } from "hooks";
++import { IconAlertCircle, IconCheckCircle, IconTrash2 } from "icons";
++import { Flex, Section } from "layout";
++import {
++  Avatar,
++  AvatarBlock,
++  Button,
++  ButtonGroup,
++  DestructiveIconButton,
++  Form,
++  InputField,
++  Notification,
++  SelectField,
++  SelectItem,
++  SwitchField,
++  SwitchGroup,
++  Text,
++  TextHeading,
++  TextSubtitle,
++  TextTitlePage,
++} from "primitives";
++import { useState, type FormEvent, type Key, type ReactNode } from "react";
++
++type Role = "Owner" | "Admin" | "Editor" | "Viewer";
++const ROLES: Role[] = ["Owner", "Admin", "Editor", "Viewer"];
++const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
++
++const MEMBERS: [string, string, Role][] = [
++  ["Ada Lovelace", "ada@example.com", "Owner"],
++  ["Grace Hopper", "grace@example.com", "Admin"],
++  ["Alan Turing", "alan@example.com", "Editor"],
++  ["Katherine Johnson", "katherine@example.com", "Viewer"],
++];
++
++const INITIAL = {
++  name: "Ada Lovelace",
++  email: "ada@example.com",
++  jobTitle: "Engineering lead",
++  productUpdates: true,
++  weeklyDigest: false,
++  members: MEMBERS.map(([name, email, role], i) => ({
++    id: `${i}`,
++    name,
++    email,
++    role,
++  })),
++};
++type Settings = typeof INITIAL;
++
++const NOTIFICATIONS = [
++  [
++    "productUpdates",
++    "Product updates",
++    "News about features and improvements.",
++  ],
++  ["weeklyDigest", "Weekly digest", "A summary of team activity every Monday."],
++] as const;
++
++const initials = (name: string) => name.replace(/\B\w+|\s/g, "").slice(0, 2);
++
++function SettingsSection(props: {
++  id: string;
++  title: string;
++  children: ReactNode;
++}) {
++  return (
++    <section aria-labelledby={`${props.id}-heading`}>
++      <Flex direction="column" alignSecondary="stretch" gap="400">
++        <TextHeading elementType="h2" id={`${props.id}-heading`}>
++          {props.title}
++        </TextHeading>
++        {props.children}
++      </Flex>
++    </section>
++  );
++}
++
++export function TeamSettings() {
++  const { isMobile } = useMediaQuery();
++  const [saved, setSaved] = useState<Settings>(INITIAL);
++  const [values, setValues] = useState<Settings>(INITIAL);
++  const [showSaved, setShowSaved] = useState(false);
++
++  const update = (patch: Partial<Settings>) => {
++    setValues((current) => ({ ...current, ...patch }));
++    setShowSaved(false);
++  };
++  const { members } = values;
++  const setRole = (id: string, role: Role) =>
++    update({ members: members.map((m) => (m.id === id ? { ...m, role } : m)) });
++  const remove = (id: string) =>
++    update({ members: members.filter((m) => m.id !== id) });
++
++  const nameError = values.name.trim() ? undefined : "Enter your full name.";
++  const emailError = EMAIL_PATTERN.test(values.email.trim())
++    ? undefined
++    : "Enter a valid email address, like name@example.com.";
++  const isInvalid = Boolean(nameError || emailError);
++  const isDirty = JSON.stringify(values) !== JSON.stringify(saved);
++
++  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
++    event.preventDefault();
++    if (isInvalid || !isDirty) return;
++    setSaved(values);
++    setShowSaved(true);
++  };
++  const handleCancel = () => {
++    setValues(saved);
++    setShowSaved(false);
++  };
++
++  return (
++    <Section padding={isMobile ? "600" : "1600"} variant="subtle">
++      <Form
++        validationBehavior="aria"
++        onSubmit={handleSubmit}
++        aria-labelledby="team-settings-title"
++      >
++        <Flex
++          container
++          direction="column"
++          alignSecondary="stretch"
++          gap={isMobile ? "600" : "800"}
++        >
++          <Flex direction="column" gap="200">
++            <TextTitlePage elementType="h1" id="team-settings-title">
++              Team settings
++            </TextTitlePage>
++            <TextSubtitle>
++              Manage your profile, notifications and who has access to your
++              team.
++            </TextSubtitle>
++          </Flex>
++
++          {isInvalid && (
++            <Notification
++              variant="alert"
++              role="alert"
++              icon={<IconAlertCircle />}
++            >
++              <Text>Please fix the highlighted fields before saving.</Text>
++            </Notification>
++          )}
++          {showSaved && (
++            <Notification role="status" icon={<IconCheckCircle />}>
++              <Text>Your changes have been saved.</Text>
++            </Notification>
++          )}
++
++          <SettingsSection id="profile" title="Profile">
++            <InputField
++              label="Full name"
++              value={values.name}
++              onChange={(name) => update({ name })}
++              isRequired
++              isInvalid={Boolean(nameError)}
++              errorMessage={nameError}
++              autoComplete="name"
++            />
++            <InputField
++              label="Email"
++              type="email"
++              value={values.email}
++              onChange={(email) => update({ email })}
++              isRequired
++              isInvalid={Boolean(emailError)}
++              errorMessage={emailError}
++              autoComplete="email"
++            />
++            <InputField
++              label="Job title"
++              description="Shown to teammates next to your name."
++              value={values.jobTitle}
++              onChange={(jobTitle) => update({ jobTitle })}
++              autoComplete="organization-title"
++            />
++          </SettingsSection>
++
++          <SettingsSection id="notifications" title="Notifications">
++            <SwitchGroup>
++              {NOTIFICATIONS.map(([key, label, description]) => (
++                <SwitchField
++                  key={key}
++                  label={label}
++                  description={description}
++                  isSelected={values[key]}
++                  onChange={(on) => update({ [key]: on })}
++                />
++              ))}
++              <SwitchField
++                label="Security alerts"
++                description="Always on to keep your account safe."
++                isSelected
++                isDisabled
++              />
++            </SwitchGroup>
++          </SettingsSection>
++
++          <SettingsSection id="members" title="Team members">
++            <Flex
++              role="list"
++              direction="column"
++              alignSecondary="stretch"
++              gap="400"
++            >
++              {members.map(({ id, name, email, role }) => (
++                <Flex
++                  role="listitem"
++                  key={id}
++                  direction={isMobile ? "column" : "row"}
++                  alignPrimary="space-between"
++                  alignSecondary={isMobile ? "stretch" : "center"}
++                  gap="400"
++                >
++                  <AvatarBlock title={name} description={email}>
++                    <Avatar initials={initials(name)} />
++                  </AvatarBlock>
++                  <Flex alignSecondary="center" gap="200">
++                    <SelectField
++                      aria-label={`Role for ${name}`}
++                      selectedKey={role}
++                      onSelectionChange={(key: Key | null) =>
++                        key && setRole(id, key as Role)
++                      }
++                      isDisabled={role === "Owner"}
++                      disabledKeys={["Owner"]}
++                      items={ROLES.map((r) => ({ id: r }))}
++                    >
++                      {(item) => (
++                        <SelectItem id={item.id}>{item.id}</SelectItem>
++                      )}
++                    </SelectField>
++                    <DestructiveIconButton
++                      variant="danger-subtle"
++                      aria-label={
++                        role === "Owner"
++                          ? `${name} is the owner and cannot be removed`
++                          : `Remove ${name}`
++                      }
++                      isDisabled={role === "Owner"}
++                      onPress={() => remove(id)}
++                    >
++                      <IconTrash2 />
++                    </DestructiveIconButton>
++                  </Flex>
++                </Flex>
++              ))}
++            </Flex>
++          </SettingsSection>
++
++          <ButtonGroup align={isMobile ? "stack" : "end"}>
++            <Button
++              type="button"
++              variant="neutral"
++              onPress={handleCancel}
++              isDisabled={!isDirty}
++            >
++              Cancel
++            </Button>
++            <Button
++              type="submit"
++              variant="primary"
++              isDisabled={!isDirty || isInvalid}
++            >
++              Save changes
++            </Button>
++          </ButtonGroup>
++        </Flex>
++      </Form>
++    </Section>
++  );
++}

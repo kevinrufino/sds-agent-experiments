@@ -1,0 +1,252 @@
+diff --git a/src/App.tsx b/src/App.tsx
+index b7ca42c..638dfe7 100644
+--- a/src/App.tsx
++++ b/src/App.tsx
+@@ -6,12 +6,14 @@ import { PanelSections } from "./examples/PanelSections";
+ import { PricingGrid } from "./examples/PricingGrid";
+ import { ProductDetails } from "./examples/ProductDetails";
+ import { ProductGrid } from "./examples/ProductGrid";
++import { TeamSettings } from "./examples/TeamSettings";
+ import { WelcomeHero } from "./examples/WelcomeHero";
+ 
+ function App() {
+   return (
+     <AllProviders>
+       <Header />
++      <TeamSettings />
+       <Demo />
+       <WelcomeHero />
+       <PanelSections />
+diff --git a/src/examples/TeamSettings.tsx b/src/examples/TeamSettings.tsx
+new file mode 100644
+index 0000000..0b28c3b
+--- /dev/null
++++ b/src/examples/TeamSettings.tsx
+@@ -0,0 +1,227 @@
++import { Card } from "compositions";
++import { useMediaQuery } from "hooks";
++import { Flex, Section } from "layout";
++import {
++  Avatar,
++  AvatarBlock,
++  Button,
++  ButtonDanger,
++  ButtonGroup,
++  Form,
++  InputField,
++  Notification,
++  SelectField,
++  SelectItem,
++  SwitchField,
++  SwitchGroup,
++  TextHeading,
++  TextSubtitle,
++  TextTitleHero,
++  TextTitlePage,
++} from "primitives";
++import { useState } from "react";
++
++type Role = "Owner" | "Admin" | "Editor" | "Viewer";
++type Member = { id: string; name: string; email: string; role: Role };
++type Settings = {
++  name: string;
++  email: string;
++  jobTitle: string;
++  productUpdates: boolean;
++  weeklyDigest: boolean;
++  members: Member[];
++};
++
++const ROLES: Role[] = ["Owner", "Admin", "Editor", "Viewer"];
++
++const INITIAL: Settings = {
++  name: "Avery Johnson",
++  email: "avery@example.com",
++  jobTitle: "Product designer",
++  productUpdates: true,
++  weeklyDigest: false,
++  members: [
++    { id: "1", name: "Avery Johnson", email: "avery@example.com", role: "Owner" },
++    { id: "2", name: "Sam Rivera", email: "sam@example.com", role: "Admin" },
++    { id: "3", name: "Jordan Lee", email: "jordan@example.com", role: "Editor" },
++    { id: "4", name: "Priya Patel", email: "priya@example.com", role: "Viewer" },
++  ],
++};
++
++const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
++const initials = (name: string) =>
++  name.split(" ").map((part) => part.charAt(0)).join("").slice(0, 2);
++
++export function TeamSettings() {
++  const { isMobile } = useMediaQuery();
++  const [saved, setSaved] = useState<Settings>(INITIAL);
++  const [values, setValues] = useState<Settings>(INITIAL);
++  const [showSaved, setShowSaved] = useState(false);
++
++  const update = (patch: Partial<Settings>) => {
++    setValues((current) => ({ ...current, ...patch }));
++    setShowSaved(false);
++  };
++  const updateMember = (id: string, patch: Partial<Member>) =>
++    update({
++      members: values.members.map((m) => (m.id === id ? { ...m, ...patch } : m)),
++    });
++
++  const nameInvalid = values.name.trim() === "";
++  const emailInvalid = !EMAIL_PATTERN.test(values.email.trim());
++  const isInvalid = nameInvalid || emailInvalid;
++  const isDirty = JSON.stringify(values) !== JSON.stringify(saved);
++
++  const save = () => {
++    if (isInvalid || !isDirty) return;
++    setSaved(values);
++    setShowSaved(true);
++  };
++  const cancel = () => {
++    setValues(saved);
++    setShowSaved(false);
++  };
++
++  const Title = isMobile ? TextTitlePage : TextTitleHero;
++
++  return (
++    <Section padding={isMobile ? "600" : "1200"} aria-labelledby="team-settings-title">
++      <Flex container direction="column" gap={isMobile ? "600" : "800"}>
++        <Flex direction="column" gap="200">
++          <Title elementType="h1" id="team-settings-title">
++            Team settings
++          </Title>
++          <TextSubtitle>Manage your profile, notifications and who has access to your team.</TextSubtitle>
++        </Flex>
++
++        <Form
++          validationBehavior="aria"
++          onSubmit={(e) => {
++            e.preventDefault();
++            save();
++          }}
++        >
++          <Flex direction="column" gap="600" alignSecondary="stretch">
++            {isInvalid && (
++              <Notification variant="alert" role="alert">
++                Please fix the highlighted fields before saving.
++              </Notification>
++            )}
++            {showSaved && (
++              <Notification role="status">Your changes have been saved.</Notification>
++            )}
++
++            <Card variant="stroke" padding="600" aria-labelledby="profile-heading">
++              <TextHeading elementType="h2" id="profile-heading">Profile</TextHeading>
++              <InputField
++                label="Full name"
++                isRequired
++                value={values.name}
++                onChange={(name) => update({ name })}
++                isInvalid={nameInvalid}
++                errorMessage="Enter your full name."
++              />
++              <InputField
++                label="Email"
++                type="email"
++                isRequired
++                value={values.email}
++                onChange={(email) => update({ email })}
++                isInvalid={emailInvalid}
++                errorMessage="Enter a valid email address, like name@example.com."
++              />
++              <InputField
++                label="Job title"
++                value={values.jobTitle}
++                onChange={(jobTitle) => update({ jobTitle })}
++                description="Shown to teammates next to your name."
++              />
++            </Card>
++
++            <Card variant="stroke" padding="600" aria-labelledby="notifications-heading">
++              <TextHeading elementType="h2" id="notifications-heading">Notifications</TextHeading>
++              <SwitchGroup>
++                <SwitchField
++                  label="Product updates"
++                  description="News about new features and improvements."
++                  isSelected={values.productUpdates}
++                  onChange={(productUpdates) => update({ productUpdates })}
++                />
++                <SwitchField
++                  label="Weekly digest"
++                  description="A summary of your team's activity every Monday."
++                  isSelected={values.weeklyDigest}
++                  onChange={(weeklyDigest) => update({ weeklyDigest })}
++                />
++                <SwitchField
++                  label="Security alerts"
++                  description="Always on to keep your account safe."
++                  isSelected
++                  isDisabled
++                />
++              </SwitchGroup>
++            </Card>
++
++            <Card variant="stroke" padding="600" aria-labelledby="members-heading">
++              <TextHeading elementType="h2" id="members-heading">Team members</TextHeading>
++              <Flex direction="column" gap="400" alignSecondary="stretch" role="list">
++                {values.members.map((member) => {
++                  const isOwner = member.role === "Owner";
++                  return (
++                    <Flex
++                      key={member.id}
++                      role="listitem"
++                      direction={isMobile ? "column" : "row"}
++                      alignPrimary="space-between"
++                      alignSecondary={isMobile ? "stretch" : "center"}
++                      gap="400"
++                    >
++                      <AvatarBlock title={member.name} description={member.email}>
++                        <Avatar initials={initials(member.name)} />
++                      </AvatarBlock>
++                      <Flex gap="300" alignSecondary="center">
++                        <SelectField
++                          aria-label={`Role for ${member.name}`}
++                          selectedKey={member.role}
++                          onSelectionChange={(key) => updateMember(member.id, { role: key as Role })}
++                          isDisabled={isOwner}
++                          disabledKeys={["Owner"]}
++                        >
++                          {ROLES.map((role) => (
++                            <SelectItem key={role} id={role}>
++                              {role}
++                            </SelectItem>
++                          ))}
++                        </SelectField>
++                        <ButtonDanger
++                          variant="danger-subtle"
++                          size="small"
++                          aria-label={`Remove ${member.name}`}
++                          isDisabled={isOwner}
++                          onPress={() =>
++                            update({ members: values.members.filter((m) => m.id !== member.id) })
++                          }
++                        >
++                          Remove
++                        </ButtonDanger>
++                      </Flex>
++                    </Flex>
++                  );
++                })}
++              </Flex>
++            </Card>
++
++            <ButtonGroup align={isMobile ? "stack" : "end"}>
++              <Button variant="neutral" onPress={cancel} isDisabled={!isDirty}>
++                Cancel
++              </Button>
++              <Button type="submit" variant="primary" isDisabled={!isDirty || isInvalid}>
++                Save changes
++              </Button>
++            </ButtonGroup>
++          </Flex>
++        </Form>
++      </Flex>
++    </Section>
++  );
++}

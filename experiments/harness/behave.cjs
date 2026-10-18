@@ -1,0 +1,35 @@
+// usage: node behave.cjs <distDir>  -> scripted behaviour checks (same for every run). Prints JSON.
+const { chromium } = require("/opt/node22/lib/node_modules/playwright");
+const http = require("http"); const fs = require("fs"); const path = require("path");
+const dist = process.argv[2];
+const types = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".svg": "image/svg+xml", ".png": "image/png" };
+const srv = http.createServer((q, r) => { let p = path.join(dist, decodeURIComponent(q.url.split("?")[0])); if (p.endsWith("/")) p += "index.html";
+  fs.readFile(p, (e, d) => { if (e) { r.writeHead(404); r.end(); return; } r.writeHead(200, { "Content-Type": types[path.extname(p)] || "application/octet-stream" }); r.end(d); }); });
+srv.listen(0, async () => {
+  const browser = await chromium.launch({ executablePath: "/opt/pw-browsers/chromium", args: ["--no-sandbox"] });
+  const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  await page.goto(`http://127.0.0.1:${srv.address().port}/`); await page.waitForTimeout(800);
+  const root = page.locator("#root > *").filter({ has: page.getByText("Team settings", { exact: true }) }).first();
+  const res = {}; const t = async (k, fn) => { try { res[k] = !!(await fn()); } catch (e) { res[k] = false; res[k + "_err"] = String(e.message).split("\n")[0].slice(0, 120); } };
+  const save = () => root.getByRole("button", { name: /save changes/i });
+  const email = () => root.getByLabel(/^email/i).first();
+  const name = () => root.getByLabel(/full name/i).first();
+  const T = { timeout: 1500 };
+  await t("B1_save_disabled_initially", async () => (await save().isDisabled(T)));
+  await t("B2_invalid_email_inline_error", async () => { await email().fill("not-an-email", T); await page.waitForTimeout(150);
+    return (await email().getAttribute("aria-invalid", T)) === "true" || (await root.getByText(/valid email/i).count()) > 0; });
+  await t("B3_page_level_error_shown", async () => (await root.locator('[role=alert], .notification-variant-alert').count()) > 0);
+  await t("B4_save_disabled_when_invalid", async () => (await save().isDisabled(T)));
+  await t("B5_valid_change_enables_save", async () => { await email().fill("new.address@example.com", T); await page.waitForTimeout(150); return !(await save().isDisabled(T)); });
+  await t("B6_save_shows_confirmation", async () => { await save().click(T); await page.waitForTimeout(250);
+    return (await root.getByText(/saved/i).count()) > 0 && (await save().isDisabled(T)); });
+  await t("B7_cancel_restores", async () => { const before = await name().inputValue(T); await name().fill("Temporary Name", T); await page.waitForTimeout(100);
+    await root.getByRole("button", { name: /^cancel$/i }).click(T); await page.waitForTimeout(200); return (await name().inputValue(T)) === before; });
+  await t("B8_owner_remove_locked", async () => { const btns = root.getByRole("button", { name: /remove|owner/i }); const n = await btns.count(); let dis = 0;
+    for (let i = 0; i < n; i++) if (await btns.nth(i).isDisabled()) dis++; return n >= 3 && dis >= 1; });
+  await t("B9_security_alerts_locked", async () => { const sw = root.getByRole("switch", { name: /security alerts/i });
+    return (await sw.isDisabled(T)) || (await sw.getAttribute("aria-readonly", T)) === "true" || (await sw.isChecked(T)) && !(await sw.isEditable(T)); });
+  const keys = Object.keys(res).filter(k => /^B\d_/.test(k) && !k.endsWith("_err"));
+  res.passed = `${keys.filter(k => res[k]).length}/${keys.length}`;
+  console.log(JSON.stringify(res)); await browser.close(); srv.close();
+});

@@ -1,0 +1,33 @@
+{
+ "url_ok": true,
+ "desktop": {
+  "block_height": 1239,
+  "horizontal_overflow": false
+ },
+ "keyboard_focus_sequence": [
+  "input:Full name",
+  "input:Email",
+  "input:Job title",
+  "input[switch]:Product updates\nNews about new",
+  "input[switch]:Weekly digest\nA summary of you",
+  "button:Role for Jordan Lee",
+  "button:Remove Jordan Lee",
+  "button:Role for Sam Rivera",
+  "button:Remove Sam Rivera",
+  "button:Role for Taylor Kim",
+  "button:Remove Taylor Kim",
+  "button:Cancel"
+ ],
+ "headings": [
+  "h1:Team settings",
+  "h2:Profile",
+  "h2:Notifications",
+  "h2:Team members"
+ ],
+ "unlabelled_controls": [],
+ "mobile": {
+  "block_height": 1631,
+  "horizontal_overflow": false
+ },
+ "page_errors": []
+}

@@ -1,0 +1,31 @@
+{
+ "url_ok": true,
+ "desktop": {
+  "block_height": 1385,
+  "horizontal_overflow": false
+ },
+ "keyboard_focus_sequence": [
+  "input:Full name",
+  "input:Email",
+  "input:Job title",
+  "input[switch]:Product updates",
+  "input[switch]:Weekly digest",
+  "button:Role for Jordan Patel",
+  "button:Remove Jordan Patel",
+  "button:Role for Morgan Lee",
+  "button:Remove Morgan Lee",
+  "button:Role for Sam Rivera",
+  "button:Remove Sam Rivera"
+ ],
+ "headings": [
+  "h1:Team settings",
+  "h2:Profile",
+  "h2:Team members"
+ ],
+ "unlabelled_controls": [],
+ "mobile": {
+  "block_height": 1779,
+  "horizontal_overflow": false
+ },
+ "page_errors": []
+}

@@ -1,0 +1,32 @@
+{
+ "url_ok": true,
+ "desktop": {
+  "block_height": 1379,
+  "horizontal_overflow": false
+ },
+ "keyboard_focus_sequence": [
+  "input:Full name",
+  "input:Email",
+  "input:Job title",
+  "input[switch]:Product updates\nNews about new",
+  "input[switch]:Weekly digest\nA summary of you",
+  "button:Role for Ben Okafor",
+  "button:Remove Ben Okafor",
+  "button:Role for Chloe Martin",
+  "button:Remove Chloe Martin",
+  "button:Role for Dev Patel",
+  "button:Remove Dev Patel"
+ ],
+ "headings": [
+  "h1:Team settings",
+  "h2:Profile",
+  "h2:Notifications",
+  "h2:Team members"
+ ],
+ "unlabelled_controls": [],
+ "mobile": {
+  "block_height": 1811,
+  "horizontal_overflow": false
+ },
+ "page_errors": []
+}
