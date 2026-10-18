@@ -1,0 +1,13 @@
+.team-settings-members {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: var(--sds-size-stroke-border) solid
+    var(--sds-color-border-default-default);
+}
+
+.team-settings-member {
+  padding-block: var(--sds-size-space-400);
+  border-bottom: var(--sds-size-stroke-border) solid
+    var(--sds-color-border-default-default);
+}
