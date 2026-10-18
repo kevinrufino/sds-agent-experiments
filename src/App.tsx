@@ -6,12 +6,14 @@ import { PanelSections } from "./examples/PanelSections";
 import { PricingGrid } from "./examples/PricingGrid";
 import { ProductDetails } from "./examples/ProductDetails";
 import { ProductGrid } from "./examples/ProductGrid";
+import { TeamSettings } from "./examples/TeamSettings";
 import { WelcomeHero } from "./examples/WelcomeHero";
 
 function App() {
   return (
     <AllProviders>
       <Header />
+      <TeamSettings />
       <Demo />
       <WelcomeHero />
       <PanelSections />

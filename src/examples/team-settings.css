@@ -1,0 +1,31 @@
+.team-settings-members {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sds-size-space-600);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.team-settings-member {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sds-size-space-300) var(--sds-size-space-600);
+}
+
+.team-settings-member-info {
+  flex: 1 1 200px;
+  min-width: 0;
+}
+
+.team-settings-member-role {
+  width: 200px;
+}
+
+@media (max-width: 480px) {
+  .team-settings-member-role {
+    flex: 1 1 0;
+    width: auto;
+  }
+}
