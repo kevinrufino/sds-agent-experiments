@@ -1,17 +1,17 @@
 import { useRef, useState, type FormEvent } from "react";
 import { useMediaQuery } from "hooks";
 import { Flex, FlexItem, Section } from "layout";
-import { Button, ButtonDanger } from "primitives/Button/Button";
-import { InputField } from "primitives/Input/Input";
-import { SelectField, SelectItem } from "primitives/Select/Select";
-import { SwitchField } from "primitives/Switch/Switch";
+import { Button, ButtonDanger } from "./ui/primitives/Button/Button";
+import { InputField } from "./ui/primitives/Input/Input";
+import { SelectField, SelectItem } from "./ui/primitives/Select/Select";
+import { SwitchField } from "./ui/primitives/Switch/Switch";
 import {
   Text,
   TextHeading,
   TextSmall,
   TextStrong,
   TextTitlePage,
-} from "primitives/Text/Text";
+} from "./ui/primitives/Text/Text";
 
 const roles = ["Admin", "Editor", "Viewer"] as const;
 type Role = (typeof roles)[number];
