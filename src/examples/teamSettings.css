@@ -1,0 +1,9 @@
+.team-settings-member {
+  border-bottom: var(--sds-size-stroke-border) solid
+    var(--sds-color-border-default-default);
+  padding-bottom: var(--sds-size-space-400);
+}
+
+.team-settings-role {
+  min-width: calc(var(--sds-size-space-1600) * 2);
+}
