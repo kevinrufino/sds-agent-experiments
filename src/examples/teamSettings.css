@@ -1,0 +1,30 @@
+.team-settings {
+  max-width: 48rem;
+}
+
+.team-settings-feedback:empty {
+  display: none;
+}
+
+.team-members {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.team-member {
+  border-bottom: var(--sds-size-stroke-border) solid
+    var(--sds-color-border-default-default);
+  padding-block: var(--sds-size-space-400);
+
+  &:first-child {
+    border-top: var(--sds-size-stroke-border) solid
+      var(--sds-color-border-default-default);
+  }
+}
+
+.team-member-info {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
