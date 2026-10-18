@@ -1,0 +1,238 @@
+import { useMediaQuery } from "hooks";
+import { IconAlertCircle, IconCheck } from "icons";
+import { Flex, Section } from "layout";
+import {
+  Avatar,
+  AvatarBlock,
+  Button,
+  ButtonDanger,
+  ButtonGroup,
+  Form,
+  InputField,
+  Notification,
+  SelectField,
+  SelectItem,
+  SwitchField,
+  SwitchGroup,
+  TextContentTitle,
+  TextHeading,
+} from "primitives";
+import { useState, type FormEvent } from "react";
+
+type Role = "Owner" | "Admin" | "Editor" | "Viewer";
+type Member = { id: string; name: string; email: string; role: Role };
+type Settings = {
+  name: string;
+  email: string;
+  jobTitle: string;
+  productUpdates: boolean;
+  weeklyDigest: boolean;
+  members: Member[];
+};
+
+const ROLES: Role[] = ["Owner", "Admin", "Editor", "Viewer"];
+
+const INITIAL_SETTINGS: Settings = {
+  name: "Ada Lovelace",
+  email: "ada@example.com",
+  jobTitle: "Engineering lead",
+  productUpdates: true,
+  weeklyDigest: false,
+  members: [
+    { id: "1", name: "Ada Lovelace", email: "ada@example.com", role: "Owner" },
+    { id: "2", name: "Grace Hopper", email: "grace@example.com", role: "Admin" },
+    { id: "3", name: "Alan Turing", email: "alan@example.com", role: "Editor" },
+    { id: "4", name: "Katherine Johnson", email: "katherine@example.com", role: "Viewer" },
+  ],
+};
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const initialsOf = (name: string) =>
+  name
+    .split(" ")
+    .map((part) => part[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+
+export function TeamSettings() {
+  const { isMobile } = useMediaQuery();
+  const [saved, setSaved] = useState<Settings>(INITIAL_SETTINGS);
+  const [values, setValues] = useState<Settings>(INITIAL_SETTINGS);
+  const [showSaved, setShowSaved] = useState(false);
+
+  const update = (patch: Partial<Settings>) => {
+    setValues((current) => ({ ...current, ...patch }));
+    setShowSaved(false);
+  };
+  const updateMember = (id: string, patch: Partial<Member>) =>
+    update({
+      members: values.members.map((m) => (m.id === id ? { ...m, ...patch } : m)),
+    });
+
+  const nameError = values.name.trim() ? undefined : "Enter your full name.";
+  const emailError = EMAIL_PATTERN.test(values.email.trim())
+    ? undefined
+    : "Enter a valid email address, like name@example.com.";
+  const isInvalid = Boolean(nameError || emailError);
+  const isDirty = JSON.stringify(values) !== JSON.stringify(saved);
+
+  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (isInvalid || !isDirty) return;
+    setSaved(values);
+    setShowSaved(true);
+  };
+  const onCancel = () => {
+    setValues(saved);
+    setShowSaved(false);
+  };
+
+  return (
+    <Section padding={isMobile ? "600" : "1600"} variant="stroke">
+      <Flex direction="column" container gap={isMobile ? "600" : "1200"}>
+        <TextContentTitle
+          title="Team settings"
+          subtitle="Manage your profile, notifications and who has access to your team."
+        />
+
+        <Form onSubmit={onSubmit} validationBehavior="aria">
+          <Flex direction="column" gap="1200">
+            {isInvalid && (
+              <Notification variant="alert" role="alert" icon={<IconAlertCircle />}>
+                Some fields need attention. Fix the errors below before saving.
+              </Notification>
+            )}
+            {showSaved && (
+              <Notification role="status" icon={<IconCheck />}>
+                Your changes have been saved.
+              </Notification>
+            )}
+
+            <Flex direction="column" gap="600">
+              <TextHeading elementType="h2">
+                Profile
+              </TextHeading>
+              <InputField
+                label="Full name"
+                name="name"
+                autoComplete="name"
+                isRequired
+                value={values.name}
+                onChange={(name) => update({ name })}
+                isInvalid={!!nameError}
+                errorMessage={nameError}
+              />
+              <InputField
+                label="Email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                isRequired
+                value={values.email}
+                onChange={(email) => update({ email })}
+                isInvalid={!!emailError}
+                errorMessage={emailError}
+              />
+              <InputField
+                label="Job title"
+                name="jobTitle"
+                autoComplete="organization-title"
+                description="Shown to teammates next to your name."
+                value={values.jobTitle}
+                onChange={(jobTitle) => update({ jobTitle })}
+              />
+            </Flex>
+
+            <Flex direction="column" gap="600">
+              <TextHeading elementType="h2">Notifications</TextHeading>
+              <SwitchGroup>
+                <SwitchField
+                  label="Product updates"
+                  description="News about new features and improvements."
+                  isSelected={values.productUpdates}
+                  onChange={(productUpdates) => update({ productUpdates })}
+                />
+                <SwitchField
+                  label="Weekly digest"
+                  description="A summary of team activity every Monday."
+                  isSelected={values.weeklyDigest}
+                  onChange={(weeklyDigest) => update({ weeklyDigest })}
+                />
+                <SwitchField
+                  label="Security alerts"
+                  description="Always on to keep your account safe."
+                  isSelected
+                  isDisabled
+                />
+              </SwitchGroup>
+            </Flex>
+
+            <Flex direction="column" gap="600">
+              <TextHeading elementType="h2">Team members</TextHeading>
+              <Flex direction="column" gap="600" role="list">
+                {values.members.map((member) => {
+                  const isOwner = member.role === "Owner";
+                  return (
+                    <Flex
+                      key={member.id}
+                      role="listitem"
+                      direction={isMobile ? "column" : "row"}
+                      alignPrimary="space-between"
+                      alignSecondary={isMobile ? "stretch" : "center"}
+                      gap="400"
+                    >
+                      <AvatarBlock title={member.name} description={member.email}>
+                        <Avatar initials={initialsOf(member.name)} />
+                      </AvatarBlock>
+                      <Flex gap="400" alignSecondary="center">
+                        <SelectField
+                          aria-label={`Role for ${member.name}`}
+                          selectedKey={member.role}
+                          onSelectionChange={(key) =>
+                            updateMember(member.id, { role: key as Role })
+                          }
+                          isDisabled={isOwner}
+                          disabledKeys={isOwner ? [] : ["Owner"]}
+                        >
+                          {ROLES.map((role) => (
+                            <SelectItem key={role} id={role}>
+                              {role}
+                            </SelectItem>
+                          ))}
+                        </SelectField>
+                        <ButtonDanger
+                          variant="danger-subtle"
+                          size="small"
+                          isDisabled={isOwner}
+                          aria-label={`Remove ${member.name}`}
+                          onPress={() =>
+                            update({
+                              members: values.members.filter((m) => m.id !== member.id),
+                            })
+                          }
+                        >
+                          Remove
+                        </ButtonDanger>
+                      </Flex>
+                    </Flex>
+                  );
+                })}
+              </Flex>
+            </Flex>
+
+            <ButtonGroup align={isMobile ? "stack" : "end"}>
+              <Button variant="neutral" onPress={onCancel} isDisabled={!isDirty}>
+                Cancel
+              </Button>
+              <Button type="submit" isDisabled={!isDirty || isInvalid}>
+                Save changes
+              </Button>
+            </ButtonGroup>
+          </Flex>
+        </Form>
+      </Flex>
+    </Section>
+  );
+}
