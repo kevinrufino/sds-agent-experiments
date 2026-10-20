@@ -12,7 +12,7 @@ Start with [results.md](results.md), [matrix.csv](matrix.csv), [rubric.md](rubri
 - Existing React/Vite/SDS components and Storybook; local mock data; no application credentials or backend.
 - User-supplied experiment file: https://www.figma.com/design/mchDCUgpbpnntD9vMBJlzC/Simple-Design-System--Community-?node-id=3-5 . Its duplicated-file identity cannot be independently verified without Figma access. The file was not read or modified.
 - User-reported Professional plan/Full seat is not evidence of accessible MCP or published mappings. No Figma MCP tools/configured servers are available. Local Code Connect CLI parses 383 checked-in mappings; live coverage is unverified.
-- Git read/push works via platform HTTPS proxy. `api.github.com` is denied at CONNECT; draft PR creation requires that runtime network change. No token values are recorded.
+- Git read/push works via platform HTTPS proxy. `api.github.com` was initially denied at CONNECT; after the runtime network state changed, API access succeeded and [draft PR #2](https://github.com/kevinrufino/sds-agent-experiments/pull/2) was created. No token values are recorded.
 
 ## Run the selected Team Settings fixture
 

@@ -1,12 +1,6 @@
 # Next actions
 
-1. **Finish draft PR creation:** In environment settings, save/apply Internet access for `api.github.com` (already added to the draft). The available draft tool only persists configuration; approval in chat does not apply it. Keep the existing injected GitHub identity. After the proxy route changes, retry the API operation and determine whether that identity is authorized; don't assume the earlier CONNECT denial invalidated the token. Respect the two-authentication-attempt cap per meaningful configuration state. Then run from this checkout:
-
-   ```sh
-   gh pr create --draft --repo kevinrufino/sds-agent-experiments --base main --head experiments/sds-settings-results --title "Measure SDS discovery and validation with isolated Team Settings experiments" --body-file experiments/pr-description.md
-   ```
-
-   If created through Codex, attach the resulting URL to the task. No production deployment is requested. If API access remains unavailable, the pushed results branch and committed patches/reports are the artifact fallback; do not call that an opened PR.
+1. **Review [draft PR #2](https://github.com/kevinrufino/sds-agent-experiments/pull/2):** The GitHub API became reachable after the environment resumed, and the authorized draft PR is now open against `main`. Review the evidence and implementation; no merge or production deployment was performed. The earlier API blocker is resolved.
 
 2. **Enable a real E03/E04 pair:** Connect the Figma MCP integration with read access to the user-designated `mchDCUgpbpnntD9vMBJlzC` duplicate, then retrieve node 3-5 and inspect actual Code Connect mapping output plus component descriptions. Record returned file/node identity and coverage. If mappings are unavailable or cannot be toggled while holding other context constant, keep E03 blocked. Description treatment requires isolated authorized write/read access to the duplicate, captured before/after text/node IDs, and proof those descriptions reached the agent. Do not modify upstream artifacts or publish mappings without separate approval. Do not purchase a plan/API upgrade.
 

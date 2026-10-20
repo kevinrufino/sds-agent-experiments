@@ -12,18 +12,20 @@
   "github_cli_auth_status": "GH_TOKEN binding present; gh auth status failed",
   "github_api_read": "gh api repos/kevinrufino/sds-agent-experiments returned Forbidden",
   "github_auth_attempts": 2,
-  "github_next": "No more API auth retries without meaningful credential change; native Git push separately tests its scoped permission",
+  "github_next": "Review draft PR #2; no remaining GitHub access blocker",
   "account_plan": "User reports Professional Full seat; not independently verified; no billing or plan changes",
   "github_network_probe": "Unauthenticated CONNECT to api.github.com returned 403 from envoy; initial CLI auth failures do not establish invalid credentials",
-  "github_network_draft": "api.github.com added to allowed_domains; runtime apply pending",
+  "github_network_draft": "api.github.com saved earlier; resumed runtime permits API requests",
   "native_git_push": "SUCCESS: experiment/shared-baseline plus four run branches",
-  "github_api_status": "Still CONNECT-denied after user authorized action; authorization did not apply draft network setting",
-  "draft_pr_created": false,
+  "github_api_status": "RESOLVED on resumed instance: api.github.com CONNECT and API read succeeded; draft PR created and verified open/draft",
+  "draft_pr_created": true,
   "network_domains_saved": [
     "api.github.com",
     "fonts.googleapis.com",
     "fonts.gstatic.com"
   ],
-  "runtime_network_applied": false,
-  "environment_published": false
+  "runtime_network_applied": "api.github.com reachability verified; other saved destinations not rechecked",
+  "environment_published": false,
+  "draft_pr_url": "https://github.com/kevinrufino/sds-agent-experiments/pull/2",
+  "github_resolution_observed_at": "2026-10-20T03:25:16.878896+00:00"
 }
