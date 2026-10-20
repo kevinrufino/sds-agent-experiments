@@ -1,0 +1,29 @@
+diff --git a/src/App.tsx b/src/App.tsx
+index 6e2c5d4..206070d 100644
+--- a/src/App.tsx
++++ b/src/App.tsx
+@@ -30,6 +30,7 @@ const initialSettings = {
+ function App() {
+   const { isMobile } = useMediaQuery();
+   const [settings, setSettings] = useState(initialSettings);
++  const [savedSettings, setSavedSettings] = useState(initialSettings);
+   const [attempted, setAttempted] = useState(false);
+   const [message, setMessage] = useState("");
+   const formRef = useRef<HTMLFormElement>(null);
+@@ -49,13 +50,14 @@ function App() {
+         ?.focus();
+       return;
+     }
++    setSavedSettings(settings);
+     setMessage("Team settings saved successfully for this session.");
+   }
+ 
+   function cancel() {
+-    setSettings(initialSettings);
++    setSettings(savedSettings);
+     setAttempted(false);
+-    setMessage("Changes canceled. Initial team settings restored.");
++    setMessage("Changes canceled. Saved team settings restored.");
+   }
+ 
+   return (

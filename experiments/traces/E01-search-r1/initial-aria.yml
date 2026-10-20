@@ -1,0 +1,32 @@
+- main:
+  - heading "Team Settings" [level=1]
+  - paragraph: Manage your team details, notifications, and member access.
+  - form "Team settings":
+    - heading "Team details" [level=2]
+    - text: Team name
+    - textbox "Team name": Studio North
+    - text: Team email
+    - textbox "Team email": team@studionorth.example
+    - text: Team updates will be sent to this address.
+    - heading "Notifications" [level=2]
+    - switch "Email notifications Receive team activity and membership updates." [checked]
+    - text: Email notifications Receive team activity and membership updates.
+    - heading "Team members" [level=2]
+    - text: Role changes and removals apply when you save.
+    - button "Invite member" [disabled]
+    - text: Invitations are currently unavailable.
+    - strong: Maya Chen
+    - text: maya@example.com Role for Maya Chen
+    - button "Admin Role for Maya Chen":
+      - text: Admin
+      - img
+    - button "Remove Maya Chen from team": Remove member
+    - strong: Alex Rivera
+    - text: alex@example.com Role for Alex Rivera
+    - button "Member Role for Alex Rivera":
+      - text: Member
+      - img
+    - button "Remove Alex Rivera from team": Remove member
+    - status
+    - button "Cancel"
+    - button "Save"

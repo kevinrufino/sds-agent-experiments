@@ -1,0 +1,19 @@
+{
+  "run_id": "E06-validated-r1",
+  "spawn_observed_at": "2026-10-18T05:32:02.781785+00:00",
+  "baseline": "8b2b72202ad2c60a591e83128b2f9ad5aa27c162",
+  "initial_implementation": "f250f51",
+  "fresh_context": true,
+  "model": "inherited Cloud task model, exact identifier not exposed",
+  "seed": "N/A",
+  "temperature": "N/A",
+  "token_usage": "N/A",
+  "correction_rounds_budget": 1,
+  "worktree": "/workspace/sds-runs/E06-validated-r1",
+  "implementation_commit": "63ef6ca8f618fe5b9281de5a4dcf53d0a5ad080c",
+  "generation_artifact_written_at": "2026-10-18T05:32:27.520101+00:00",
+  "generation_observed_seconds": 24.738,
+  "duration_basis": "spawn observation to action-summary artifact mtime; includes tool waits",
+  "correction_rounds": 1,
+  "source_lines": 193
+}

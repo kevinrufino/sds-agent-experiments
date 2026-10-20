@@ -1,0 +1,11 @@
+{
+  "source_commit": "05525f75192a3aa5d5690c5e41277ebd19d2efe1",
+  "repaired_baseline": "8b2b72202ad2c60a591e83128b2f9ad5aa27c162",
+  "app_build": "PASS after 3 baseline repair attempts",
+  "storybook_build": "PASS",
+  "full_lint": "FAIL: 19 errors, 3 warnings pre-existing; generated files will be checked separately",
+  "locked_dependencies": "npm ci, lockfile unchanged",
+  "node": "24.19.0",
+  "npm": "11.9.0",
+  "local_code_connect_parsed_count": 383
+}

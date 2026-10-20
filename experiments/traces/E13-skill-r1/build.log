@@ -1,0 +1,11 @@
+
+> sds@0.0.0 app:build
+> tsc && vite build
+
+src/App.tsx(84,13): error TS2322: Type '{ children: Element; "aria-label": string; validationBehavior: "aria"; noValidate: true; onSubmit: (event: FormEvent<HTMLFormElement>) => void; }' is not assignable to type 'IntrinsicAttributes & FormProps & { singleLine?: boolean | undefined; }'.
+  Property 'noValidate' does not exist on type 'IntrinsicAttributes & FormProps & { singleLine?: boolean | undefined; }'.
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice

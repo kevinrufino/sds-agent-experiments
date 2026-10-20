@@ -1,0 +1,18 @@
+
+> sds@0.0.0 app:build
+> tsc && vite build
+
+src/App.tsx(4,38): error TS2307: Cannot find module 'primitives/Button/Button' or its corresponding type declarations.
+src/App.tsx(5,28): error TS2307: Cannot find module 'primitives/Input/Input' or its corresponding type declarations.
+src/App.tsx(6,41): error TS2307: Cannot find module 'primitives/Select/Select' or its corresponding type declarations.
+src/App.tsx(7,29): error TS2307: Cannot find module 'primitives/Switch/Switch' or its corresponding type declarations.
+src/App.tsx(14,8): error TS2307: Cannot find module 'primitives/Text/Text' or its corresponding type declarations.
+src/App.tsx(89,32): error TS7006: Parameter 'name' implicitly has an 'any' type.
+src/App.tsx(96,32): error TS7006: Parameter 'email' implicitly has an 'any' type.
+src/App.tsx(112,30): error TS7006: Parameter 'notifications' implicitly has an 'any' type.
+src/App.tsx(151,45): error TS7006: Parameter 'key' implicitly has an 'any' type.
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice

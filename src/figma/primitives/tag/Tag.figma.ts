@@ -7,7 +7,7 @@ import figma from "figma";
 const instance = figma.selectedInstance;
 const rp = figma.helpers.react.renderProp;
 
-const onRemove = instance.getBoolean("Removable", {
+instance.getBoolean("Removable", {
   true: figma.helpers.react.function("() => {}"),
   false: undefined,
 });

@@ -1,0 +1,412 @@
+import { useMemo, useSyncExternalStore } from "react";
+
+const breakpoints = {
+  mobile: 375,
+  tablet: 600,
+  desktop: 1024,
+};
+
+export function useCustomMediaQuery(mediaQuery: string): boolean {
+  const [subscribe, getSnapshot] = useMemo(() => {
+    const mediaQueryList = globalThis.matchMedia(mediaQuery);
+
+    function subscribe(onStoreChange: () => void) {
+      mediaQueryList.addEventListener("change", onStoreChange);
+      return () => mediaQueryList.removeEventListener("change", onStoreChange);
+    }
+
+    const getSnapshot = () => mediaQueryList.matches;
+
+    return [subscribe, getSnapshot];
+  }, [mediaQuery]);
+
+  return useSyncExternalStore(subscribe, getSnapshot);
+}
+
+export const useMediaQuery = () => {
+  const isMobile = useCustomMediaQuery(
+    `(max-width: ${breakpoints.tablet - 1}px)`,
+  );
+  const isTablet = useCustomMediaQuery(
+    `(min-width: ${breakpoints.tablet}px) and (max-width: ${breakpoints.desktop - 1}px)`,
+  );
+  const isDesktop = useCustomMediaQuery(
+    `(min-width: ${breakpoints.desktop}px)`,
+  );
+  const isTabletUp = useCustomMediaQuery(
+    `(min-width: ${breakpoints.tablet}px)`,
+  );
+  const isTabletDown = useCustomMediaQuery(
+    `(max-width: ${breakpoints.desktop - 1}px)`,
+  );
+
+  const matches = useMemo(() => {
+    return {
+      isMobile,
+      isTablet,
+      isDesktop,
+      isTabletUp,
+      isTabletDown,
+    };
+  }, [isMobile, isTablet, isDesktop, isTabletUp, isTabletDown]);
+
+  return matches;
+};
+.flex-container {
+  margin: 0 auto;
+  max-width: var(--global-container-max-width);
+  width: 100%;
+}
+
+.flex {
+  --flex-gap: 0px;
+  align-items: var(--flex-align-secondary, "start");
+  display: flex;
+  flex-direction: var(--flex-direction, "row");
+  gap: var(--flex-gap);
+  justify-content: var(--flex-align-primary, "start");
+
+  &.flex-type-half {
+    --column-major: calc(var(--sds-responsive-ratio-column-half) / 2);
+    --column-minor: calc(var(--sds-responsive-ratio-column-half) / 2);
+  }
+  &.flex-type-quarter {
+    --column-major: calc(var(--sds-responsive-ratio-column-quarter-major) / 4);
+    --column-minor: calc(var(--sds-responsive-ratio-column-quarter-minor) / 4);
+  }
+  &.flex-type-third {
+    --column-major: calc(var(--sds-responsive-ratio-column-third-major) / 3);
+    --column-minor: calc(var(--sds-responsive-ratio-column-third-minor) / 3);
+  }
+
+  &.flex-direction-column,
+  &.flex-direction-column-reverse {
+    &.flex-align-secondary-stretch > * {
+      width: 100%;
+    }
+  }
+
+  &.flex-type-half,
+  &.flex-type-quarter,
+  &.flex-type-third {
+    > .flex-item-size-full {
+      --column-ratio: calc(var(--sds-responsive-ratio-column-full) / 1);
+    }
+    > .flex-item-size-half {
+      --column-ratio: calc(var(--sds-responsive-ratio-column-half) / 2);
+    }
+    > .flex-item-size-major {
+      --column-ratio: var(--column-major);
+    }
+    > .flex-item-size-minor {
+      --column-ratio: var(--column-minor);
+    }
+    > * {
+      --column-count: calc(1 / var(--column-ratio));
+      --base-width: calc(
+        (100% / var(--column-count)) -
+          (((var(--column-count) - 1) / var(--column-count)) * var(--flex-gap))
+      );
+      --column-span: calc(var(--column-ratio) * var(--column-count));
+      flex-basis: calc(var(--column-span) * var(--base-width));
+      max-width: calc(var(--column-span) * var(--base-width));
+    }
+  }
+
+  &.flex-direction-row,
+  &.flex-direction-row-reverse {
+    > :not(.flex-item) {
+      --column-ratio: var(--column-minor);
+    }
+
+    &.flex-type-auto {
+      &.flex-align-primary-stretch > * {
+        flex: 1;
+      }
+    }
+  }
+
+  .flex-item-size-fill {
+    flex-grow: 1;
+  }
+
+  &.flex-wrap {
+    flex-wrap: wrap;
+  }
+  &.flex-gap-100 {
+    --flex-gap: var(--sds-size-space-100);
+  }
+  &.flex-gap-200 {
+    --flex-gap: var(--sds-size-space-200);
+  }
+  &.flex-gap-300 {
+    --flex-gap: var(--sds-size-space-300);
+  }
+  &.flex-gap-400 {
+    --flex-gap: var(--sds-size-space-400);
+  }
+  &.flex-gap-600 {
+    --flex-gap: var(--sds-size-space-600);
+  }
+  &.flex-gap-800 {
+    --flex-gap: var(--sds-size-space-800);
+  }
+  &.flex-gap-1200 {
+    --flex-gap: var(--sds-size-space-1200);
+  }
+  &.flex-gap-1600 {
+    --flex-gap: var(--sds-size-space-1600);
+  }
+}
+.section {
+  box-sizing: border-box;
+  padding: var(--padding-y-top) var(--sds-size-space-600)
+    var(--padding-y-bottom);
+  position: relative;
+  width: 100%;
+}
+.section-padding-bottom-600 {
+  --padding-y-bottom: var(--sds-size-space-600);
+}
+.section-padding-top-600 {
+  --padding-y-top: var(--sds-size-space-600);
+}
+.section-padding-bottom-800 {
+  --padding-y-bottom: var(--sds-size-space-800);
+}
+.section-padding-top-800 {
+  --padding-y-top: var(--sds-size-space-800);
+}
+.section-padding-bottom-1200 {
+  --padding-y-bottom: var(--sds-size-space-1200);
+}
+.section-padding-top-1200 {
+  --padding-y-top: var(--sds-size-space-1200);
+}
+.section-padding-bottom-1600 {
+  --padding-y-bottom: var(--sds-size-space-1600);
+}
+.section-padding-top-1600 {
+  --padding-y-top: var(--sds-size-space-1600);
+}
+.section-padding-bottom-4000 {
+  --padding-y-bottom: var(--sds-size-space-4000);
+}
+.section-padding-top-4000 {
+  --padding-y-top: var(--sds-size-space-4000);
+}
+
+.section-variant-image {
+  overflow: hidden;
+  &::before {
+    content: "";
+    background-color: var(--sds-color-background-utilities-scrim);
+    z-index: -1;
+  }
+  .section-image {
+    height: 100%;
+    width: 100%;
+    object-position: center;
+    z-index: -2;
+  }
+  &::before,
+  .section-image {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+}
+.section-variant-brand {
+  background: var(--sds-color-background-brand-default);
+  color: var(--sds-color-text-brand-on-brand);
+  .logo svg {
+    --logo-color: var(--sds-color-icon-brand-on-brand);
+  }
+  .icon svg {
+    --icon-color: var(--sds-color-icon-brand-on-brand);
+  }
+}
+
+.section-variant-neutral {
+  background: var(--sds-color-background-default-tertiary);
+}
+.section-variant-stroke {
+  &:not(:last-child) {
+    border-bottom: var(--sds-size-stroke-border) solid
+      var(--sds-color-border-default-default);
+  }
+  &:not(:first-child) {
+    border-top: var(--sds-size-stroke-border) solid
+      var(--sds-color-border-default-default);
+  }
+  & + .section-variant-stroke {
+    border-top: none;
+  }
+}
+.section-variant-subtle {
+  background: transparent;
+}
+import type { Meta, StoryObj } from "@storybook/react";
+import { Flex, FlexItem } from "layout";
+
+const meta: Meta<typeof Flex> = {
+  component: Flex,
+  title: "SDS Layout/Flex",
+  parameters: { layout: "centered" },
+};
+export default meta;
+
+const renderChild = (text: string) => (
+  <div
+    style={{
+      display: "grid",
+      placeItems: "center",
+      padding: "0.5rem 1rem",
+      background: "var(--sds-color-background-brand-default)",
+      color: "var(--sds-color-text-brand-on-brand)",
+    }}
+  >
+    {text}
+  </div>
+);
+
+export const StoryFlex: StoryObj<typeof Flex> = {
+  name: "Flex",
+  args: {
+    gap: "200",
+    wrap: true,
+  },
+  argTypes: {
+    gap: {
+      control: { type: "select" },
+      options: [undefined, "100", "200", "300", "400", "600", "800"],
+    },
+  },
+  render: (args) => (
+    <Flex direction="column" gap="600">
+      <Flex {...args} container type="quarter">
+        <FlexItem size="full">{renderChild("full")}</FlexItem>
+        <FlexItem size="major">{renderChild("major")}</FlexItem>
+        <FlexItem size="minor">{renderChild("minor")}</FlexItem>
+        <FlexItem size="minor">{renderChild("minor")}</FlexItem>
+        <FlexItem size="major">{renderChild("major")}</FlexItem>
+        <FlexItem size="half">{renderChild("half")}</FlexItem>
+        <FlexItem size="half">{renderChild("half")}</FlexItem>
+        <FlexItem size="minor">{renderChild("minor")}</FlexItem>
+        <FlexItem size="minor">{renderChild("minor")}</FlexItem>
+        <FlexItem size="minor">{renderChild("minor")}</FlexItem>
+        <FlexItem size="minor">{renderChild("minor")}</FlexItem>
+        <FlexItem size="half">{renderChild("half")}</FlexItem>
+        <FlexItem size="minor">{renderChild("minor")}</FlexItem>
+        <FlexItem size="minor">{renderChild("minor")}</FlexItem>
+        <FlexItem size="minor">{renderChild("minor")}</FlexItem>
+        <FlexItem size="minor">{renderChild("minor")}</FlexItem>
+        <FlexItem size="half">{renderChild("half")}</FlexItem>
+      </Flex>
+      <Flex {...args} container type="third">
+        <FlexItem size="full">{renderChild("full")}</FlexItem>
+        <FlexItem size="major">{renderChild("major")}</FlexItem>
+        <FlexItem size="minor">{renderChild("minor")}</FlexItem>
+        <FlexItem size="minor">{renderChild("minor")}</FlexItem>
+        <FlexItem size="major">{renderChild("major")}</FlexItem>
+        <FlexItem size="half">{renderChild("half")}</FlexItem>
+        <FlexItem size="half">{renderChild("half")}</FlexItem>
+        <FlexItem size="minor">{renderChild("minor")}</FlexItem>
+        <FlexItem size="minor">{renderChild("minor")}</FlexItem>
+        <FlexItem size="minor">{renderChild("minor")}</FlexItem>
+      </Flex>
+      <Flex {...args} container type="quarter">
+        {renderChild("span")}
+        {renderChild("span")}
+        {renderChild("span")}
+        {renderChild("span")}
+        {renderChild("span")}
+        {renderChild("span")}
+        {renderChild("span")}
+        {renderChild("span")}
+        {renderChild("span")}
+        {renderChild("span")}
+        {renderChild("span")}
+        {renderChild("span")}
+        {renderChild("span")}
+        {renderChild("span")}
+        {renderChild("span")}
+        {renderChild("span")}
+      </Flex>
+    </Flex>
+  ),
+};
+import type { Meta, StoryObj } from "@storybook/react";
+import { placeholder } from "images";
+import { Flex, Section } from "layout";
+import { TextContentTitle } from "primitives";
+
+const meta: Meta<typeof Section> = {
+  component: Section,
+  title: "SDS Layout/Section",
+  parameters: { layout: "centered" },
+};
+export default meta;
+
+export const StorySection: StoryObj<typeof Section> = {
+  name: "Section",
+  args: {
+    padding: "1600",
+    variant: "subtle",
+  },
+  argTypes: {
+    padding: {
+      control: { type: "select" },
+      options: ["800", "1600", "4000"],
+    },
+    variant: {
+      control: { type: "select" },
+      options: ["subtle", "brand", "stroke", "secondary"],
+    },
+  },
+  render: (args) => (
+    <>
+      <Section {...args}>
+        <Flex container alignPrimary="center" gap="600">
+          Hello there
+        </Flex>
+      </Section>
+      <Section {...args}>
+        <Flex container alignPrimary="center" gap="600">
+          Hello there
+        </Flex>
+      </Section>
+      <Section {...args}>
+        <Flex container alignPrimary="center" gap="600">
+          Hello there
+        </Flex>
+      </Section>
+      <Section variant="image" src={placeholder} padding="4000">
+        <Flex container alignPrimary="center" gap="600">
+          <TextContentTitle align="center" title="Title" subtitle="Subtitle" />
+        </Flex>
+      </Section>
+    </>
+  ),
+};
+import type { Meta, StoryObj } from "@storybook/react";
+import { useMediaQuery } from "hooks";
+
+function Example() {
+  const output = useMediaQuery();
+  return <pre>{JSON.stringify(output, null, 2)}</pre>;
+}
+
+const meta: Meta<typeof Example> = {
+  component: Example,
+  title: "SDS Hooks/useMediaQuery",
+  parameters: { layout: "centered" },
+};
+export default meta;
+
+export const StoryUseMediaQuery: StoryObj<typeof Example> = {
+  name: "useMediaQuery",
+  render: () => <Example />,
+};

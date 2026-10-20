@@ -1,0 +1,18 @@
+{
+  "run_id": "E13-skill-r1",
+  "spawn_observed_at": "2026-10-18T05:29:25.895684+00:00",
+  "baseline": "8b2b72202ad2c60a591e83128b2f9ad5aa27c162",
+  "fresh_context": true,
+  "model": "inherited Cloud task model, exact identifier not exposed",
+  "seed": "N/A",
+  "temperature": "N/A",
+  "token_usage": "N/A",
+  "tools": "Cloud execution + collaboration; no Figma MCP",
+  "worktree": "/workspace/sds-runs/E13-skill-r1",
+  "repetition": 1,
+  "implementation_commit": "3a0dd3831cde8350fc3678a81ee5ba0f7063fd3d",
+  "generation_artifact_written_at": "2026-10-18T05:30:24.732414+00:00",
+  "duration_basis": "Elapsed spawn observation to action-summary file mtime; includes retrieval/tools; not pure model latency",
+  "generation_observed_seconds": 58.837,
+  "source_lines": 203
+}

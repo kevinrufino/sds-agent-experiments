@@ -1,0 +1,18 @@
+{
+  "run_id": "E01-search-r1",
+  "spawn_observed_at": "2026-10-18T05:29:25.895684+00:00",
+  "baseline": "8b2b72202ad2c60a591e83128b2f9ad5aa27c162",
+  "fresh_context": true,
+  "model": "inherited Cloud task model, exact identifier not exposed",
+  "seed": "N/A",
+  "temperature": "N/A",
+  "token_usage": "N/A",
+  "tools": "Cloud execution + collaboration; no Figma MCP",
+  "worktree": "/workspace/sds-runs/E01-search-r1",
+  "repetition": 1,
+  "implementation_commit": "fa7945a0ebde6491cc5d71554479a95200597b67",
+  "generation_artifact_written_at": "2026-10-18T05:30:20.840040+00:00",
+  "duration_basis": "Elapsed spawn observation to action-summary file mtime; includes retrieval/tools; not pure model latency",
+  "generation_observed_seconds": 54.944,
+  "source_lines": 211
+}

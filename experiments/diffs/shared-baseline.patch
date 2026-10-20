@@ -1,0 +1,170 @@
+diff --git a/src/figma/primitives/tag/Tag.figma.ts b/src/figma/primitives/tag/Tag.figma.ts
+index c0af346..7a8881b 100644
+--- a/src/figma/primitives/tag/Tag.figma.ts
++++ b/src/figma/primitives/tag/Tag.figma.ts
+@@ -7,7 +7,7 @@ import figma from "figma";
+ const instance = figma.selectedInstance;
+ const rp = figma.helpers.react.renderProp;
+ 
+-const onRemove = instance.getBoolean("Removable", {
++instance.getBoolean("Removable", {
+   true: figma.helpers.react.function("() => {}"),
+   false: undefined,
+ });
+diff --git a/src/ui/primitives/Button/Button.tsx b/src/ui/primitives/Button/Button.tsx
+index 17f211f..4b3badd 100644
+--- a/src/ui/primitives/Button/Button.tsx
++++ b/src/ui/primitives/Button/Button.tsx
+@@ -21,25 +21,33 @@ export const Button = React.forwardRef(function Button(
+     `button-variant-${variant}`,
+   );
+ 
+-  const { style, ...sharedProps } = props;
++  if (isAnchorProps(props)) {
++    const { style, ...sharedProps } = props;
++    return (
++      <RACLink
++        {...sharedProps}
++        className={classNames}
++        ref={ref as React.ForwardedRef<HTMLAnchorElement>}
++      >
++        {props.children}
++      </RACLink>
++    );
++  }
+ 
+-  return isAnchorProps(props) ? (
+-    <RACLink
+-      {...sharedProps}
+-      className={classNames}
+-      ref={ref as React.ForwardedRef<HTMLAnchorElement>}
+-    >
+-      {props.children}
+-    </RACLink>
+-  ) : (
+-    <RACButton
+-      {...sharedProps}
+-      className={classNames}
+-      ref={ref as React.ForwardedRef<HTMLButtonElement>}
+-    >
+-      {props.children}
+-    </RACButton>
+-  );
++  if (isButtonProps(props)) {
++    const { style, ...sharedProps } = props;
++    return (
++      <RACButton
++        {...sharedProps}
++        className={classNames}
++        ref={ref as React.ForwardedRef<HTMLButtonElement>}
++      >
++        {props.children}
++      </RACButton>
++    );
++  }
++
++  return null;
+ });
+ 
+ export type ButtonDangerProps = Omit<ButtonBaseProps, "variant"> & {
+@@ -67,25 +75,33 @@ export const ButtonDanger = React.forwardRef(function Button(
+     `button-variant-${variant}`,
+   );
+ 
+-  const { style, ...sharedProps } = props;
++  if (isAnchorProps(props)) {
++    const { style, ...sharedProps } = props;
++    return (
++      <RACLink
++        {...sharedProps}
++        className={classNames}
++        ref={ref as React.ForwardedRef<HTMLAnchorElement>}
++      >
++        {props.children}
++      </RACLink>
++    );
++  }
+ 
+-  return isAnchorProps(props) ? (
+-    <RACLink
+-      {...sharedProps}
+-      className={classNames}
+-      ref={ref as React.ForwardedRef<HTMLAnchorElement>}
+-    >
+-      {props.children}
+-    </RACLink>
+-  ) : (
+-    <RACButton
+-      {...sharedProps}
+-      className={classNames}
+-      ref={ref as React.ForwardedRef<HTMLButtonElement>}
+-    >
+-      {props.children}
+-    </RACButton>
+-  );
++  if (isButtonProps(props)) {
++    const { style, ...sharedProps } = props;
++    return (
++      <RACButton
++        {...sharedProps}
++        className={classNames}
++        ref={ref as React.ForwardedRef<HTMLButtonElement>}
++      >
++        {props.children}
++      </RACButton>
++    );
++  }
++
++  return null;
+ });
+ 
+ type ButtonBaseProps = {
+@@ -106,6 +122,13 @@ function isAnchorProps(
+   return "href" in props;
+ }
+ 
++function isButtonProps(
++  props: ButtonBaseProps | ButtonDangerProps,
++): props is (ButtonBaseProps | ButtonDangerProps) &
++  ComponentPropsWithoutRef<typeof RACButton> {
++  return !("href" in props);
++}
++
+ export type ButtonGroupProps = React.ComponentPropsWithoutRef<"div"> & {
+   align?: "start" | "end" | "center" | "justify" | "stack";
+ };
+diff --git a/src/ui/utils/AnchorOrButton.tsx b/src/ui/utils/AnchorOrButton.tsx
+index 2c28f01..eb642cb 100644
+--- a/src/ui/utils/AnchorOrButton.tsx
++++ b/src/ui/utils/AnchorOrButton.tsx
+@@ -31,16 +31,21 @@ export const AnchorOrButton = forwardRef(function AnchorOrButton(
+   props: AnchorOrButtonProps,
+   ref: ForwardedRef<HTMLElement>,
+ ) {
++  if (isAnchorProps(props)) {
++    const { style, ...sharedProps } = props;
++    return (
++      <RACLink
++        {...sharedProps}
++        className={props.className}
++        ref={ref as React.ForwardedRef<HTMLAnchorElement>}
++      >
++        {props.children}
++      </RACLink>
++    );
++  }
++
+   const { style, ...sharedProps } = props;
+-  return isAnchorProps(props) ? (
+-    <RACLink
+-      {...sharedProps}
+-      className={props.className}
+-      ref={ref as React.ForwardedRef<HTMLAnchorElement>}
+-    >
+-      {props.children}
+-    </RACLink>
+-  ) : (
++  return (
+     <RACButton
+       {...sharedProps}
+       className={props.className}

@@ -1,0 +1,30 @@
+{
+  "run_id": "E01-search-r1",
+  "evaluation_started_at": "2026-10-18T05:31:31.884188+00:00",
+  "commands": {
+    "build": {
+      "command": [
+        "npm",
+        "run",
+        "app:build"
+      ],
+      "exit_code": 0,
+      "seconds": 3.75
+    },
+    "lint": {
+      "command": [
+        "./node_modules/.bin/eslint",
+        "src/App.tsx",
+        "--max-warnings",
+        "0"
+      ],
+      "exit_code": 0,
+      "seconds": 1.772
+    },
+    "browser": {
+      "exit_code": 0
+    }
+  },
+  "http_ready": true,
+  "evaluation_finished_at": "2026-10-18T05:31:50.767993+00:00"
+}

@@ -1,0 +1,34 @@
+- main:
+  - heading "Team Settings" [level=1]
+  - paragraph: Manage your team details, notifications, and member access.
+  - text: Changes are saved locally for this session.
+  - form "Team settings":
+    - region "Team details":
+      - heading "Team details" [level=2]
+      - text: Team name
+      - textbox "Team name": Studio North
+      - text: Team email
+      - textbox "Team email": team@studionorth.example
+      - text: The contact address for your team.
+      - switch "Email notifications Receive updates about your team's activity." [checked]
+      - text: Email notifications Receive updates about your team's activity.
+    - region "Team members":
+      - heading "Team members" [level=2]
+      - text: Role changes and removals take effect when you save.
+      - button "Invite member" [disabled]
+      - text: Invitations are currently unavailable.
+      - strong: Maya Chen
+      - text: maya@studionorth.example Role for Maya Chen
+      - button "Admin Role for Maya Chen":
+        - text: Admin
+        - img
+      - button "Remove Maya Chen": Remove member
+      - strong: Alex Rivera
+      - text: alex@studionorth.example Role for Alex Rivera
+      - button "Member Role for Alex Rivera":
+        - text: Member
+        - img
+      - button "Remove Alex Rivera": Remove member
+    - status
+    - button "Cancel"
+    - button "Save"

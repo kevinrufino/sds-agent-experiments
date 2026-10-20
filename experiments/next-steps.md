@@ -1,0 +1,9 @@
+# Next actions
+
+1. **Review [draft PR #2](https://github.com/kevinrufino/sds-agent-experiments/pull/2):** The GitHub API became reachable after the environment resumed, and the authorized draft PR is now open against `main`. Review the evidence and implementation; no merge or production deployment was performed. The earlier API blocker is resolved.
+
+2. **Enable a real E03/E04 pair:** Connect the Figma MCP integration with read access to the user-designated `mchDCUgpbpnntD9vMBJlzC` duplicate, then retrieve node 3-5 and inspect actual Code Connect mapping output plus component descriptions. Record returned file/node identity and coverage. If mappings are unavailable or cannot be toggled while holding other context constant, keep E03 blocked. Description treatment requires isolated authorized write/read access to the duplicate, captured before/after text/node IDs, and proof those descriptions reached the agent. Do not modify upstream artifacts or publish mappings without separate approval. Do not purchase a plan/API upgrade.
+
+3. **Replicate the code-only pairs:** Run 2–3 fresh repetitions of E01 using the same fixed data, layout/task, baseline, permissions and evaluator. Expand the preregistered brief to define Save→edit→Cancel and keyboard focus after deletion. Repeat E06 on naturally failing outputs; do not seed defects to force improvement. Preserve total initial+repair time and retrieval cost separately. Report variability rather than treating this single pair as a general effect.
+
+Optional environment finish: `fonts.googleapis.com` and `fonts.gstatic.com` are saved domain additions for the repository's existing font links. Apply them, verify the fonts actually load, then recapture a clearly separate screenshot set if typography comparisons are needed. Review/save the reusable install/start configuration and publish the environment through its UI when ready; no snapshot publication or fresh-task restoration was verified in this run.

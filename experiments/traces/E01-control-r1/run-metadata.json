@@ -1,0 +1,18 @@
+{
+  "run_id": "E01-control-r1",
+  "spawn_observed_at": "2026-10-18T05:29:25.895684+00:00",
+  "baseline": "8b2b72202ad2c60a591e83128b2f9ad5aa27c162",
+  "fresh_context": true,
+  "model": "inherited Cloud task model, exact identifier not exposed",
+  "seed": "N/A",
+  "temperature": "N/A",
+  "token_usage": "N/A",
+  "tools": "Cloud execution + collaboration; no Figma MCP",
+  "worktree": "/workspace/sds-runs/E01-control-r1",
+  "repetition": 1,
+  "implementation_commit": "f250f51c1b3aed6e76c512efaa4b31b738c3df0d",
+  "generation_artifact_written_at": "2026-10-18T05:29:58.404224+00:00",
+  "duration_basis": "Elapsed spawn observation to action-summary file mtime; includes retrieval/tools; not pure model latency",
+  "generation_observed_seconds": 32.509,
+  "source_lines": 193
+}

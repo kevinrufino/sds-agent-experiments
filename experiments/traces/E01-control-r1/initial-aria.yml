@@ -1,0 +1,35 @@
+- main:
+  - heading "Team Settings" [level=1]
+  - paragraph: Manage your team details, notifications, and member access.
+  - text: Changes are stored only for this session.
+  - form "Team settings":
+    - heading "Team details" [level=2]
+    - text: Team name
+    - textbox "Team name": Studio team
+    - text: Team email
+    - textbox "Team email": team@example.com
+    - text: Where we send team updates.
+    - heading "Notifications" [level=2]
+    - switch "Email notifications Receive updates about team activity." [checked]
+    - text: Email notifications Receive updates about team activity.
+    - heading "Team members" [level=2]
+    - text: Role changes and removals apply when you save.
+    - button "Invite member" [disabled]
+    - text: Invitations are unavailable in this local demo.
+    - group "Alex Morgan":
+      - strong: Alex Morgan
+      - text: alex@example.com Role for Alex Morgan
+      - button "Admin Role for Alex Morgan":
+        - text: Admin
+        - img
+      - button "Remove Alex Morgan": Remove
+    - group "Sam Rivera":
+      - strong: Sam Rivera
+      - text: sam@example.com Role for Sam Rivera
+      - button "Editor Role for Sam Rivera":
+        - text: Editor
+        - img
+      - button "Remove Sam Rivera": Remove
+    - button "Save"
+    - button "Cancel"
+    - status
